@@ -15,6 +15,11 @@ public class User {
     public static boolean verified = false;
     static Scanner scanner = new Scanner(System.in);
 
+/*
+    Incase need multiple jsons for different users classes like admin and basic user,
+    change jsonRead to read from dictionary like 1: adminJson 2: userJson,
+    so if like this collect a token or user class before running the class so like in main
+ */
 
 
 
