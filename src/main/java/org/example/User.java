@@ -12,7 +12,7 @@ public class User {
 
     private static String txt = "", name = "", pass = "", field = "";
     private static int  id = 0;
-    private static boolean verified = false;
+    public static boolean verified = false;
     static Scanner scanner = new Scanner(System.in);
 
 
@@ -64,7 +64,7 @@ public class User {
         }
         if(id != target){
             System.out.println("userId not found!");
-            id = 0;
+            id = -1;
             return;
         }
         // Print the values
@@ -102,7 +102,7 @@ public class User {
 
             for(int i = 5; i >= 0; i--){
                 System.out.println("Enter your password!: ");
-                System.out.println(i + " attempts left!\n");
+                System.out.println(i + " attempts left!");
                 String inPass = scanner.nextLine();
                 if(inPass.equals(pass)){
                     System.out.println("Verified!");
