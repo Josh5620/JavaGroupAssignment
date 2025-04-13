@@ -10,27 +10,27 @@ import static org.example.User.scanner;
 
 public class User {
     public static void main(String[] args) {
-        makeBigList();
-        boolean Test = true;
+        
+        makeBigList(LoginFilePath,bigList);
         while(currentUser == null) {
             findList(userInput());
         }
         login(currentUser);
-
+        
     }
 
-    static String filePath = "src/LoginTest.txt";
+    static String LoginFilePath = "src/LoginTest.txt";
     static List<List<String>> bigList = new ArrayList<>();
     static List<String> currentUser;
     static Scanner scanner = new Scanner(System.in);
 
 
-    public static void makeBigList(){
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+    public static void makeBigList(String filepath, List mainList){
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
-                bigList.add(Arrays.asList(parts));
+                mainList.add(Arrays.asList(parts));
 
             }
 
