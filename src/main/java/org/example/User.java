@@ -11,7 +11,7 @@ import static org.example.User.scanner;
 public class User {
     public static void main(String[] args) {
         makeBigList();
-
+        boolean Test = true;
         while(currentUser == null) {
             findList(userInput());
         }
