@@ -22,7 +22,7 @@ public class User {
     static String LoginFilePath = "src/LoginTest.txt";
     static List<List<String>> bigList = new ArrayList<>();
     static List<String> currentUser;
-    static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
 
     public static void makeBigList(String filepath, List mainList){
