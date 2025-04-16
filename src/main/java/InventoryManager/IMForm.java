@@ -369,7 +369,7 @@ public class IMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_ColouredHighlight
 
     private void ColorReset(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ColorReset
-        javax.swing.JButton btn = (JButton) evt.getSource();
+        JButton btn = (JButton) evt.getSource();
         btn.setBackground(new Color(173,216,230));    
     }//GEN-LAST:event_ColorReset
 
