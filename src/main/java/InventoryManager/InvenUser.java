@@ -1,6 +1,7 @@
 package InventoryManager;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
 import org.example.User;
 
 public class InvenUser extends User {
@@ -14,7 +15,8 @@ public class InvenUser extends User {
         
         //System.out.print(InvenList);  
         //System.out.print(lowitemStock());
-        updateStock("ID001", 5);
+        lowItemAlert(lowitemStock());
+        //updateStock("ID001", 5);
         //Test();
     }
     /*
@@ -66,4 +68,21 @@ public class InvenUser extends User {
         
     }
     
+    public static void lowItemAlert(List<List<String>> lowItems){
+        
+        String AlertText = "";
+        for( List<String> item : lowItems){
+            String smallText = String.format("(%s / %s) Amount Left: %s \n", item.get(0), item.get(2), item.get(3));
+            AlertText = (AlertText + smallText);
+            smallText = "";
+            
+            
+        }
+        
+        JOptionPane.showMessageDialog(
+                null,
+                AlertText,
+                "Inventory Alert",
+                JOptionPane.WARNING_MESSAGE);
+    } 
 }
