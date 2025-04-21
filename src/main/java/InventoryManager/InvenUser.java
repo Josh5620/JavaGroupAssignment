@@ -32,6 +32,14 @@ public class InvenUser extends User {
     }
     */
     
+    public InvenUser(){
+        makeBigList(filePath1, InvenList);
+    }
+    
+    public static List<List<String>> getInvenList(){
+        return InvenList;
+    }
+    
     public static List<List<String>> lowitemStock(){ // Returns a array of the stuff that is below <5 its public so SM can use it too
         for(List<String> item : InvenList){
             for(String qItem : item){
@@ -68,17 +76,13 @@ public class InvenUser extends User {
         
     }
     
-    public static void lowItemAlert(List<List<String>> lowItems){
-        
+    public static void lowItemAlert(List<List<String>> lowItems){     
         String AlertText = "";
         for( List<String> item : lowItems){
             String smallText = String.format("(%s / %s) Amount Left: %s \n", item.get(0), item.get(2), item.get(3));
             AlertText = (AlertText + smallText);
             smallText = "";
-            
-            
-        }
-        
+            } 
         JOptionPane.showMessageDialog(
                 null,
                 AlertText,

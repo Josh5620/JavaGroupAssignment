@@ -1,7 +1,15 @@
 package InventoryManager;
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.*;
+import java.awt.Component;
+import javax.swing.table.DefaultTableModel;
+import InventoryManager.InvenUser;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.util.*;
+import javax.swing.table.DefaultTableCellRenderer;
+
+
 
 public class IMForm extends javax.swing.JFrame {
 
@@ -10,8 +18,16 @@ public class IMForm extends javax.swing.JFrame {
         initComponents();
         this.cl = (CardLayout)(MainPanel.getLayout());
         cl.show(MainPanel, "card7");  
+        System.out.println(user.getInvenList().size());
+    
+        
+        customizeTable();
     }
-
+    InvenUser user = new InvenUser();
+    
+    
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -19,6 +35,9 @@ public class IMForm extends javax.swing.JFrame {
         MainPanel = new javax.swing.JPanel();
         Panel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
         Panel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         Panel4 = new javax.swing.JPanel();
@@ -48,21 +67,73 @@ public class IMForm extends javax.swing.JFrame {
 
         jLabel2.setText("Panel2");
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ItemID", "ItemName", "Supplier", "Quantity"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
+            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        jLabel8.setText("Panel2");
+
         javax.swing.GroupLayout Panel2Layout = new javax.swing.GroupLayout(Panel2);
         Panel2.setLayout(Panel2Layout);
         Panel2Layout.setHorizontalGroup(
             Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel2Layout.createSequentialGroup()
-                .addGap(209, 209, 209)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
+                .addGap(115, 115, 115)
                 .addComponent(jLabel2)
-                .addContainerGap(402, Short.MAX_VALUE))
+                .addGroup(Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(22, Short.MAX_VALUE))))
         );
         Panel2Layout.setVerticalGroup(
             Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel2Layout.createSequentialGroup()
-                .addGap(216, 216, 216)
-                .addComponent(jLabel2)
-                .addContainerGap(278, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(182, 182, 182))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))))
         );
 
         MainPanel.add(Panel2, "card2");
@@ -393,6 +464,9 @@ public class IMForm extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button1;
@@ -417,5 +491,53 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+    
+    private void customizeTable(){
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.getTableHeader().setResizingAllowed(false);
+        jTable1.setRowSelectionAllowed(true);
+        
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(75);
+        jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
+        jTable1.getColumnModel().getColumn(2).setPreferredWidth(150);
+        jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); 
+        for(List<String> item : user.getInvenList()){
+            model.addRow(new Object[]{item.get(0),item.get(1),item.get(2),item.get(3)});
+        }
+      
+        // need to edit invenuser to be able to update the invenlist to affect this table and also implement a function there to write upadted invnelist to the txt file
+        jTable1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,boolean isSelected, boolean hasFocus, int row, int column){
+                
+                Component c = super.getTableCellRendererComponent(table, value,isSelected, hasFocus, row, column);
+                
+                if(isSelected){
+                    c.setBackground(Color.LIGHT_GRAY);
+                        
+                }else if(column == 3 && Integer.parseInt(value.toString())< 10) {
+                    c.setBackground(Color.RED);
+                    
+                }else {
+                    c.setBackground(Color.WHITE);
+                }
+                return c;
+            }
+            
+            
+        });
+        jTable1.repaint();
+        
+       
+        
+        
+    }
+    
 }
