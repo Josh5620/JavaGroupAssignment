@@ -2,7 +2,8 @@ package InventoryManager;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import org.example.User;
+import UserLogin.User;
+
 
 public class InvenUser extends User {
     
