@@ -419,7 +419,7 @@ public class IMForm extends javax.swing.JFrame {
     
     CardLayout cl;
     private void Button1Action(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button1Action
-        cl.show(MainPanel, "card2");  
+        cl.show(MainPanel, "card2"); 
     }//GEN-LAST:event_Button1Action
 
     private void Button5Action(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button5Action
