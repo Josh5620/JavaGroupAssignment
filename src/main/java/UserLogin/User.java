@@ -1,4 +1,4 @@
-package org.example;
+package UserLogin;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,12 +6,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.example.User.scanner;
-
 public class User {
     public static void main(String[] args) {
         
-        makeBigList(LoginFilePath,bigList);
+        makeBigList(LoginFilePath,userList);
         while(currentUser == null) {
             findList(userInput());
         }
@@ -20,7 +18,7 @@ public class User {
     }
 
     static String LoginFilePath = "src/LoginTest.txt";
-    static List<List<String>> bigList = new ArrayList<>();
+    static List<List<String>> userList = new ArrayList<>();
     static List<String> currentUser;
     public static Scanner scanner = new Scanner(System.in);
 
@@ -55,7 +53,7 @@ public class User {
 
     public static void findList(String InName){
         outer:
-        for(List<String> BigI : bigList){
+        for(List<String> BigI : userList){
             for(String SmallI : BigI){
                 if(SmallI.equals(InName)){
                     System.out.println("FOUND IT OUTPUTTING THE LISt");
