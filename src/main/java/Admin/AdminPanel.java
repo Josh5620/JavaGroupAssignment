@@ -1,22 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Admin;
 
-/**
- *
- * @author Dylan
- */
-public class AdminPanel extends javax.swing.JFrame {
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.Component;
+import javax.swing.table.DefaultTableModel;
+import InventoryManager.InvenUser;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.util.*;
+import javax.swing.table.DefaultTableCellRenderer;
 
-    /**
-     * Creates new form AdminPanel
-     */
+public class AdminPanel extends javax.swing.JFrame {
+    CardLayout AdminLayout;
+    
     public AdminPanel() {
         initComponents();
+        this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
+        AdminLayout.show(AdminMainPanel, "HomeCard");
     }
 
+    
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,10 +34,13 @@ public class AdminPanel extends javax.swing.JFrame {
 
         AdminMainPanel = new javax.swing.JPanel();
         ManageUserP = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         SMPanel = new javax.swing.JPanel();
         PMPanel = new javax.swing.JPanel();
         IMPanel = new javax.swing.JPanel();
         FMPanel = new javax.swing.JPanel();
+        AdminHPPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         AdminSidePanel = new javax.swing.JPanel();
         SMBtn = new javax.swing.JButton();
         IMBtn = new javax.swing.JButton();
@@ -40,77 +49,122 @@ public class AdminPanel extends javax.swing.JFrame {
         HomeBtn = new javax.swing.JButton();
         LogoutBtn = new javax.swing.JButton();
         PMBtn = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(850, 490));
+        setResizable(false);
 
         AdminMainPanel.setLayout(new java.awt.CardLayout());
+
+        ManageUserP.setBackground(new java.awt.Color(204, 0, 0));
+
+        jLabel2.setText("User Management");
 
         javax.swing.GroupLayout ManageUserPLayout = new javax.swing.GroupLayout(ManageUserP);
         ManageUserP.setLayout(ManageUserPLayout);
         ManageUserPLayout.setHorizontalGroup(
             ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(ManageUserPLayout.createSequentialGroup()
+                .addGap(185, 185, 185)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(252, Short.MAX_VALUE))
         );
         ManageUserPLayout.setVerticalGroup(
             ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(ManageUserPLayout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(353, Short.MAX_VALUE))
         );
 
-        AdminMainPanel.add(ManageUserP, "card2");
+        AdminMainPanel.add(ManageUserP, "ManageUserCard");
+
+        SMPanel.setBackground(new java.awt.Color(0, 153, 51));
+        SMPanel.setPreferredSize(new java.awt.Dimension(585, 478));
 
         javax.swing.GroupLayout SMPanelLayout = new javax.swing.GroupLayout(SMPanel);
         SMPanel.setLayout(SMPanelLayout);
         SMPanelLayout.setHorizontalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
+            .addGap(0, 587, Short.MAX_VALUE)
         );
         SMPanelLayout.setVerticalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 478, Short.MAX_VALUE)
         );
 
-        AdminMainPanel.add(SMPanel, "card3");
+        AdminMainPanel.add(SMPanel, "SMCard");
+
+        PMPanel.setBackground(new java.awt.Color(0, 153, 153));
 
         javax.swing.GroupLayout PMPanelLayout = new javax.swing.GroupLayout(PMPanel);
         PMPanel.setLayout(PMPanelLayout);
         PMPanelLayout.setHorizontalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 587, Short.MAX_VALUE)
         );
         PMPanelLayout.setVerticalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 478, Short.MAX_VALUE)
         );
 
-        AdminMainPanel.add(PMPanel, "card2");
+        AdminMainPanel.add(PMPanel, "PMCard");
+
+        IMPanel.setBackground(new java.awt.Color(255, 204, 204));
+        IMPanel.setPreferredSize(new java.awt.Dimension(585, 478));
 
         javax.swing.GroupLayout IMPanelLayout = new javax.swing.GroupLayout(IMPanel);
         IMPanel.setLayout(IMPanelLayout);
         IMPanelLayout.setHorizontalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 587, Short.MAX_VALUE)
         );
         IMPanelLayout.setVerticalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 478, Short.MAX_VALUE)
         );
 
-        AdminMainPanel.add(IMPanel, "card2");
+        AdminMainPanel.add(IMPanel, "IMCard");
+
+        FMPanel.setBackground(new java.awt.Color(0, 102, 0));
 
         javax.swing.GroupLayout FMPanelLayout = new javax.swing.GroupLayout(FMPanel);
         FMPanel.setLayout(FMPanelLayout);
         FMPanelLayout.setHorizontalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 587, Short.MAX_VALUE)
         );
         FMPanelLayout.setVerticalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 478, Short.MAX_VALUE)
         );
 
-        AdminMainPanel.add(FMPanel, "card2");
+        AdminMainPanel.add(FMPanel, "FMCard");
+
+        AdminHPPanel.setBackground(new java.awt.Color(0, 102, 0));
+
+        jLabel1.setText("Hello Admin");
+
+        javax.swing.GroupLayout AdminHPPanelLayout = new javax.swing.GroupLayout(AdminHPPanel);
+        AdminHPPanel.setLayout(AdminHPPanelLayout);
+        AdminHPPanelLayout.setHorizontalGroup(
+            AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminHPPanelLayout.createSequentialGroup()
+                .addGap(197, 197, 197)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(314, Short.MAX_VALUE))
+        );
+        AdminHPPanelLayout.setVerticalGroup(
+            AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminHPPanelLayout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(346, Short.MAX_VALUE))
+        );
+
+        jLabel1.getAccessibleContext().setAccessibleDescription("");
+
+        AdminMainPanel.add(AdminHPPanel, "HomeCard");
 
         AdminSidePanel.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -124,23 +178,46 @@ public class AdminPanel extends javax.swing.JFrame {
 
         IMBtn.setBackground(new java.awt.Color(0, 153, 255));
         IMBtn.setText("Inventory Manager");
+        IMBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IMBtnActionPerformed(evt);
+            }
+        });
 
         ManageUsersBtn.setBackground(new java.awt.Color(0, 153, 255));
         ManageUsersBtn.setText("Manage Users");
+        ManageUsersBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ManageUsersBtnActionPerformed(evt);
+            }
+        });
 
         FMBtn.setBackground(new java.awt.Color(0, 153, 255));
         FMBtn.setText("Finance Manager");
+        FMBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FMBtnActionPerformed(evt);
+            }
+        });
 
         HomeBtn.setBackground(new java.awt.Color(0, 153, 255));
         HomeBtn.setText("Home");
+        HomeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HomeBtnActionPerformed(evt);
+            }
+        });
 
         LogoutBtn.setBackground(new java.awt.Color(0, 153, 255));
         LogoutBtn.setText("Log out");
 
         PMBtn.setBackground(new java.awt.Color(0, 153, 255));
         PMBtn.setText("Purchase Manager");
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Admin/mega (1).jpg"))); // NOI18N
+        PMBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PMBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout AdminSidePanelLayout = new javax.swing.GroupLayout(AdminSidePanel);
         AdminSidePanel.setLayout(AdminSidePanelLayout);
@@ -151,7 +228,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addGroup(AdminSidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdminSidePanelLayout.createSequentialGroup()
                         .addComponent(LogoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                         .addComponent(HomeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(SMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ManageUsersBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -159,16 +236,11 @@ public class AdminPanel extends javax.swing.JFrame {
                     .addComponent(IMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PMBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(AdminSidePanelLayout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         AdminSidePanelLayout.setVerticalGroup(
             AdminSidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminSidePanelLayout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(ManageUsersBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(SMBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -190,8 +262,8 @@ public class AdminPanel extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(AdminSidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AdminSidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(AdminMainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -207,9 +279,31 @@ public class AdminPanel extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void SMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SMBtnActionPerformed
-        // TODO add your handling code here:
+       AdminLayout.show(AdminMainPanel, "SMCard");
     }//GEN-LAST:event_SMBtnActionPerformed
+
+    private void ManageUsersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ManageUsersBtnActionPerformed
+        AdminLayout.show(AdminMainPanel, "ManageUserCard");
+    }//GEN-LAST:event_ManageUsersBtnActionPerformed
+
+    private void PMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PMBtnActionPerformed
+        AdminLayout.show(AdminMainPanel, "PMCard");
+    }//GEN-LAST:event_PMBtnActionPerformed
+
+    private void IMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IMBtnActionPerformed
+        AdminLayout.show(AdminMainPanel, "IMCard");
+    }//GEN-LAST:event_IMBtnActionPerformed
+
+    private void FMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FMBtnActionPerformed
+        AdminLayout.show(AdminMainPanel, "FMCard");
+    }//GEN-LAST:event_FMBtnActionPerformed
+
+    private void HomeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeBtnActionPerformed
+        AdminLayout.show(AdminMainPanel, "HomeCard");
+    }//GEN-LAST:event_HomeBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -247,6 +341,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AdminHPPanel;
     private javax.swing.JPanel AdminMainPanel;
     private javax.swing.JPanel AdminSidePanel;
     private javax.swing.JButton FMBtn;
@@ -262,5 +357,6 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JButton SMBtn;
     private javax.swing.JPanel SMPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }
