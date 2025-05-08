@@ -1,16 +1,30 @@
 package UserLogin;
+import Admin.AdminPanel;
+import FinanceManager.resources.General;
 import InventoryManager.IMForm;
+import PM.PMForm1;
+import SM.SMForm;
+import java.util.*;
+import javax.swing.JOptionPane;
 
 
 
 public class LoginPage extends javax.swing.JFrame {
-
+    User tempUser = new User();
+    Map<String, String> roleMap = new HashMap<>() {{
+        put("Admin", "Admin");
+        put("Finance Manager (FM)", "FM");
+        put("Inventory Manager (IM)", "IM");
+        put("Purchase Manager (PM)", "PM");
+        put("Sales Manager (SM)", "SM");
+    }};
+    
 
     public LoginPage() {
         initComponents();
-        
+    
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -36,7 +50,7 @@ public class LoginPage extends javax.swing.JFrame {
             }
         });
 
-        RoleCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        RoleCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Finance Manager (FM)", "Inventory Manager (IM)", "Purchase Manager (PM)", "Sales Manager (SM)", " " }));
         RoleCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RoleComboActionPerformed(evt);
@@ -99,9 +113,9 @@ public class LoginPage extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(75, 75, 75)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RoleCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(RoleCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(userField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,37 +150,11 @@ public class LoginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_RoleComboActionPerformed
 
     private void LoginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginBtnActionPerformed
-        // TODO add your handling code here:
+        tempUser.makeLoginList(tempUser.FullUserList, roleMap.get(RoleCombo.getSelectedItem()));
+        Login(tempUser.SpecifiedUserList);
     }//GEN-LAST:event_LoginBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new LoginPage().setVisible(true);
@@ -186,15 +174,71 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JTextField userField;
     // End of variables declaration//GEN-END:variables
 
-    private void stuff(){
-        RoleCombo.addItem("Admin");
-        RoleCombo.addItem("Inventory Manager");
-        
-        
-        
-        
-        
-        
-    }
-
+    public void Login(List<List<String>> userList){
+        String userLog = userField.getText();
+        String passLog = passField.getText();
+        boolean foundUser = false;
+        List<String> focusUser = new ArrayList<>();
+        boolean Verified = false;
+        try{
+            for(List<String> user : userList){ 
+                if(userLog.equals(user.get(1))){
+                    foundUser = true;  
+                    focusUser = user;
+                    break;
+                }
+            }
+            if(foundUser != true){
+                JOptionPane.showMessageDialog(
+                null,
+                "User Not found!",
+                "Login Failed",
+                JOptionPane.WARNING_MESSAGE);
+            }
+            for(String pswd : focusUser){
+                if(passLog.equals(pswd)){
+                    Verified = true;
+                    System.out.println("Logged in");
+                    break;
+                }  
+            } 
+            if(Verified != true){ 
+                JOptionPane.showMessageDialog(
+                null,
+                "Password Incorrect",
+                "Login Failed",
+                JOptionPane.WARNING_MESSAGE);}
+            else{
+                switch(RoleCombo.getSelectedIndex()){
+                    case 0:
+                        AdminPanel adminPanel = new AdminPanel();
+                        adminPanel.setVisible(true);
+                        this.dispose();
+                        break;
+                    case 1:
+                        FinanceManager.resources.General FMFormGeneral = new FinanceManager.resources.General();
+                        FMFormGeneral.setVisible(true);
+                        this.dispose();
+                        break;
+                    case 2:
+                        IMForm iMForm = new IMForm();
+                        iMForm.setVisible(true);
+                        this.dispose();
+                        break;
+                    case 3:
+                        PMForm1 pMForm = new PMForm1();
+                        pMForm.setVisible(true);
+                        this.dispose();
+                        break;
+                    case 4:
+                        SMForm sMForm = new SMForm();
+                        sMForm.setVisible(true);
+                        this.dispose();
+                        break;
+                }          
+            }  
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }    
 }

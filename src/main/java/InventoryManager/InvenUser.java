@@ -12,7 +12,7 @@ public class InvenUser extends User {
     static List<List<String>> StockAlert = new ArrayList<>();
     
     public static void main(String[] args) {
-        makeBigList(filePath1, InvenList);
+        // makeBigList(filePath1, InvenList);
         
         //System.out.print(InvenList);  
         //System.out.print(lowitemStock());
