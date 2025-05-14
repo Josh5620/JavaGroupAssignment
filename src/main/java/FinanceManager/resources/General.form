@@ -195,13 +195,11 @@
         <Component class="javax.swing.JButton" name="btnPurchaseOrders">
           <Properties>
             <Property name="text" type="java.lang.String" value=" Purchase Orders"/>
-            <Property name="actionCommand" type="java.lang.String" value=" Purchase Orders"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnSettings">
           <Properties>
             <Property name="text" type="java.lang.String" value="Settings"/>
-            <Property name="actionCommand" type="java.lang.String" value="Settings"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnColorMode">

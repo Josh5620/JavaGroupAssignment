@@ -33,14 +33,14 @@ public class AdminPanel extends javax.swing.JFrame {
     private void initComponents() {
 
         AdminMainPanel = new javax.swing.JPanel();
-        ManageUserP = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         SMPanel = new javax.swing.JPanel();
         PMPanel = new javax.swing.JPanel();
         IMPanel = new javax.swing.JPanel();
         FMPanel = new javax.swing.JPanel();
         AdminHPPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        ManageUserP = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         AdminSidePanel = new javax.swing.JPanel();
         SMBtn = new javax.swing.JButton();
         IMBtn = new javax.swing.JButton();
@@ -49,35 +49,13 @@ public class AdminPanel extends javax.swing.JFrame {
         HomeBtn = new javax.swing.JButton();
         LogoutBtn = new javax.swing.JButton();
         PMBtn = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(850, 490));
         setResizable(false);
 
         AdminMainPanel.setLayout(new java.awt.CardLayout());
-
-        ManageUserP.setBackground(new java.awt.Color(204, 0, 0));
-
-        jLabel2.setText("User Management");
-
-        javax.swing.GroupLayout ManageUserPLayout = new javax.swing.GroupLayout(ManageUserP);
-        ManageUserP.setLayout(ManageUserPLayout);
-        ManageUserPLayout.setHorizontalGroup(
-            ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ManageUserPLayout.createSequentialGroup()
-                .addGap(185, 185, 185)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(252, Short.MAX_VALUE))
-        );
-        ManageUserPLayout.setVerticalGroup(
-            ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ManageUserPLayout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(353, Short.MAX_VALUE))
-        );
-
-        AdminMainPanel.add(ManageUserP, "ManageUserCard");
 
         SMPanel.setBackground(new java.awt.Color(0, 153, 51));
         SMPanel.setPreferredSize(new java.awt.Dimension(585, 478));
@@ -90,7 +68,7 @@ public class AdminPanel extends javax.swing.JFrame {
         );
         SMPanelLayout.setVerticalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 480, Short.MAX_VALUE)
         );
 
         AdminMainPanel.add(SMPanel, "SMCard");
@@ -105,7 +83,7 @@ public class AdminPanel extends javax.swing.JFrame {
         );
         PMPanelLayout.setVerticalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 480, Short.MAX_VALUE)
         );
 
         AdminMainPanel.add(PMPanel, "PMCard");
@@ -121,7 +99,7 @@ public class AdminPanel extends javax.swing.JFrame {
         );
         IMPanelLayout.setVerticalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 480, Short.MAX_VALUE)
         );
 
         AdminMainPanel.add(IMPanel, "IMCard");
@@ -136,7 +114,7 @@ public class AdminPanel extends javax.swing.JFrame {
         );
         FMPanelLayout.setVerticalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 480, Short.MAX_VALUE)
         );
 
         AdminMainPanel.add(FMPanel, "FMCard");
@@ -159,16 +137,40 @@ public class AdminPanel extends javax.swing.JFrame {
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
                 .addGap(99, 99, 99)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addContainerGap(348, Short.MAX_VALUE))
         );
 
         jLabel1.getAccessibleContext().setAccessibleDescription("");
 
         AdminMainPanel.add(AdminHPPanel, "HomeCard");
 
-        AdminSidePanel.setBackground(new java.awt.Color(102, 102, 102));
+        ManageUserP.setBackground(new java.awt.Color(255, 255, 255));
 
-        SMBtn.setBackground(new java.awt.Color(0, 153, 255));
+        jLabel2.setText("User Management");
+
+        javax.swing.GroupLayout ManageUserPLayout = new javax.swing.GroupLayout(ManageUserP);
+        ManageUserP.setLayout(ManageUserPLayout);
+        ManageUserPLayout.setHorizontalGroup(
+            ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ManageUserPLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(402, Short.MAX_VALUE))
+        );
+        ManageUserPLayout.setVerticalGroup(
+            ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ManageUserPLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(394, Short.MAX_VALUE))
+        );
+
+        AdminMainPanel.add(ManageUserP, "ManageUserCard");
+
+        AdminSidePanel.setBackground(new java.awt.Color(153, 153, 153));
+
+        SMBtn.setBackground(new java.awt.Color(204, 102, 0));
+        SMBtn.setForeground(new java.awt.Color(0, 0, 0));
         SMBtn.setText("Sales Manager");
         SMBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,7 +178,8 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
 
-        IMBtn.setBackground(new java.awt.Color(0, 153, 255));
+        IMBtn.setBackground(new java.awt.Color(204, 102, 0));
+        IMBtn.setForeground(new java.awt.Color(0, 0, 0));
         IMBtn.setText("Inventory Manager");
         IMBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,7 +187,8 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
 
-        ManageUsersBtn.setBackground(new java.awt.Color(0, 153, 255));
+        ManageUsersBtn.setBackground(new java.awt.Color(204, 102, 0));
+        ManageUsersBtn.setForeground(new java.awt.Color(0, 0, 0));
         ManageUsersBtn.setText("Manage Users");
         ManageUsersBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -192,7 +196,8 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
 
-        FMBtn.setBackground(new java.awt.Color(0, 153, 255));
+        FMBtn.setBackground(new java.awt.Color(204, 102, 0));
+        FMBtn.setForeground(new java.awt.Color(0, 0, 0));
         FMBtn.setText("Finance Manager");
         FMBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,7 +205,8 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
 
-        HomeBtn.setBackground(new java.awt.Color(0, 153, 255));
+        HomeBtn.setBackground(new java.awt.Color(204, 102, 0));
+        HomeBtn.setForeground(new java.awt.Color(0, 0, 0));
         HomeBtn.setText("Home");
         HomeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,10 +214,12 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
 
-        LogoutBtn.setBackground(new java.awt.Color(0, 153, 255));
+        LogoutBtn.setBackground(new java.awt.Color(204, 102, 0));
+        LogoutBtn.setForeground(new java.awt.Color(0, 0, 0));
         LogoutBtn.setText("Log out");
 
-        PMBtn.setBackground(new java.awt.Color(0, 153, 255));
+        PMBtn.setBackground(new java.awt.Color(204, 102, 0));
+        PMBtn.setForeground(new java.awt.Color(0, 0, 0));
         PMBtn.setText("Purchase Manager");
         PMBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,42 +227,49 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mega (3).png"))); // NOI18N
+
         javax.swing.GroupLayout AdminSidePanelLayout = new javax.swing.GroupLayout(AdminSidePanel);
         AdminSidePanel.setLayout(AdminSidePanelLayout);
         AdminSidePanelLayout.setHorizontalGroup(
             AdminSidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminSidePanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(AdminSidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdminSidePanelLayout.createSequentialGroup()
-                        .addComponent(LogoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                        .addComponent(HomeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(SMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ManageUsersBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(FMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(IMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PMBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(AdminSidePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(AdminSidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdminSidePanelLayout.createSequentialGroup()
+                                .addComponent(LogoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(HomeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(SMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ManageUsersBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(FMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(IMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(PMBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         AdminSidePanelLayout.setVerticalGroup(
             AdminSidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminSidePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(8, 8, 8)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ManageUsersBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(SMBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PMBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(IMBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(FMBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(AdminSidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(HomeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LogoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
+                    .addComponent(LogoutBtn)
+                    .addComponent(HomeBtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -358,5 +373,6 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPanel SMPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }

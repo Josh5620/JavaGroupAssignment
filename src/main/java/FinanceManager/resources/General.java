@@ -47,7 +47,7 @@ public class General extends javax.swing.JFrame {
             ex.printStackTrace();
             
             // now start your GUI exactly once, with FlatDarkLaf active
-            SwingUtilities.invokeLater(() -> new General().setVisible(true));
+            //SwingUtilities.invokeLater(() -> new General().setVisible(true));
         }
         initComponents();
         
