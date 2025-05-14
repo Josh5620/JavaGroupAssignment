@@ -162,7 +162,7 @@ public class SMForm extends javax.swing.JFrame {
         panelWelcome.setLayout(panelWelcomeLayout);
         panelWelcomeLayout.setHorizontalGroup(
             panelWelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         panelWelcomeLayout.setVerticalGroup(
             panelWelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,11 +189,11 @@ public class SMForm extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 366, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGap(0, 345, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel2, "card2");
@@ -204,11 +204,11 @@ public class SMForm extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 366, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGap(0, 345, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel3, "card3");
@@ -219,11 +219,11 @@ public class SMForm extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 366, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGap(0, 345, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel4, "card4");
@@ -232,29 +232,30 @@ public class SMForm extends javax.swing.JFrame {
         panelItemManagement.setLayout(panelItemManagementLayout);
         panelItemManagementLayout.setHorizontalGroup(
             panelItemManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelItemManagementLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelItemManagementLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelItemManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnViewItemForm, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
-                    .addComponent(btnEditItemForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDeleteItemForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAddItemForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnViewItemForm, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDeleteItemForm, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnEditItemForm, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnAddItemForm, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelItemManagementLayout.setVerticalGroup(
             panelItemManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelItemManagementLayout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addComponent(btnAddItemForm)
-                .addGap(43, 43, 43)
-                .addComponent(btnEditItemForm)
-                .addGap(44, 44, 44)
-                .addComponent(btnDeleteItemForm)
-                .addGap(46, 46, 46)
-                .addComponent(btnViewItemForm)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelItemManagementLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(panelItemManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddItemForm)
+                    .addComponent(btnEditItemForm)
+                    .addComponent(btnDeleteItemForm)
+                    .addComponent(btnViewItemForm))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         panelMainContent.add(panelItemManagement, "card2");
@@ -265,7 +266,7 @@ public class SMForm extends javax.swing.JFrame {
         panelSupplierManagement.setLayout(panelSupplierManagementLayout);
         panelSupplierManagementLayout.setHorizontalGroup(
             panelSupplierManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         panelSupplierManagementLayout.setVerticalGroup(
             panelSupplierManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,7 +281,7 @@ public class SMForm extends javax.swing.JFrame {
         panelDailySalesEntry.setLayout(panelDailySalesEntryLayout);
         panelDailySalesEntryLayout.setHorizontalGroup(
             panelDailySalesEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         panelDailySalesEntryLayout.setVerticalGroup(
             panelDailySalesEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,7 +296,7 @@ public class SMForm extends javax.swing.JFrame {
         panelPurchaseRequisition.setLayout(panelPurchaseRequisitionLayout);
         panelPurchaseRequisitionLayout.setHorizontalGroup(
             panelPurchaseRequisitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         panelPurchaseRequisitionLayout.setVerticalGroup(
             panelPurchaseRequisitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -310,7 +311,7 @@ public class SMForm extends javax.swing.JFrame {
         panelDisplayRequisition.setLayout(panelDisplayRequisitionLayout);
         panelDisplayRequisitionLayout.setHorizontalGroup(
             panelDisplayRequisitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         panelDisplayRequisitionLayout.setVerticalGroup(
             panelDisplayRequisitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,7 +326,7 @@ public class SMForm extends javax.swing.JFrame {
         panelViewPurchaseOrders.setLayout(panelViewPurchaseOrdersLayout);
         panelViewPurchaseOrdersLayout.setHorizontalGroup(
             panelViewPurchaseOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         panelViewPurchaseOrdersLayout.setVerticalGroup(
             panelViewPurchaseOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
