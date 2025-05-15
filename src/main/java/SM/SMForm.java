@@ -28,6 +28,11 @@ public class SMForm extends javax.swing.JFrame {
         jPanel1.add(EditItem, "DeleteItem");
         jPanel1.add(DeleteItem, "EditItem");
         jPanel1.add(ViewItem, "ViewItem");
+        
+        jPanel2.add(panelAddSupplier, "panelAddSupplier");
+        jPanel2.add(panelEditSupplier, "panelEditSupplier");
+        jPanel2.add(panelDeleteSupplier, "panelDeleteSupplier");
+        jPanel2.add(panelViewSupplier, "panelViewSupplier");
 
     }
 
@@ -82,14 +87,33 @@ public class SMForm extends javax.swing.JFrame {
         btnSaveChanges = new javax.swing.JButton();
         DeleteItem = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        Table_deletItem = new javax.swing.JTable();
         btnDeleteItem = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        Table_deletitem = new javax.swing.JTable();
         ViewItem = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableItems = new javax.swing.JTable();
         panelSupplierManagement = new javax.swing.JPanel();
+        btnAddSupplier = new javax.swing.JButton();
+        btnEditSupplier = new javax.swing.JButton();
+        btnDeleteSupplier = new javax.swing.JButton();
+        btnViewSupplier = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        panelAddSupplier = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        txtSupplierName = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        txtSupplierID = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        txtSupplierEmail = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        txtSupplierPhone = new javax.swing.JTextField();
+        btnSaveSupplier = new javax.swing.JButton();
+        panelEditSupplier = new javax.swing.JPanel();
+        panelDeleteSupplier = new javax.swing.JPanel();
+        panelViewSupplier = new javax.swing.JPanel();
         panelDailySalesEntry = new javax.swing.JPanel();
         panelPurchaseRequisition = new javax.swing.JPanel();
         panelDisplayRequisition = new javax.swing.JPanel();
@@ -196,11 +220,11 @@ public class SMForm extends javax.swing.JFrame {
         panelWelcome.setLayout(panelWelcomeLayout);
         panelWelcomeLayout.setHorizontalGroup(
             panelWelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 788, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         panelWelcomeLayout.setVerticalGroup(
             panelWelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGap(0, 583, Short.MAX_VALUE)
         );
 
         panelMainContent.add(panelWelcome, "card8");
@@ -284,7 +308,7 @@ public class SMForm extends javax.swing.JFrame {
                     .addGroup(AddItemLayout.createSequentialGroup()
                         .addGap(176, 176, 176)
                         .addComponent(btnSaveItem)))
-                .addContainerGap(442, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
         AddItemLayout.setVerticalGroup(
             AddItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -342,7 +366,7 @@ public class SMForm extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(EditItemLayout.createSequentialGroup()
                         .addComponent(txtSearchItemCode, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 415, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
                         .addComponent(btnSearchItem)
                         .addGap(119, 119, 119))))
             .addGroup(EditItemLayout.createSequentialGroup()
@@ -392,9 +416,7 @@ public class SMForm extends javax.swing.JFrame {
 
         jLabel11.setText("Delete Item");
 
-        btnDeleteItem.setText("Delete");
-
-        Table_deletitem.setModel(new javax.swing.table.DefaultTableModel(
+        Table_deletItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -402,10 +424,12 @@ public class SMForm extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Item Name", "Item Code", "Quantity  ", "Price"
+                "Item Name  ", "Item Code  ", "Quantity  ", "Price"
             }
         ));
-        jScrollPane2.setViewportView(Table_deletitem);
+        jScrollPane3.setViewportView(Table_deletItem);
+
+        btnDeleteItem.setText("Delete");
 
         javax.swing.GroupLayout DeleteItemLayout = new javax.swing.GroupLayout(DeleteItem);
         DeleteItem.setLayout(DeleteItemLayout);
@@ -417,23 +441,23 @@ public class SMForm extends javax.swing.JFrame {
                         .addGap(190, 190, 190)
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(DeleteItemLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(201, 201, 201)
+                        .addComponent(btnDeleteItem))
                     .addGroup(DeleteItemLayout.createSequentialGroup()
-                        .addGap(202, 202, 202)
-                        .addComponent(btnDeleteItem)))
-                .addContainerGap(310, Short.MAX_VALUE))
+                        .addGap(23, 23, 23)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         DeleteItemLayout.setVerticalGroup(
             DeleteItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DeleteItemLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
                 .addComponent(btnDeleteItem)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jPanel1.add(DeleteItem, "card4");
@@ -458,14 +482,13 @@ public class SMForm extends javax.swing.JFrame {
         ViewItemLayout.setHorizontalGroup(
             ViewItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ViewItemLayout.createSequentialGroup()
-                .addGroup(ViewItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ViewItemLayout.createSequentialGroup()
-                        .addGap(197, 197, 197)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(ViewItemLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(320, Short.MAX_VALUE))
+                .addGap(197, 197, 197)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ViewItemLayout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         ViewItemLayout.setVerticalGroup(
             ViewItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -505,22 +528,182 @@ public class SMForm extends javax.swing.JFrame {
                     .addComponent(btnAddItemForm))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
 
         panelMainContent.add(panelItemManagement, "card2");
 
         panelSupplierManagement.setBackground(new java.awt.Color(0, 102, 102));
 
+        btnAddSupplier.setText("Add");
+        btnAddSupplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddSupplierActionPerformed(evt);
+            }
+        });
+
+        btnEditSupplier.setText("Edit");
+        btnEditSupplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditSupplierActionPerformed(evt);
+            }
+        });
+
+        btnDeleteSupplier.setText("Delet");
+        btnDeleteSupplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteSupplierActionPerformed(evt);
+            }
+        });
+
+        btnViewSupplier.setText("View");
+        btnViewSupplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewSupplierActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setLayout(new java.awt.CardLayout());
+
+        jLabel12.setText("Add Supplier");
+
+        jLabel14.setText("Supplier Name");
+
+        jLabel15.setText("Supplier ID");
+
+        jLabel16.setText("Email");
+
+        jLabel17.setText("Phone");
+
+        btnSaveSupplier.setText("Save");
+
+        javax.swing.GroupLayout panelAddSupplierLayout = new javax.swing.GroupLayout(panelAddSupplier);
+        panelAddSupplier.setLayout(panelAddSupplierLayout);
+        panelAddSupplierLayout.setHorizontalGroup(
+            panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAddSupplierLayout.createSequentialGroup()
+                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAddSupplierLayout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(txtSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAddSupplierLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSupplierEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSupplierID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSupplierPhone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(94, 94, 94))
+            .addGroup(panelAddSupplierLayout.createSequentialGroup()
+                .addGap(199, 199, 199)
+                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSaveSupplier)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelAddSupplierLayout.setVerticalGroup(
+            panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAddSupplierLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
+                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSupplierEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addComponent(btnSaveSupplier)
+                .addGap(80, 80, 80))
+        );
+
+        jPanel2.add(panelAddSupplier, "card2");
+
+        javax.swing.GroupLayout panelEditSupplierLayout = new javax.swing.GroupLayout(panelEditSupplier);
+        panelEditSupplier.setLayout(panelEditSupplierLayout);
+        panelEditSupplierLayout.setHorizontalGroup(
+            panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 488, Short.MAX_VALUE)
+        );
+        panelEditSupplierLayout.setVerticalGroup(
+            panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 363, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(panelEditSupplier, "card3");
+
+        javax.swing.GroupLayout panelDeleteSupplierLayout = new javax.swing.GroupLayout(panelDeleteSupplier);
+        panelDeleteSupplier.setLayout(panelDeleteSupplierLayout);
+        panelDeleteSupplierLayout.setHorizontalGroup(
+            panelDeleteSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 488, Short.MAX_VALUE)
+        );
+        panelDeleteSupplierLayout.setVerticalGroup(
+            panelDeleteSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 363, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(panelDeleteSupplier, "card4");
+
+        javax.swing.GroupLayout panelViewSupplierLayout = new javax.swing.GroupLayout(panelViewSupplier);
+        panelViewSupplier.setLayout(panelViewSupplierLayout);
+        panelViewSupplierLayout.setHorizontalGroup(
+            panelViewSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 488, Short.MAX_VALUE)
+        );
+        panelViewSupplierLayout.setVerticalGroup(
+            panelViewSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 363, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(panelViewSupplier, "card5");
+
         javax.swing.GroupLayout panelSupplierManagementLayout = new javax.swing.GroupLayout(panelSupplierManagement);
         panelSupplierManagement.setLayout(panelSupplierManagementLayout);
         panelSupplierManagementLayout.setHorizontalGroup(
             panelSupplierManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 788, Short.MAX_VALUE)
+            .addGroup(panelSupplierManagementLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(btnAddSupplier)
+                .addGap(55, 55, 55)
+                .addComponent(btnEditSupplier)
+                .addGap(59, 59, 59)
+                .addComponent(btnDeleteSupplier)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnViewSupplier)
+                .addGap(17, 17, 17))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSupplierManagementLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelSupplierManagementLayout.setVerticalGroup(
             panelSupplierManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGroup(panelSupplierManagementLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(panelSupplierManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddSupplier)
+                    .addComponent(btnEditSupplier)
+                    .addComponent(btnDeleteSupplier)
+                    .addComponent(btnViewSupplier))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         panelMainContent.add(panelSupplierManagement, "card3");
@@ -531,11 +714,11 @@ public class SMForm extends javax.swing.JFrame {
         panelDailySalesEntry.setLayout(panelDailySalesEntryLayout);
         panelDailySalesEntryLayout.setHorizontalGroup(
             panelDailySalesEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 788, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         panelDailySalesEntryLayout.setVerticalGroup(
             panelDailySalesEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGap(0, 583, Short.MAX_VALUE)
         );
 
         panelMainContent.add(panelDailySalesEntry, "card4");
@@ -546,11 +729,11 @@ public class SMForm extends javax.swing.JFrame {
         panelPurchaseRequisition.setLayout(panelPurchaseRequisitionLayout);
         panelPurchaseRequisitionLayout.setHorizontalGroup(
             panelPurchaseRequisitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 788, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         panelPurchaseRequisitionLayout.setVerticalGroup(
             panelPurchaseRequisitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGap(0, 583, Short.MAX_VALUE)
         );
 
         panelMainContent.add(panelPurchaseRequisition, "card5");
@@ -561,11 +744,11 @@ public class SMForm extends javax.swing.JFrame {
         panelDisplayRequisition.setLayout(panelDisplayRequisitionLayout);
         panelDisplayRequisitionLayout.setHorizontalGroup(
             panelDisplayRequisitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 788, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         panelDisplayRequisitionLayout.setVerticalGroup(
             panelDisplayRequisitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGap(0, 583, Short.MAX_VALUE)
         );
 
         panelMainContent.add(panelDisplayRequisition, "card6");
@@ -576,11 +759,11 @@ public class SMForm extends javax.swing.JFrame {
         panelViewPurchaseOrders.setLayout(panelViewPurchaseOrdersLayout);
         panelViewPurchaseOrdersLayout.setHorizontalGroup(
             panelViewPurchaseOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 788, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         panelViewPurchaseOrdersLayout.setVerticalGroup(
             panelViewPurchaseOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 483, Short.MAX_VALUE)
+            .addGap(0, 583, Short.MAX_VALUE)
         );
 
         panelMainContent.add(panelViewPurchaseOrders, "card7");
@@ -672,6 +855,26 @@ public class SMForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtItemNameActionPerformed
 
+    private void btnAddSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddSupplierActionPerformed
+      CardLayout cl = (CardLayout)(jPanel2.getLayout());
+      cl.show(jPanel2, "panelAddSupplier");
+    }//GEN-LAST:event_btnAddSupplierActionPerformed
+
+    private void btnEditSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditSupplierActionPerformed
+      CardLayout cl = (CardLayout)(jPanel2.getLayout());
+      cl.show(jPanel2, "panelEditSupplier");
+    }//GEN-LAST:event_btnEditSupplierActionPerformed
+
+    private void btnDeleteSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteSupplierActionPerformed
+      CardLayout cl = (CardLayout)(jPanel2.getLayout());
+      cl.show(jPanel2, "panelDeleteSupplier");
+    }//GEN-LAST:event_btnDeleteSupplierActionPerformed
+
+    private void btnViewSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewSupplierActionPerformed
+      CardLayout cl = (CardLayout)(jPanel2.getLayout());
+      cl.show(jPanel2, "panelViewSupplier");
+    }//GEN-LAST:event_btnViewSupplierActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -718,21 +921,31 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JPanel Main;
     private javax.swing.JButton Purchase_R;
     private javax.swing.JButton Supplier_M;
-    private javax.swing.JTable Table_deletitem;
+    private javax.swing.JTable Table_deletItem;
     private javax.swing.JPanel ViewItem;
     private javax.swing.JButton View_P_O;
     private javax.swing.JButton btnAddItemForm;
+    private javax.swing.JButton btnAddSupplier;
     private javax.swing.JButton btnDeleteItem;
     private javax.swing.JButton btnDeleteItemForm;
+    private javax.swing.JButton btnDeleteSupplier;
     private javax.swing.JButton btnEditItemForm;
+    private javax.swing.JButton btnEditSupplier;
     private javax.swing.JButton btnSaveChanges;
     private javax.swing.JButton btnSaveItem;
+    private javax.swing.JButton btnSaveSupplier;
     private javax.swing.JButton btnSearchItem;
     private javax.swing.JButton btnViewItemForm;
+    private javax.swing.JButton btnViewSupplier;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -742,16 +955,21 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPanel panelAddSupplier;
     private javax.swing.JPanel panelDailySalesEntry;
+    private javax.swing.JPanel panelDeleteSupplier;
     private javax.swing.JPanel panelDisplayRequisition;
+    private javax.swing.JPanel panelEditSupplier;
     private javax.swing.JPanel panelItemManagement;
     private javax.swing.JPanel panelMainContent;
     private javax.swing.JPanel panelPurchaseRequisition;
     private javax.swing.JPanel panelSidebar;
     private javax.swing.JPanel panelSupplierManagement;
     private javax.swing.JPanel panelViewPurchaseOrders;
+    private javax.swing.JPanel panelViewSupplier;
     private javax.swing.JPanel panelWelcome;
     private javax.swing.JTable tableItems;
     private javax.swing.JTextField txtEditItemName;
@@ -762,5 +980,9 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtQuantity;
     private javax.swing.JTextField txtSearchItemCode;
+    private javax.swing.JTextField txtSupplierEmail;
+    private javax.swing.JTextField txtSupplierID;
+    private javax.swing.JTextField txtSupplierName;
+    private javax.swing.JTextField txtSupplierPhone;
     // End of variables declaration//GEN-END:variables
 }
