@@ -1,2 +1,0 @@
-ITM001 | Fresh Milk | Liter | 4.50 | 200 | Dairy
-ITM002 | Orange Juice | Liter | 6.20 | 150 | Beverage
