@@ -1,0 +1,10 @@
+1|IM|im1|im1 ure fired|Done
+2|IM|all|Low Item Alert : Hand Sanitiser|Done
+3|FM|user3|Warning : PO #1234 awaiting stock confirmation|Not Done
+4|PM|user4|Low Item Alert : Laptop Chargers|Done
+5|Admin|user5|Security Notice : Multiple failed login attempts|Not Done
+6|IM|user6|Low Item Alert : Eggs|Done
+7|SM|user7|Low Item Alert : Printer Ink|Done
+8|FM|user8|Alert : Payment delayed for Supplier #S45|Not Done
+9|PM|user9|Low Item Alert : Packaging Tape|Done
+10|Admin|user10|System Notice : Inventory sync completed at 03:00 AM|Done
