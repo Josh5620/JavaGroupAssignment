@@ -17,7 +17,7 @@ public class User {
 }
 
     static String LoginFilePath = "src/LoginTest.txt";
-    List<List<String>> FullUserList = new ArrayList<>();
+    public List<List<String>> FullUserList = new ArrayList<>();
     List<List<String>> SpecifiedUserList = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
 

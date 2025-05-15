@@ -47,12 +47,12 @@ public class General extends javax.swing.JFrame {
             ex.printStackTrace();
             
             // now start your GUI exactly once, with FlatDarkLaf active
-<<<<<<< Updated upstream
+//<<<<<<< Updated upstream
             //SwingUtilities.invokeLater(() -> new General().setVisible(true));
-=======
-            SwingUtilities.invokeLater(() -> new General().setVisible(true));
+//=======
+            //SwingUtilities.invokeLater(() -> new General().setVisible(true));
 
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
         }
         initComponents();
         
