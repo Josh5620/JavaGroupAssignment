@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class User {
     public static void main(String[] args) {       
@@ -46,5 +47,13 @@ public class User {
                 System.out.println(Type + " User List has been made");
         
     }
-
+    
+    public void ReloadUsers(){
+        makeBigList(LoginFilePath, FullUserList);
+                JOptionPane.showMessageDialog(
+                null,
+                "User List Reloaded",
+                "Info",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
 }
