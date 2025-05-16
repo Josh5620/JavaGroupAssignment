@@ -1,6 +1,6 @@
 Supplier ID|Supplier Name|Email|Phone|Item ID
-SUP001|AlNajahSupply|najah@suppliers.com|0123456789|ITM001
+SUP001|AlNajahSupply|najah@suppliers.com|0123456789|ITM001,ITM007,ITM006
 SUP002|FreshMart|freshmart@suppliers.com|0112233445|ITM002
-SUP003|GreenWorld|green@suppliers.com|0101010101|ITM003
+SUP003|GreenWorld|green@suppliers.com|0101010101|ITM003,ITM009
 SUP004|PastaHouse|pasta@suppliers.com|0198765432|ITM004
 SUP005|CannedZone|canned@suppliers.com|0177777777|ITM005
