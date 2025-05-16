@@ -18,7 +18,7 @@ public class LoginPage extends javax.swing.JFrame {
         put("Purchase Manager (PM)", "PM");
         put("Sales Manager (SM)", "SM");
     }};
-    
+    List<List<String>> UserList = tempUser.getFullUserList();
 
     public LoginPage() {
         initComponents();
@@ -153,7 +153,7 @@ public class LoginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_RoleComboActionPerformed
 
     private void LoginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginBtnActionPerformed
-        tempUser.makeLoginList(tempUser.FullUserList, roleMap.get(RoleCombo.getSelectedItem()));
+        tempUser.makeLoginList(UserList, roleMap.get(RoleCombo.getSelectedItem()));
         Login(tempUser.SpecifiedUserList);
     }//GEN-LAST:event_LoginBtnActionPerformed
 
