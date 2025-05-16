@@ -10,19 +10,22 @@ import java.util.ArrayList;
  *
  * @author Dylan
  */
-public class Admin extends User { 
+public class Admin extends User {
+    User tmpuser = new User();
+    String Userfilepath = tmpuser.getLoginFilePath();
+    List<List<String>> UserList = tmpuser.getFullUserList();
 
 
      
     public void AddUser(String username, String Passwd, String Role){
-        int NewUserID = this.FullUserList.size() + 1;
+        int NewUserID = UserList.size() + 1;
         List<String> tmpUserList = new ArrayList<>();
         tmpUserList.add(String.valueOf(NewUserID));
         tmpUserList.add(username);
         tmpUserList.add(Passwd);
         tmpUserList.add(Role);
-        for(List<String> user : this.FullUserList){
-            if(username.equalsIgnoreCase(user.get(1)))
+        for(List<String> user : UserList){
+            if(username.equalsIgnoreCase(user.get(1))){
                 JOptionPane.showMessageDialog(
                 null,
                 "Username already taken!",
@@ -31,25 +34,40 @@ public class Admin extends User {
                 );
                 return;
         }
-        this.FullUserList.add(tmpUserList);
-                this.ReloadUsers();
-            System.out.println("User was successfully added!"
-                    + "Current number of users:" + this.FullUserList.size());
+            else if (UserList == null) {
+                JOptionPane.showMessageDialog(
+                null,
+                "User List is not loaded properly!"
+                );
+            }
+        }
+        UserList.add(tmpUserList);
+        tmpuser.updateTextFile(UserList, Userfilepath);
+        this.ReloadUsers();
+        System.out.println("User was successfully added! "
+                    + "Current number of users: " + UserList.size());
 
     };
      
     public void DeleteUser(String username){
-        
+        for(int i = 0; i < UserList.size(); i++){
+            String selectedUser = UserList.get(i).get(i);
+            if (selectedUser.equalsIgnoreCase(username)){
+                UserList.remove(i);
+                
+            }
+            
+        };
         
         this.ReloadUsers();
         System.out.println("User was successfully deleted!"
-                + "Current number of users:" + this.FullUserList.size());
+                + "Current number of users:" + UserList.size());
     }
     
     public void UpdateUser(String username, String Passwd, String Role){
         
         
-        
+        this.updateTextFile(UserList, Userfilepath);
         this.ReloadUsers();
     }
 }

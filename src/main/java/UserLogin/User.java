@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 
 public class User {
     public static void main(String[] args) {       
-    public static void main(String[] args) {
 
       
     }
@@ -21,17 +20,22 @@ public class User {
 }
 
     
-    static String AlertFilePath = "src/AlertList.txt";
-    static String LoginFilePath = "src/LoginTest.txt";
-<<<<<<< Updated upstream
-    public List<List<String>> FullUserList = new ArrayList<>();
-=======
+    private static String AlertFilePath = "src/AlertList.txt";
+    private static String LoginFilePath = "src/LoginTest.txt";
+
+    private List<List<String>> FullUserList = new ArrayList<>();
     static String TestFilePath = "src/Testing.txt";
-    List<List<String>> FullUserList = new ArrayList<>();
->>>>>>> Stashed changes
     List<List<String>> SpecifiedUserList = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
 
+    
+    public List<List<String>> getFullUserList(){
+        return this.FullUserList;
+    }
+    
+    public String getLoginFilePath (){
+        return this.LoginFilePath;
+    }
 
     public void makeBigList(String filepath, List mainList){
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
@@ -60,7 +64,6 @@ public class User {
     }
     
     public void ReloadUsers(){
-    public void reloadUsers(){
         makeBigList(LoginFilePath, FullUserList);
                 JOptionPane.showMessageDialog(
                 null,
