@@ -12,6 +12,7 @@ import java.util.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.table.TableRowSorter;
 
 
 public class AdminPanel extends javax.swing.JFrame {
@@ -20,6 +21,7 @@ public class AdminPanel extends javax.swing.JFrame {
         
         // Initialize a hashmap for user roles
         private Map<String, String> roleMap = new HashMap<>() {{
+            put("Admin", "Admin");
             put("Sales Manager", "SM");
             put("Purchase Manager", "PM");
             put("Finance Manager", "FM");
@@ -73,13 +75,13 @@ public class AdminPanel extends javax.swing.JFrame {
         AddUBtn = new javax.swing.JButton();
         DeleteUBtn = new javax.swing.JButton();
         UpdateUBtn = new javax.swing.JButton();
-        UserNBox1 = new javax.swing.JTextField();
+        DelUserBox = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         FilterPanel = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        RoleFilter = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        RoleFilterBox = new javax.swing.JComboBox<>();
+        FilterButton = new javax.swing.JButton();
         AdminSidePanel = new javax.swing.JPanel();
         SMBtn = new javax.swing.JButton();
         IMBtn = new javax.swing.JButton();
@@ -237,6 +239,11 @@ public class AdminPanel extends javax.swing.JFrame {
         });
 
         DeleteUBtn.setText("Delete");
+        DeleteUBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteUBtnActionPerformed(evt);
+            }
+        });
 
         UpdateUBtn.setText("Update ");
         UpdateUBtn.setToolTipText("");
@@ -286,7 +293,7 @@ public class AdminPanel extends javax.swing.JFrame {
                             .addGroup(UserMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(UpdateUBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(AddUBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(UserNBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(DelUserBox, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
         UserMPanelLayout.setVerticalGroup(
@@ -321,7 +328,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(UserMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(UserNBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(DelUserBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addComponent(DeleteUBtn))
         );
@@ -334,9 +341,14 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Role:");
 
-        RoleFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select A Role", "Sales Manager", "Purchase Manager", "Finance Manager", "Inventory Manager" }));
+        RoleFilterBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Admin", "Sales Manager", "Purchase Manager", "Finance Manager", "Inventory Manager" }));
 
-        jButton1.setText("Filter");
+        FilterButton.setText("Filter");
+        FilterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FilterButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout FilterPanelLayout = new javax.swing.GroupLayout(FilterPanel);
         FilterPanel.setLayout(FilterPanelLayout);
@@ -345,12 +357,12 @@ public class AdminPanel extends javax.swing.JFrame {
             .addGroup(FilterPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(FilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(FilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(FilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(FilterPanelLayout.createSequentialGroup()
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(RoleFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(RoleFilterBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -362,9 +374,9 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(FilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(RoleFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(RoleFilterBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                .addComponent(FilterButton))
         );
 
         javax.swing.GroupLayout ManageUserPLayout = new javax.swing.GroupLayout(ManageUserP);
@@ -561,8 +573,11 @@ public class AdminPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_HomeBtnActionPerformed
 
     private void UpdateUBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateUBtnActionPerformed
-       System.out.println("Size of User List is :" + admin.UserList.size());
-       System.out.println("Selected ComboBox item: " + RoleBox.getSelectedItem());
+       admin.UpdateUser(UserNBox.getText(), PasswdBox.getText(), roleMap.get(RoleBox.getSelectedItem()));
+       buildUserTable();
+        UserNBox.setText("");
+        PasswdBox.setText("");
+        RoleBox.setSelectedIndex(0);
     }//GEN-LAST:event_UpdateUBtnActionPerformed
 
     private void LogoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutBtnActionPerformed
@@ -574,7 +589,20 @@ public class AdminPanel extends javax.swing.JFrame {
     private void AddUBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddUBtnActionPerformed
           admin.AddUser(UserNBox.getText(), PasswdBox.getText(), roleMap.get(RoleBox.getSelectedItem()));
           buildUserTable();
+          UserNBox.setText("");
+          PasswdBox.setText("");
+          RoleBox.setSelectedIndex(0);
     }//GEN-LAST:event_AddUBtnActionPerformed
+
+    private void DeleteUBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteUBtnActionPerformed
+        admin.DeleteUser(DelUserBox.getText());
+        buildUserTable();
+        DelUserBox.setText("");
+    }//GEN-LAST:event_DeleteUBtnActionPerformed
+
+    private void FilterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FilterButtonActionPerformed
+        RoleFilter();
+    }//GEN-LAST:event_FilterButtonActionPerformed
 
     
     public void buildUserTable(){
@@ -584,7 +612,7 @@ public class AdminPanel extends javax.swing.JFrame {
         userTable.setRowSelectionAllowed(true);
         
         // Refresh the user list from file 
-        admin.reloadUsers();
+        admin.ReloadUsers();
         
         // Load the existing table model generated by Netbeans
         DefaultTableModel Usermodel = (DefaultTableModel) userTable.getModel();
@@ -601,6 +629,35 @@ public class AdminPanel extends javax.swing.JFrame {
             user.get(3)
         });
         }
+    }
+    
+    public void RoleFilter(){
+        DefaultTableModel Usermodel = (DefaultTableModel) userTable.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(Usermodel);
+        userTable.setRowSorter(sorter);
+        
+        String selectedRole = (String) RoleFilterBox.getSelectedItem();
+        String rolecode = roleMap.get(selectedRole);
+        
+        if (selectedRole.equalsIgnoreCase("All")){
+            sorter.setRowFilter(null);
+        }
+        else if (selectedRole.equalsIgnoreCase("Admin")){
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + rolecode + "$", 3));
+        }
+        else if (selectedRole.equalsIgnoreCase("Sales Manager")){
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + rolecode + "$", 3));
+        }
+        else if (selectedRole.equalsIgnoreCase("Purchase Manager")){
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + rolecode + "$", 3));
+        }
+        else if (selectedRole.equalsIgnoreCase("Finance Manager")){
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + rolecode + "$", 3));
+        }
+        else if (selectedRole.equalsIgnoreCase("Inventory Manager")){
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + rolecode + "$", 3));
+        }
+        buildUserTable();
     }
     
     /**
@@ -643,9 +700,11 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPanel AdminHPPanel;
     private javax.swing.JPanel AdminMainPanel;
     private javax.swing.JPanel AdminSidePanel;
+    private javax.swing.JTextField DelUserBox;
     private javax.swing.JButton DeleteUBtn;
     private javax.swing.JButton FMBtn;
     private javax.swing.JPanel FMPanel;
+    private javax.swing.JButton FilterButton;
     private javax.swing.JPanel FilterPanel;
     private javax.swing.JButton HomeBtn;
     private javax.swing.JButton IMBtn;
@@ -657,14 +716,12 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPanel PMPanel;
     private javax.swing.JTextField PasswdBox;
     private javax.swing.JComboBox<String> RoleBox;
-    private javax.swing.JComboBox<String> RoleFilter;
+    private javax.swing.JComboBox<String> RoleFilterBox;
     private javax.swing.JButton SMBtn;
     private javax.swing.JPanel SMPanel;
     private javax.swing.JButton UpdateUBtn;
     private javax.swing.JPanel UserMPanel;
     private javax.swing.JTextField UserNBox;
-    private javax.swing.JTextField UserNBox1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
