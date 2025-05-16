@@ -16,7 +16,9 @@ public class InvenUser extends User {
         
         //System.out.print(InvenList);  
         //System.out.print(lowitemStock());
+        
         lowItemAlert(lowitemStock());
+        
         //updateStock("ID001", 5);
         //Test();
     }
@@ -42,6 +44,9 @@ public class InvenUser extends User {
     }
     
     public static List<List<String>> lowitemStock(){ // Returns a array of the stuff that is below <5 its public so SM can use it too
+        if (!StockAlert.isEmpty()) {
+        StockAlert.clear(); // ✅ Will run because it has "Item"
+        }
         for(List<String> item : InvenList){
             for(String qItem : item){
                 try{
@@ -79,8 +84,9 @@ public class InvenUser extends User {
     
     public static void lowItemAlert(List<List<String>> lowItems){     
         String AlertText = "";
+        
         for( List<String> item : lowItems){
-            String smallText = String.format("(%s / %s) Amount Left: %s \n", item.get(0), item.get(2), item.get(3));
+            String smallText = String.format("(%s / %s) Amount Left: %s \n", item.get(0), item.get(1), item.get(2));
             AlertText = (AlertText + smallText);
             smallText = "";
             } 
@@ -89,6 +95,7 @@ public class InvenUser extends User {
                 AlertText,
                 "Inventory Alert",
                 JOptionPane.WARNING_MESSAGE);
+        lowItems.clear();
     } 
     
     public static List botSix(){

@@ -29,12 +29,6 @@ public class IMForm extends javax.swing.JFrame {
     private void initComponents() {
 
         MainPanel = new javax.swing.JPanel();
-        Panel6 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        Panel4 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        Panel5 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         HomePanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -57,6 +51,12 @@ public class IMForm extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         TAI = new javax.swing.JLabel();
         UAP = new javax.swing.JLabel();
+        Panel6 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        Panel4 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        Panel5 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         Panel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -65,6 +65,12 @@ public class IMForm extends javax.swing.JFrame {
         Label2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         InvenTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        Label3 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         SidePanel = new javax.swing.JPanel();
         ExitButton = new javax.swing.JButton();
         HomeButton = new javax.swing.JButton();
@@ -84,69 +90,6 @@ public class IMForm extends javax.swing.JFrame {
 
         MainPanel.setBackground(new java.awt.Color(153, 153, 153));
         MainPanel.setLayout(new java.awt.CardLayout());
-
-        jLabel6.setText("Panel6");
-
-        javax.swing.GroupLayout Panel6Layout = new javax.swing.GroupLayout(Panel6);
-        Panel6.setLayout(Panel6Layout);
-        Panel6Layout.setHorizontalGroup(
-            Panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel6Layout.createSequentialGroup()
-                .addGap(252, 252, 252)
-                .addComponent(jLabel6)
-                .addContainerGap(373, Short.MAX_VALUE))
-        );
-        Panel6Layout.setVerticalGroup(
-            Panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel6Layout.createSequentialGroup()
-                .addContainerGap(280, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(244, 244, 244))
-        );
-
-        MainPanel.add(Panel6, "card6");
-
-        jLabel4.setText("Panel4");
-
-        javax.swing.GroupLayout Panel4Layout = new javax.swing.GroupLayout(Panel4);
-        Panel4.setLayout(Panel4Layout);
-        Panel4Layout.setHorizontalGroup(
-            Panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(291, 291, 291))
-        );
-        Panel4Layout.setVerticalGroup(
-            Panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(546, 546, 546))
-        );
-
-        MainPanel.add(Panel4, "card4");
-
-        jLabel5.setText("Panel5");
-
-        javax.swing.GroupLayout Panel5Layout = new javax.swing.GroupLayout(Panel5);
-        Panel5.setLayout(Panel5Layout);
-        Panel5Layout.setHorizontalGroup(
-            Panel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel5Layout.createSequentialGroup()
-                .addGap(247, 247, 247)
-                .addComponent(jLabel5)
-                .addContainerGap(374, Short.MAX_VALUE))
-        );
-        Panel5Layout.setVerticalGroup(
-            Panel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel5Layout.createSequentialGroup()
-                .addGap(229, 229, 229)
-                .addComponent(jLabel5)
-                .addContainerGap(295, Short.MAX_VALUE))
-        );
-
-        MainPanel.add(Panel5, "card5");
 
         HomePanel.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -338,6 +281,69 @@ public class IMForm extends javax.swing.JFrame {
 
         MainPanel.add(HomePanel, "card7");
 
+        jLabel6.setText("Panel6");
+
+        javax.swing.GroupLayout Panel6Layout = new javax.swing.GroupLayout(Panel6);
+        Panel6.setLayout(Panel6Layout);
+        Panel6Layout.setHorizontalGroup(
+            Panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel6Layout.createSequentialGroup()
+                .addGap(252, 252, 252)
+                .addComponent(jLabel6)
+                .addContainerGap(373, Short.MAX_VALUE))
+        );
+        Panel6Layout.setVerticalGroup(
+            Panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel6Layout.createSequentialGroup()
+                .addContainerGap(280, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(244, 244, 244))
+        );
+
+        MainPanel.add(Panel6, "card6");
+
+        jLabel4.setText("Panel4");
+
+        javax.swing.GroupLayout Panel4Layout = new javax.swing.GroupLayout(Panel4);
+        Panel4.setLayout(Panel4Layout);
+        Panel4Layout.setHorizontalGroup(
+            Panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(291, 291, 291))
+        );
+        Panel4Layout.setVerticalGroup(
+            Panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(546, 546, 546))
+        );
+
+        MainPanel.add(Panel4, "card4");
+
+        jLabel5.setText("Panel5");
+
+        javax.swing.GroupLayout Panel5Layout = new javax.swing.GroupLayout(Panel5);
+        Panel5.setLayout(Panel5Layout);
+        Panel5Layout.setHorizontalGroup(
+            Panel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel5Layout.createSequentialGroup()
+                .addGap(247, 247, 247)
+                .addComponent(jLabel5)
+                .addContainerGap(374, Short.MAX_VALUE))
+        );
+        Panel5Layout.setVerticalGroup(
+            Panel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel5Layout.createSequentialGroup()
+                .addGap(229, 229, 229)
+                .addComponent(jLabel5)
+                .addContainerGap(295, Short.MAX_VALUE))
+        );
+
+        MainPanel.add(Panel5, "card5");
+
         jLabel2.setText("Panel2");
 
         jTable1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -402,8 +408,8 @@ public class IMForm extends javax.swing.JFrame {
 
         Panel3.setFocusable(false);
 
-        Label2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        Label2.setText("Inventory List");
+        Label2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Label2.setText("Low Stock Items");
 
         InvenTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -418,27 +424,83 @@ public class IMForm extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(InvenTable);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel1.setText("Items highlighted Red : (<20 Stock)");
+
+        Label3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Label3.setText("Inventory List");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setFocusable(false);
+        jScrollPane3.setViewportView(jTextArea1);
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setBackground(new java.awt.Color(255, 204, 102));
+        jButton2.setText("Load");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout Panel3Layout = new javax.swing.GroupLayout(Panel3);
         Panel3.setLayout(Panel3Layout);
         Panel3Layout.setHorizontalGroup(
             Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel3Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(Label2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel3Layout.createSequentialGroup()
-                .addContainerGap(351, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addGroup(Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panel3Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Panel3Layout.createSequentialGroup()
+                                .addComponent(Label2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(Panel3Layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(jButton1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addGroup(Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23))
+            .addGroup(Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(Panel3Layout.createSequentialGroup()
+                    .addGap(47, 47, 47)
+                    .addComponent(Label3)
+                    .addContainerGap(382, Short.MAX_VALUE)))
         );
         Panel3Layout.setVerticalGroup(
             Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel3Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(Label2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(78, 78, 78)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addContainerGap(41, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(72, 72, 72)
+                .addGroup(Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Label2)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
+            .addGroup(Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(Panel3Layout.createSequentialGroup()
+                    .addGap(34, 34, 34)
+                    .addComponent(Label3)
+                    .addContainerGap(458, Short.MAX_VALUE)))
         );
 
         MainPanel.add(Panel3, "card3");
@@ -650,6 +712,16 @@ public class IMForm extends javax.swing.JFrame {
     private void Button4Action(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button4Action
         cl.show(MainPanel, "card5");  
     }//GEN-LAST:event_Button4Action
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        user.lowItemAlert(user.lowitemStock());
+                // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        jTextArea1.setText(" ");
+        lowItemText();
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     public static void main(String args[]) {
 
@@ -680,6 +752,7 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel LSA5;
     private javax.swing.JLabel LSA6;
     private javax.swing.JLabel Label2;
+    private javax.swing.JLabel Label3;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel Panel2;
     private javax.swing.JPanel Panel3;
@@ -689,6 +762,9 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JPanel SidePanel;
     private javax.swing.JLabel TAI;
     private javax.swing.JLabel UAP;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -709,7 +785,9 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JProgressBar jProgressBar6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
     
     private void customizeTable(){
@@ -743,7 +821,7 @@ public class IMForm extends javax.swing.JFrame {
                 } else if (column == 2) { // Quantity column
                     try {
                         int qty = Integer.parseInt(table.getValueAt(row, column).toString());
-                        c.setBackground(qty < 10 ? Color.RED : Color.WHITE);
+                        c.setBackground(qty < 20 ? Color.RED : Color.WHITE);
                     } catch (NumberFormatException e) {
                         c.setBackground(Color.WHITE);
                     }
@@ -795,5 +873,17 @@ public class IMForm extends javax.swing.JFrame {
             label.setText(nameList.get(i));
         }
         
+    }
+    
+    private void lowItemText(){
+    StringBuilder builder = new StringBuilder();
+
+    for (List<String> row : user.lowitemStock()) {
+        builder.append(String.join(" | ", row)).append("\n");
+    }
+
+    jTextArea1.setText(builder.toString());
+    builder.setLength(0);
+    
     }
 }
