@@ -1,4 +1,4 @@
-Item ID|Item Name|Price
+Item ID|Item Name|7
 ITM001|Sugar|3.20
 ITM002|MilkPowder|12.50
 ITM003|OliveOil|25.00
