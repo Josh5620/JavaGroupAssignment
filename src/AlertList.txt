@@ -8,3 +8,5 @@
 8|FM|user8|Alert : Payment delayed for Supplier #S45|Not Done
 9|PM|user9|Low Item Alert : Packaging Tape|Done
 10|Admin|user10|System Notice : Inventory sync completed at 03:00 AM|Done
+
+11|SM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done

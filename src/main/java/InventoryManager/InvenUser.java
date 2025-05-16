@@ -17,7 +17,6 @@ public class InvenUser extends User {
         //System.out.print(InvenList);  
         //System.out.print(lowitemStock());
         
-        lowItemAlert(lowitemStock());
         
         //updateStock("ID001", 5);
         //Test();
@@ -45,7 +44,7 @@ public class InvenUser extends User {
     
     public static List<List<String>> lowitemStock(){ // Returns a array of the stuff that is below <5 its public so SM can use it too
         if (!StockAlert.isEmpty()) {
-        StockAlert.clear(); // ✅ Will run because it has "Item"
+        StockAlert.clear(); // 
         }
         for(List<String> item : InvenList){
             for(String qItem : item){
@@ -82,6 +81,26 @@ public class InvenUser extends User {
         
     }
     
+    public void lowItemAlertSend(String username) {
+        lowitemStock();
+        StringBuilder alertBuilder = new StringBuilder("Low stock: ");
+
+        for (int i = 0; i < StockAlert.size(); i++) {
+            String itemName = StockAlert.get(i).get(1); // get item name
+
+            alertBuilder.append(itemName);
+
+            if (i < StockAlert.size() - 1) {
+                alertBuilder.append(", ");
+            }
+        }
+
+        sendAlert("SM", username, alertBuilder.toString());
+
+        StockAlert.clear();
+    }
+    
+/*
     public static void lowItemAlert(List<List<String>> lowItems){     
         String AlertText = "";
         
@@ -97,6 +116,7 @@ public class InvenUser extends User {
                 JOptionPane.WARNING_MESSAGE);
         lowItems.clear();
     } 
+*/
     
     public static List botSix(){
         List<List<String>> sortedList = new ArrayList<>(InvenList);

@@ -25,7 +25,7 @@ public class User {
     private final String LoginFilePath = "src/LoginTest.txt";
     private List<List<String>> FullUserList = new ArrayList<>();
 
-    static String TestFilePath = "src/Testing.txt";
+    public static String TestFilePath = "src/Testing.txt";
     List<List<String>> SpecifiedUserList = new ArrayList<>();
     
     
@@ -67,8 +67,6 @@ public class User {
         
     }
     
-
-
     public void reloadUsers(){
         makeBigList(LoginFilePath, FullUserList);
                 JOptionPane.showMessageDialog(
@@ -101,7 +99,7 @@ public class User {
             if(roleString.equals(role)){
                 System.out.println(Alert);
                 System.out.println(userString);
-                if(userString.equals("all")){
+                if(userString.equals("all")){  
                     makeBigList(LoginFilePath, FullUserList);
                     JOptionPane.showMessageDialog(
                     null,
@@ -140,4 +138,29 @@ public class User {
         }
         
     }
+    
+    public void sendAlert(String role, String username, String message) {
+    try {
+        int id = 1;
+
+        // Count lines to determine new ID
+        try (BufferedReader reader = new BufferedReader(new FileReader(AlertFilePath))) {
+            while (reader.readLine() != null) {
+                id++;
+            }
+        }
+
+        
+        String alert = "\n" + id + "|" + role + "|" + username + "|" + message + "|Not Done";
+
+        
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(AlertFilePath, true))) {
+            writer.write(alert);
+            writer.newLine();
+        }
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 }
