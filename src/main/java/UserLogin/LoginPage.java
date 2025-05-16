@@ -112,7 +112,6 @@ public class LoginPage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -141,7 +140,7 @@ public class LoginPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void IMFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IMFormActionPerformed
-        IMForm InvenForm = new IMForm();
+        IMForm InvenForm = new IMForm("test", "IM");
         InvenForm.setVisible(true);
         
         this.dispose();
@@ -226,7 +225,7 @@ public class LoginPage extends javax.swing.JFrame {
                         this.dispose();
                         break;
                     case 2:
-                        IMForm iMForm = new IMForm();
+                        IMForm iMForm = new IMForm(userLog, focusUser.get(3));
                         iMForm.setVisible(true);
                         this.dispose();
                         break;
