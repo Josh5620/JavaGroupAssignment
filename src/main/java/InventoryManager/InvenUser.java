@@ -46,7 +46,7 @@ public class InvenUser extends User {
             for(String qItem : item){
                 try{
                     int itemSum = Integer.parseInt(qItem);        
-                    if(itemSum < 5 ){
+                    if(itemSum < 20 ){
                         StockAlert.add(item);             
                         }} catch(NumberFormatException e) {continue;}     
             }
@@ -90,4 +90,23 @@ public class InvenUser extends User {
                 "Inventory Alert",
                 JOptionPane.WARNING_MESSAGE);
     } 
+    
+    public static List botSix(){
+        List<List<String>> sortedList = new ArrayList<>(InvenList);
+        List<List<String>> bot6List = new ArrayList<>();
+        // Sort the list based on the quantity (index 2)
+        sortedList.sort((a, b) -> {
+            try {
+                int qtyA = Integer.parseInt(a.get(2));
+                int qtyB = Integer.parseInt(b.get(2));
+                return Integer.compare(qtyA, qtyB); 
+            } catch (NumberFormatException e) {
+                return 0; 
+            }
+        });
+        for (int i = 0; i < Math.min(6, sortedList.size()); i++) {
+            bot6List.add(sortedList.get(i));
+        }
+        return bot6List;
+    }
 }

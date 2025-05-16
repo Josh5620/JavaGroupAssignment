@@ -1,1 +1,6 @@
-
+Item ID|Item Name|Price
+ITM001|Sugar|3.20
+ITM002|MilkPowder|12.50
+ITM003|OliveOil|25.00
+ITM004|Pasta|4.75
+ITM005|CannedBeans|2.80

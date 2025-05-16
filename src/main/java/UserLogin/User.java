@@ -20,12 +20,16 @@ public class User {
 }
 
     
-    private static String AlertFilePath = "src/AlertList.txt";
-    private static String LoginFilePath = "src/LoginTest.txt";
 
+    private final String AlertFilePath = "src/AlertList.txt";
+    private final String LoginFilePath = "src/LoginTest.txt";
     private List<List<String>> FullUserList = new ArrayList<>();
+
     static String TestFilePath = "src/Testing.txt";
     List<List<String>> SpecifiedUserList = new ArrayList<>();
+    
+    
+    
     public static Scanner scanner = new Scanner(System.in);
 
     
@@ -63,7 +67,9 @@ public class User {
         
     }
     
-    public void ReloadUsers(){
+
+
+    public void reloadUsers(){
         makeBigList(LoginFilePath, FullUserList);
                 JOptionPane.showMessageDialog(
                 null,
