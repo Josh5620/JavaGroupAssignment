@@ -327,13 +327,8 @@
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="UpdateUBtn" min="-2" pref="79" max="-2" attributes="0"/>
-                                                  <Component id="AddUBtn" min="-2" pref="79" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                                          </Group>
+                                          <Component id="UpdateUBtn" min="-2" pref="79" max="-2" attributes="0"/>
+                                          <Component id="AddUBtn" min="-2" pref="79" max="-2" attributes="0"/>
                                           <Component id="UserNBox1" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>

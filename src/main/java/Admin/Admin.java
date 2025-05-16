@@ -43,7 +43,7 @@ public class Admin extends User {
         }
         UserList.add(tmpUserList);
         tmpuser.updateTextFile(UserList, Userfilepath);
-        this.ReloadUsers();
+        this.reloadUsers();
         System.out.println("User was successfully added! "
                     + "Current number of users: " + UserList.size());
 
@@ -59,7 +59,7 @@ public class Admin extends User {
             
         };
         
-        this.ReloadUsers();
+        this.reloadUsers();
         System.out.println("User was successfully deleted!"
                 + "Current number of users:" + UserList.size());
     }
@@ -68,6 +68,6 @@ public class Admin extends User {
         
         
         this.updateTextFile(UserList, Userfilepath);
-        this.ReloadUsers();
+        this.reloadUsers();
     }
 }
