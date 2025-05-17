@@ -21,6 +21,10 @@ public class SMForm extends javax.swing.JFrame {
         panelMainContent.add(panelSupplierManagement, "panelSupplierManagement");
         panelMainContent.add(panelDailySalesEntry, "panelDailySalesEntry");
         panelMainContent.add(panelPurchaseRequisition, "panelPurchaseRequisition");
+<<<<<<< HEAD
+=======
+        // panelMainContent.add(panelDisplayRequisition, "panelDisplayRequisition");
+>>>>>>> 6f2ec4c766745d14e8c24824fc744dc2b8d9d487
         panelMainContent.add(panelViewPurchaseOrders, "panelViewPurchaseOrders");
         
         jPanel1.add(AddItem, "AddItem");
