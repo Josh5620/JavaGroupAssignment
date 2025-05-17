@@ -1,5 +1,6 @@
 package InventoryManager;
 import javax.swing.*;
+import UserLogin.LoginPage;
 import java.awt.event.*;
 import java.awt.Component;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +20,10 @@ public class IMForm extends javax.swing.JFrame {
         customizeTable();
         homePageLoad(username,role);
     }
+    
     InvenUser user = new InvenUser();
+    List<List<String>> PurchaseOrderList = new ArrayList<>();
+    String POFilePath = "src/PurchaseOrders.txt";
     
     
     
@@ -65,12 +69,18 @@ public class IMForm extends javax.swing.JFrame {
         Label5 = new javax.swing.JLabel();
         specificUserField = new javax.swing.JTextField();
         specificUserBtn = new javax.swing.JButton();
-        Panel6 = new javax.swing.JPanel();
+        UpdateStock = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        Panel4 = new javax.swing.JPanel();
+        StockReport = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        Panel5 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        ViewPOs = new javax.swing.JPanel();
+        Label6 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        POList = new javax.swing.JList<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        POTextArea = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         Panel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -81,9 +91,9 @@ public class IMForm extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         Button4 = new javax.swing.JButton();
         Button5 = new javax.swing.JButton();
-        Button2 = new javax.swing.JButton();
         Button3 = new javax.swing.JButton();
         Button1 = new javax.swing.JButton();
+        Button2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 153));
@@ -409,66 +419,105 @@ public class IMForm extends javax.swing.JFrame {
 
         jLabel6.setText("Panel6");
 
-        javax.swing.GroupLayout Panel6Layout = new javax.swing.GroupLayout(Panel6);
-        Panel6.setLayout(Panel6Layout);
-        Panel6Layout.setHorizontalGroup(
-            Panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel6Layout.createSequentialGroup()
+        javax.swing.GroupLayout UpdateStockLayout = new javax.swing.GroupLayout(UpdateStock);
+        UpdateStock.setLayout(UpdateStockLayout);
+        UpdateStockLayout.setHorizontalGroup(
+            UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(UpdateStockLayout.createSequentialGroup()
                 .addGap(252, 252, 252)
                 .addComponent(jLabel6)
                 .addContainerGap(373, Short.MAX_VALUE))
         );
-        Panel6Layout.setVerticalGroup(
-            Panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel6Layout.createSequentialGroup()
+        UpdateStockLayout.setVerticalGroup(
+            UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UpdateStockLayout.createSequentialGroup()
                 .addContainerGap(280, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(244, 244, 244))
         );
 
-        MainPanel.add(Panel6, "card6");
+        MainPanel.add(UpdateStock, "card6");
 
         jLabel4.setText("Panel4");
 
-        javax.swing.GroupLayout Panel4Layout = new javax.swing.GroupLayout(Panel4);
-        Panel4.setLayout(Panel4Layout);
-        Panel4Layout.setHorizontalGroup(
-            Panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout StockReportLayout = new javax.swing.GroupLayout(StockReport);
+        StockReport.setLayout(StockReportLayout);
+        StockReportLayout.setHorizontalGroup(
+            StockReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockReportLayout.createSequentialGroup()
+                .addContainerGap(334, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(291, 291, 291))
         );
-        Panel4Layout.setVerticalGroup(
-            Panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel4Layout.createSequentialGroup()
+        StockReportLayout.setVerticalGroup(
+            StockReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockReportLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(546, 546, 546))
         );
 
-        MainPanel.add(Panel4, "card4");
+        MainPanel.add(StockReport, "card4");
 
-        jLabel5.setText("Panel5");
+        Label6.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Label6.setText("Purchase Orders");
 
-        javax.swing.GroupLayout Panel5Layout = new javax.swing.GroupLayout(Panel5);
-        Panel5.setLayout(Panel5Layout);
-        Panel5Layout.setHorizontalGroup(
-            Panel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel5Layout.createSequentialGroup()
-                .addGap(247, 247, 247)
-                .addComponent(jLabel5)
-                .addContainerGap(374, Short.MAX_VALUE))
+        POList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        POList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane5.setViewportView(POList);
+
+        POTextArea.setColumns(20);
+        POTextArea.setRows(5);
+        jScrollPane4.setViewportView(POTextArea);
+
+        jButton1.setText("Load Details");
+
+        jButton3.setText("Refresh");
+
+        javax.swing.GroupLayout ViewPOsLayout = new javax.swing.GroupLayout(ViewPOs);
+        ViewPOs.setLayout(ViewPOsLayout);
+        ViewPOsLayout.setHorizontalGroup(
+            ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ViewPOsLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Label6)
+                    .addGroup(ViewPOsLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jButton3))))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
-        Panel5Layout.setVerticalGroup(
-            Panel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel5Layout.createSequentialGroup()
-                .addGap(229, 229, 229)
-                .addComponent(jLabel5)
-                .addContainerGap(295, Short.MAX_VALUE))
+        ViewPOsLayout.setVerticalGroup(
+            ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ViewPOsLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(Label6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ViewPOsLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4))
+                        .addContainerGap(47, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ViewPOsLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addGap(54, 54, 54))))
         );
 
-        MainPanel.add(Panel5, "card5");
+        MainPanel.add(ViewPOs, "card5");
 
         jLabel2.setText("Panel2");
 
@@ -514,21 +563,21 @@ public class IMForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
                 .addContainerGap(127, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
+                .addGap(192, 192, 192)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
         );
         Panel2Layout.setVerticalGroup(
             Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(60, Short.MAX_VALUE)
                 .addGroup(Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(186, 186, 186))))
+                        .addGap(186, 186, 186))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49))))
         );
 
         MainPanel.add(Panel2, "card2");
@@ -551,7 +600,7 @@ public class IMForm extends javax.swing.JFrame {
 
         HomeButton.setBackground(new java.awt.Color(102, 153, 255));
         HomeButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        HomeButton.setText("Home Page");
+        HomeButton.setText("Logout");
         HomeButton.setToolTipText("");
         HomeButton.setBorderPainted(false);
         HomeButton.setMargin(new java.awt.Insets(2, 10, 3, 10));
@@ -601,22 +650,6 @@ public class IMForm extends javax.swing.JFrame {
             }
         });
 
-        Button2.setBackground(new java.awt.Color(173, 216, 230));
-        Button2.setText("jButton3");
-        Button2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                ColouredHighlight(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                ColorReset(evt);
-            }
-        });
-        Button2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button2Action(evt);
-            }
-        });
-
         Button3.setBackground(new java.awt.Color(173, 216, 230));
         Button3.setText("jButton3");
         Button3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -649,6 +682,22 @@ public class IMForm extends javax.swing.JFrame {
             }
         });
 
+        Button2.setBackground(new java.awt.Color(173, 216, 230));
+        Button2.setText("Home Dashboard");
+        Button2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ColouredHighlight(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ColorReset(evt);
+            }
+        });
+        Button2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button2Action(evt);
+            }
+        });
+
         javax.swing.GroupLayout SidePanelLayout = new javax.swing.GroupLayout(SidePanel);
         SidePanel.setLayout(SidePanelLayout);
         SidePanelLayout.setHorizontalGroup(
@@ -656,22 +705,22 @@ public class IMForm extends javax.swing.JFrame {
             .addGroup(SidePanelLayout.createSequentialGroup()
                 .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(SidePanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(SidePanelLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(Button4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
                                 .addComponent(Button3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Button2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Button1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(Button1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Button2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(SidePanelLayout.createSequentialGroup()
-                                .addComponent(ExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(70, 70, 70)
+                                .addComponent(ExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
                                 .addComponent(HomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(Button5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(24, Short.MAX_VALUE))
+                            .addComponent(Button5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(SidePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         SidePanelLayout.setVerticalGroup(
             SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -679,9 +728,9 @@ public class IMForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 120, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Button1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Button2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Button1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Button3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -689,9 +738,9 @@ public class IMForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Button5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(HomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(HomeButton, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                    .addComponent(ExitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(34, 34, 34))
         );
 
@@ -716,7 +765,9 @@ public class IMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitButtonAction
 
     private void HomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeButtonActionPerformed
-        cl.show(MainPanel, "card7");  
+        LoginPage loginPage = new LoginPage();
+        loginPage.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_HomeButtonActionPerformed
 
     private void ColouredHighlight(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ColouredHighlight
@@ -730,7 +781,7 @@ public class IMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_ColorReset
 
     private void Button2Action(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button2Action
-        cl.show(MainPanel, "card4");  
+        cl.show(MainPanel, "card7");
     }//GEN-LAST:event_Button2Action
 
     private void Button3Action(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button3Action
@@ -789,15 +840,20 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel Label3;
     private javax.swing.JLabel Label4;
     private javax.swing.JLabel Label5;
+    private javax.swing.JLabel Label6;
     private javax.swing.JPanel MainPanel;
+    private javax.swing.JList<String> POList;
+    private javax.swing.JTextArea POTextArea;
     private javax.swing.JPanel Panel2;
-    private javax.swing.JPanel Panel4;
-    private javax.swing.JPanel Panel5;
-    private javax.swing.JPanel Panel6;
     private javax.swing.JPanel SidePanel;
+    private javax.swing.JPanel StockReport;
     private javax.swing.JLabel TAI;
     private javax.swing.JLabel UAP;
+    private javax.swing.JPanel UpdateStock;
+    private javax.swing.JPanel ViewPOs;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -806,7 +862,6 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
@@ -820,6 +875,8 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton specificUserBtn;
@@ -921,5 +978,14 @@ public class IMForm extends javax.swing.JFrame {
     jTextArea1.setText(builder.toString());
     builder.setLength(0);
     
+    }
+    
+    private void loadPOs(){
+        user.makeBigList(POFilePath, PurchaseOrderList);
+        StringBuilder builder = new StringBuilder();
+        for(List<String> order : PurchaseOrderList){
+            
+            
+        }
     }
 }
