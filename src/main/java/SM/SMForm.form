@@ -75,6 +75,7 @@
                               <Component id="Supplier_M" alignment="0" max="32767" attributes="0"/>
                               <Component id="Daily_S_E" alignment="0" max="32767" attributes="0"/>
                               <Component id="Purchase_R" alignment="0" max="32767" attributes="0"/>
+                              <Component id="Display_R" alignment="0" max="32767" attributes="0"/>
                               <Component id="View_P_O" alignment="0" max="32767" attributes="0"/>
                               <Component id="Logout" alignment="0" max="32767" attributes="0"/>
                           </Group>
@@ -96,6 +97,8 @@
                   <Component id="Daily_S_E" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="Purchase_R" min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="Display_R" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="View_P_O" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -136,6 +139,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Purchase_RActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="Display_R">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Display Requisitions"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Display_RActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="View_P_O">
@@ -295,6 +306,8 @@
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="jLabel3" alignment="0" min="-2" pref="95" max="-2" attributes="0"/>
                                                   <Component id="txtItemName" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
+                                                  <Component id="jLabel1" alignment="0" min="-2" pref="99" max="-2" attributes="0"/>
+                                                  <Component id="txtQuantity" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -331,9 +344,15 @@
                                   <Component id="txtItemID" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtPrice" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="txtQuantity" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtPrice" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnSaveItem" min="-2" max="-2" attributes="0"/>
                               <EmptySpace pref="109" max="32767" attributes="0"/>
@@ -356,6 +375,13 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtItemNameActionPerformed"/>
                       </Events>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Q&#x650;uantity"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtQuantity">
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel4">
                       <Properties>
@@ -415,6 +441,8 @@
                                   <Component id="txtEditPrice" alignment="0" max="32767" attributes="0"/>
                                   <Component id="txtEditItemName" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabel8" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel9" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtEditQuantity" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabel10" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabel6" min="-2" pref="90" max="-2" attributes="0"/>
                               </Group>
@@ -438,7 +466,11 @@
                               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtEditItemName" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtEditQuantity" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtEditPrice" min="-2" max="-2" attributes="0"/>
@@ -473,6 +505,13 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtEditItemName">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel9">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Quantity:"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtEditQuantity">
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel10">
                       <Properties>
@@ -552,14 +591,20 @@
                         <Component class="javax.swing.JTable" name="Table_deletItem">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="3" rowCount="4">
+                              <Table columnCount="4" rowCount="4">
                                 <Column editable="true" title="Item Name  " type="java.lang.Object"/>
                                 <Column editable="true" title="Item ID" type="java.lang.Object"/>
+                                <Column editable="true" title="Quantity  " type="java.lang.Object"/>
                                 <Column editable="true" title="Price" type="java.lang.Object"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                               <TableColumnModel selectionModel="0">
+                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                  <Title/>
+                                  <Editor/>
+                                  <Renderer/>
+                                </Column>
                                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                                   <Title/>
                                   <Editor/>
@@ -641,14 +686,20 @@
                         <Component class="javax.swing.JTable" name="tableItems">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="3" rowCount="4">
+                              <Table columnCount="4" rowCount="4">
                                 <Column editable="true" title="Item Name" type="java.lang.Object"/>
                                 <Column editable="true" title="Item ID" type="java.lang.Object"/>
+                                <Column editable="true" title="Quantity" type="java.lang.Object"/>
                                 <Column editable="true" title="Price" type="java.lang.Object"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                               <TableColumnModel selectionModel="0">
+                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                  <Title/>
+                                  <Editor/>
+                                  <Renderer/>
+                                </Column>
                                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                                   <Title/>
                                   <Editor/>
@@ -778,6 +829,10 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
+                                      <Component id="txtSupplierName" min="-2" pref="110" max="-2" attributes="0"/>
+                                  </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -785,10 +840,6 @@
                                           <Component id="jLabel16" alignment="1" min="-2" pref="110" max="-2" attributes="0"/>
                                           <Component id="txtSupplierEmail" alignment="1" min="-2" pref="110" max="-2" attributes="0"/>
                                       </Group>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="77" pref="77" max="-2" attributes="0"/>
-                                      <Component id="txtSupplierName" min="-2" pref="110" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace pref="97" max="32767" attributes="0"/>
@@ -800,22 +851,11 @@
                               </Group>
                               <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="199" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="199" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="btnSaveSupplier" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel12" min="-2" pref="91" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="170" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="jLabel45" min="-2" pref="110" max="-2" attributes="0"/>
-                                          <Component id="comboSupplierItemCode" min="-2" pref="110" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
+                                  <Component id="btnSaveSupplier" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel12" min="-2" pref="91" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -826,11 +866,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel12" min="-2" pref="38" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabel45" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="comboSupplierItemCode" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -896,26 +932,6 @@
                         <Property name="text" type="java.lang.String" value="Save"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel45">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Item ID"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JComboBox" name="comboSupplierItemCode">
-                      <Properties>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="4">
-                            <StringItem index="0" value="Item 1"/>
-                            <StringItem index="1" value="Item 2"/>
-                            <StringItem index="2" value="Item 3"/>
-                            <StringItem index="3" value="Item 4"/>
-                          </StringArray>
-                        </Property>
-                      </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                      </AuxValues>
-                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="panelEditSupplier">
@@ -931,29 +947,25 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="196" max="-2" attributes="0"/>
-                                      <Component id="jLabel18" min="-2" pref="89" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="175" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="txtEditSupplierPhone" min="-2" pref="110" max="-2" attributes="0"/>
+                                          <Component id="jLabel22" min="-2" pref="110" max="-2" attributes="0"/>
+                                          <Component id="txtEditSupplierEmail" min="-2" pref="110" max="-2" attributes="0"/>
+                                          <Component id="jLabel21" min="-2" pref="110" max="-2" attributes="0"/>
+                                          <Component id="txtEditSupplierName" min="-2" pref="110" max="-2" attributes="0"/>
+                                          <Component id="jLabel20" min="-2" pref="110" max="-2" attributes="0"/>
+                                          <Component id="jLabel18" min="-2" pref="89" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel19" min="-2" pref="110" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="txtSearchSupplierID" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
-                                                  <Component id="jLabel20" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
-                                                  <Component id="txtEditSupplierName" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
-                                                  <Component id="jLabel21" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
-                                                  <Component id="txtEditSupplierEmail" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
-                                              </Group>
+                                          <Group type="102" attributes="0">
+                                              <Component id="txtSearchSupplierID" min="-2" pref="110" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="txtEditSupplierPhone" pref="110" max="32767" attributes="0"/>
-                                                  <Component id="jLabel22" pref="110" max="32767" attributes="0"/>
-                                                  <Component id="btnSearchSupplier" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="comboEditSupplierItemCode" max="32767" attributes="0"/>
-                                              </Group>
+                                              <Component id="btnSearchSupplier" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -962,7 +974,7 @@
                                       <Component id="btnSaveSupplierChanges" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="92" max="32767" attributes="0"/>
+                              <EmptySpace pref="130" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -978,29 +990,21 @@
                                   <Component id="txtSearchSupplierID" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnSearchSupplier" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel22" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtEditSupplierName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtEditSupplierPhone" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtEditSupplierEmail" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="comboEditSupplierItemCode" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
+                              <Component id="txtEditSupplierName" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtEditSupplierEmail" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel22" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtEditSupplierPhone" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                               <Component id="btnSaveSupplierChanges" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="21" max="32767" attributes="0"/>
+                              <EmptySpace pref="39" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1051,26 +1055,6 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Update"/>
                       </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel1">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Item ID"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JComboBox" name="comboEditSupplierItemCode">
-                      <Properties>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="4">
-                            <StringItem index="0" value="Item 1"/>
-                            <StringItem index="1" value="Item 2"/>
-                            <StringItem index="2" value="Item 3"/>
-                            <StringItem index="3" value="Item 4"/>
-                          </StringArray>
-                        </Property>
-                      </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1234,21 +1218,15 @@
                         <Component class="javax.swing.JTable" name="tableSuppliers">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="5" rowCount="4">
-                                <Column editable="true" title="Supplier ID" type="java.lang.Object"/>
+                              <Table columnCount="4" rowCount="4">
                                 <Column editable="true" title="Supplier Name" type="java.lang.Object"/>
+                                <Column editable="true" title="Supplier ID" type="java.lang.Object"/>
                                 <Column editable="true" title="Email" type="java.lang.Object"/>
                                 <Column editable="true" title="Phone" type="java.lang.Object"/>
-                                <Column editable="true" title="Item ID" type="java.lang.Object"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                               <TableColumnModel selectionModel="0">
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
                                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                                   <Title/>
                                   <Editor/>

@@ -21,10 +21,7 @@ public class SMForm extends javax.swing.JFrame {
         panelMainContent.add(panelSupplierManagement, "panelSupplierManagement");
         panelMainContent.add(panelDailySalesEntry, "panelDailySalesEntry");
         panelMainContent.add(panelPurchaseRequisition, "panelPurchaseRequisition");
-<<<<<<< HEAD
-=======
         // panelMainContent.add(panelDisplayRequisition, "panelDisplayRequisition");
->>>>>>> 6f2ec4c766745d14e8c24824fc744dc2b8d9d487
         panelMainContent.add(panelViewPurchaseOrders, "panelViewPurchaseOrders");
         
         jPanel1.add(AddItem, "AddItem");
@@ -59,6 +56,7 @@ public class SMForm extends javax.swing.JFrame {
         Supplier_M = new javax.swing.JButton();
         Daily_S_E = new javax.swing.JButton();
         Purchase_R = new javax.swing.JButton();
+        Display_R = new javax.swing.JButton();
         View_P_O = new javax.swing.JButton();
         Logout = new javax.swing.JButton();
         panelMainContent = new javax.swing.JPanel();
@@ -73,6 +71,8 @@ public class SMForm extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtItemName = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtQuantity = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtItemID = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -85,6 +85,8 @@ public class SMForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtEditItemName = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtEditQuantity = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         txtEditPrice = new javax.swing.JTextField();
         btnSaveChanges = new javax.swing.JButton();
@@ -114,8 +116,6 @@ public class SMForm extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         txtSupplierPhone = new javax.swing.JTextField();
         btnSaveSupplier = new javax.swing.JButton();
-        jLabel45 = new javax.swing.JLabel();
-        comboSupplierItemCode = new javax.swing.JComboBox<>();
         panelEditSupplier = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -128,8 +128,6 @@ public class SMForm extends javax.swing.JFrame {
         txtEditSupplierPhone = new javax.swing.JTextField();
         btnSearchSupplier = new javax.swing.JButton();
         btnSaveSupplierChanges = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        comboEditSupplierItemCode = new javax.swing.JComboBox<>();
         panelDeleteSupplier = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableSuppliersDelete = new javax.swing.JTable();
@@ -243,6 +241,13 @@ public class SMForm extends javax.swing.JFrame {
             }
         });
 
+        Display_R.setText("Display Requisitions");
+        Display_R.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Display_RActionPerformed(evt);
+            }
+        });
+
         View_P_O.setText("View Purchase Orders");
         View_P_O.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,6 +275,7 @@ public class SMForm extends javax.swing.JFrame {
                             .addComponent(Supplier_M, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Daily_S_E, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Purchase_R, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Display_R, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(View_P_O, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -286,6 +292,8 @@ public class SMForm extends javax.swing.JFrame {
                 .addComponent(Daily_S_E, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Purchase_R, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Display_R, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(View_P_O, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -353,6 +361,8 @@ public class SMForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Qِuantity");
+
         jLabel4.setText("Code");
 
         jLabel5.setText("Price");
@@ -374,7 +384,9 @@ public class SMForm extends javax.swing.JFrame {
                             .addGroup(AddItemLayout.createSequentialGroup()
                                 .addGroup(AddItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(52, 52, 52)
                                 .addGroup(AddItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtItemID, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
@@ -400,9 +412,13 @@ public class SMForm extends javax.swing.JFrame {
                     .addComponent(txtItemName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtItemID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
+                .addGroup(AddItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(AddItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnSaveItem)
                 .addContainerGap(109, Short.MAX_VALUE))
@@ -419,6 +435,8 @@ public class SMForm extends javax.swing.JFrame {
         jLabel7.setText("Item ID:");
 
         jLabel8.setText("Item Name:");
+
+        jLabel9.setText("Quantity:");
 
         jLabel10.setText("Price:");
 
@@ -446,6 +464,8 @@ public class SMForm extends javax.swing.JFrame {
                     .addComponent(txtEditPrice, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtEditItemName, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtEditQuantity, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -465,7 +485,11 @@ public class SMForm extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtEditItemName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtEditQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtEditPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -482,13 +506,13 @@ public class SMForm extends javax.swing.JFrame {
 
         Table_deletItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Item Name  ", "Item ID", "Price"
+                "Item Name  ", "Item ID", "Quantity  ", "Price"
             }
         ));
         jScrollPane3.setViewportView(Table_deletItem);
@@ -530,13 +554,13 @@ public class SMForm extends javax.swing.JFrame {
 
         tableItems.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Item Name", "Item ID", "Price"
+                "Item Name", "Item ID", "Quantity", "Price"
             }
         ));
         jScrollPane1.setViewportView(tableItems);
@@ -641,25 +665,21 @@ public class SMForm extends javax.swing.JFrame {
 
         btnSaveSupplier.setText("Save");
 
-        jLabel45.setText("Item ID");
-
-        comboSupplierItemCode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout panelAddSupplierLayout = new javax.swing.GroupLayout(panelAddSupplier);
         panelAddSupplier.setLayout(panelAddSupplierLayout);
         panelAddSupplierLayout.setHorizontalGroup(
             panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAddSupplierLayout.createSequentialGroup()
                 .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAddSupplierLayout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(txtSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAddSupplierLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSupplierEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelAddSupplierLayout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addComponent(txtSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtSupplierEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
                 .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -668,17 +688,10 @@ public class SMForm extends javax.swing.JFrame {
                     .addComponent(txtSupplierPhone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(94, 94, 94))
             .addGroup(panelAddSupplierLayout.createSequentialGroup()
+                .addGap(199, 199, 199)
                 .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelAddSupplierLayout.createSequentialGroup()
-                        .addGap(199, 199, 199)
-                        .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSaveSupplier)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelAddSupplierLayout.createSequentialGroup()
-                        .addGap(170, 170, 170)
-                        .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboSupplierItemCode, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(btnSaveSupplier)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelAddSupplierLayout.setVerticalGroup(
@@ -686,11 +699,7 @@ public class SMForm extends javax.swing.JFrame {
             .addGroup(panelAddSupplierLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel45)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboSupplierItemCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(62, 62, 62)
                 .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(jLabel15))
@@ -733,10 +742,6 @@ public class SMForm extends javax.swing.JFrame {
 
         btnSaveSupplierChanges.setText("Update");
 
-        jLabel1.setText("Item ID");
-
-        comboEditSupplierItemCode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout panelEditSupplierLayout = new javax.swing.GroupLayout(panelEditSupplier);
         panelEditSupplier.setLayout(panelEditSupplierLayout);
         panelEditSupplierLayout.setHorizontalGroup(
@@ -744,30 +749,27 @@ public class SMForm extends javax.swing.JFrame {
             .addGroup(panelEditSupplierLayout.createSequentialGroup()
                 .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelEditSupplierLayout.createSequentialGroup()
-                        .addGap(196, 196, 196)
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(175, 175, 175)
+                        .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtEditSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEditSupplierEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEditSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelEditSupplierLayout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelEditSupplierLayout.createSequentialGroup()
-                                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtSearchSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtEditSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtEditSupplierEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtSearchSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(118, 118, 118)
-                                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtEditSupplierPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                                    .addComponent(btnSearchSupplier)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboEditSupplierItemCode, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(btnSearchSupplier))))
                     .addGroup(panelEditSupplierLayout.createSequentialGroup()
                         .addGap(185, 185, 185)
                         .addComponent(btnSaveSupplierChanges)))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
         panelEditSupplierLayout.setVerticalGroup(
             panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -780,25 +782,21 @@ public class SMForm extends javax.swing.JFrame {
                 .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearchSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearchSupplier))
-                .addGap(18, 18, 18)
-                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel20)
-                    .addComponent(jLabel22))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEditSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEditSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21)
-                    .addComponent(jLabel1))
+                .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEditSupplierEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboEditSupplierItemCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(81, 81, 81)
+                .addComponent(txtEditSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtEditSupplierEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtEditSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addComponent(btnSaveSupplierChanges)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         jPanel2.add(panelEditSupplier, "card3");
@@ -860,13 +858,13 @@ public class SMForm extends javax.swing.JFrame {
 
         tableSuppliers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Supplier ID", "Supplier Name", "Email", "Phone", "Item ID"
+                "Supplier Name", "Supplier ID", "Email", "Phone"
             }
         ));
         jScrollPane4.setViewportView(tableSuppliers);
@@ -1538,6 +1536,11 @@ public class SMForm extends javax.swing.JFrame {
       cl.show(panelMainContent, "panelPurchaseRequisition");
     }//GEN-LAST:event_Purchase_RActionPerformed
 
+    private void Display_RActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Display_RActionPerformed
+      CardLayout cl = (CardLayout)(panelMainContent.getLayout());
+      cl.show(panelMainContent, "panelDisplayRequisition");
+    }//GEN-LAST:event_Display_RActionPerformed
+
     private void View_P_OActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_View_P_OActionPerformed
       CardLayout cl = (CardLayout)(panelMainContent.getLayout());
       cl.show(panelMainContent, "panelViewPurchaseOrders");
@@ -1659,6 +1662,7 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JPanel AddItem;
     private javax.swing.JButton Daily_S_E;
     private javax.swing.JPanel DeleteItem;
+    private javax.swing.JButton Display_R;
     private javax.swing.JPanel EditItem;
     private javax.swing.JButton Item_M;
     private javax.swing.JButton Logout;
@@ -1702,10 +1706,8 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboEditPRCode;
     private javax.swing.JComboBox<String> comboEditPRItemID;
     private javax.swing.JComboBox<String> comboEditSaleItemID;
-    private javax.swing.JComboBox<String> comboEditSupplierItemCode;
     private javax.swing.JComboBox<String> comboPRItemID;
     private javax.swing.JComboBox<String> comboSaleItemID;
-    private javax.swing.JComboBox<String> comboSupplierItemCode;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1745,11 +1747,11 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
-    private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1793,6 +1795,7 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtEditPRDate;
     private javax.swing.JTextField txtEditPRQuantity;
     private javax.swing.JTextField txtEditPrice;
+    private javax.swing.JTextField txtEditQuantity;
     private javax.swing.JTextField txtEditSaleDate;
     private javax.swing.JTextField txtEditSaleQuantity;
     private javax.swing.JTextField txtEditSupplierEmail;
@@ -1803,6 +1806,7 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtPRQuantity;
     private javax.swing.JTextField txtPRRequiredDate;
     private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtQuantity;
     private javax.swing.JTextField txtSaleDate;
     private javax.swing.JTextField txtSaleQuantity;
     private javax.swing.JTextField txtSearchItemID;
