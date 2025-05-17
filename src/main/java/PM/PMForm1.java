@@ -9,7 +9,9 @@ package PM;
  * @author dhmez
  */
 import java.awt.CardLayout;
+import java.util.List;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 public class PMForm1 extends javax.swing.JFrame {
 
     /**
@@ -68,10 +70,10 @@ public class PMForm1 extends javax.swing.JFrame {
         tblItems = new javax.swing.JTable();
         panelViewSuppliers = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        btnRefresh1 = new javax.swing.JButton();
+        btnRefreshSup = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblViewSup = new javax.swing.JTable();
         panelViewPRs = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -311,7 +313,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Item ID", "Item Name", "Item Price", "Supplier ID"
             }
         ));
         jScrollPane1.setViewportView(tblItems);
@@ -355,20 +357,25 @@ public class PMForm1 extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Suppliers Table");
 
-        btnRefresh1.setText("Refresh");
+        btnRefreshSup.setText("Refresh");
+        btnRefreshSup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshSupActionPerformed(evt);
+            }
+        });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblViewSup.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Supplier ID", "Name", "Email Address", "Phone Number", "Item IDs"
             }
         ));
-        jScrollPane3.setViewportView(jTable2);
+        jScrollPane3.setViewportView(tblViewSup);
 
         jScrollPane5.setViewportView(jScrollPane3);
 
@@ -385,7 +392,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(146, 146, 146))
             .addGroup(panelViewSuppliersLayout.createSequentialGroup()
                 .addGap(89, 89, 89)
-                .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnRefreshSup, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelViewSuppliersLayout.setVerticalGroup(
@@ -396,7 +403,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(btnRefresh1)
+                .addComponent(btnRefreshSup)
                 .addGap(17, 17, 17))
         );
 
@@ -960,7 +967,24 @@ public class PMForm1 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnRefreshItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshItemsActionPerformed
-        // TODO add your handling code here:
+        ItemManager manager = new ItemManager();
+        List<Item> itemList = manager.getAllItems();
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(new String[] {"Item ID", "Item Name", "Item Price", "Supplier ID"});
+
+        for (Item item : itemList) {
+            model.addRow(new Object[] {
+                item.getItemId(),
+                item.getItemName(),
+                item.getPrice(),
+                item.getSupplierId()
+            });
+        }
+
+        tblItems.setModel(model);
+        
+
     }//GEN-LAST:event_btnRefreshItemsActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -1013,6 +1037,28 @@ public class PMForm1 extends javax.swing.JFrame {
         cl.show(contentPanel, "panelGeneratePO");
     }//GEN-LAST:event_btnBack8ActionPerformed
 
+    private void btnRefreshSupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshSupActionPerformed
+        SupplierManager manager = new SupplierManager();
+        List<Supplier> supplierList = manager.getAllSuppliers();
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(new String[] {
+            "Supplier ID", "Name", "Email Address", "Phone Number", "Item IDs"
+        });
+
+        for (Supplier supplier : supplierList) {
+            model.addRow(new Object[] {
+                supplier.getSupplierID(),
+                supplier.getName(),
+                supplier.getEmail(),
+                supplier.getPhone(),
+                String.join(",", supplier.getItemIDs()) // <<< هذه أهم سطر
+            });
+        }
+
+        tblViewSup.setModel(model);
+    }//GEN-LAST:event_btnRefreshSupActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1062,8 +1108,8 @@ public class PMForm1 extends javax.swing.JFrame {
     private javax.swing.JButton btnEdit2;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnHome;
-    private javax.swing.JButton btnRefresh1;
     private javax.swing.JButton btnRefreshItems;
+    private javax.swing.JButton btnRefreshSup;
     private javax.swing.JButton btnReject;
     private javax.swing.JButton btnVGeneratePO;
     private javax.swing.JButton btnViewItems;
@@ -1110,7 +1156,6 @@ public class PMForm1 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
@@ -1129,6 +1174,7 @@ public class PMForm1 extends javax.swing.JFrame {
     private javax.swing.JPanel panelViewSuppliers;
     private javax.swing.JTable tblItems;
     private javax.swing.JTable tblPOsDelete;
+    private javax.swing.JTable tblViewSup;
     private javax.swing.JTextField txtItemID;
     private javax.swing.JTextField txtItemID2;
     private javax.swing.JTextField txtPOID;
