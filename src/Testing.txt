@@ -1,6 +1,40 @@
-1|SM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-2|SM|JAcob|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-3|SM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-4|SM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-5|SM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-6|SM|im1|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+1|adm1|p1|Admin
+2|fm1|p2|FM
+3|im1|p3|IM
+4|pm1|p4|PM
+5|sm1|p5|SM
+6|adm2|p6|Admin
+7|fm2|p7|FM
+8|im2|p8|IM
+9|pm2|p9|PM
+10|sm2|p10|SM
+11|adm3|p11|Admin
+12|fm3|p12|FM
+13|im3|p13|IM
+14|pm3|p14|PM
+15|sm3|p15|SM
+16|adm4|p16|Admin
+17|fm4|p17|FM
+18|im4|p18|IM
+19|pm4|p19|PM
+20|sm4|p20|SM
+1|adm1|p1|Admin
+2|fm1|p2|FM
+3|im1|p3|IM
+4|pm1|p4|PM
+5|sm1|p5|SM
+6|adm2|p6|Admin
+7|fm2|p7|FM
+8|im2|p8|IM
+9|pm2|p9|PM
+10|sm2|p10|SM
+11|adm3|p11|Admin
+12|fm3|p12|FM
+13|im3|p13|IM
+14|pm3|p14|PM
+15|sm3|p15|SM
+16|adm4|p16|Admin
+17|fm4|p17|FM
+18|im4|p18|IM
+19|pm4|p19|PM
+20|sm4|p20|SM

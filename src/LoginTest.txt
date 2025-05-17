@@ -13,4 +13,10 @@
 13|im3|p13|IM
 14|pm3|p14|PM
 15|sm3|p15|SM
-16|im4|p20|FM
+16|adm4|p16|Admin
+17|fm4|p17|FM
+18|im4|p18|IM
+19|pm4|p19|PM
+20|sm4|p20|SM
+21|User|p1|SM
+22|User2|p2|SM
