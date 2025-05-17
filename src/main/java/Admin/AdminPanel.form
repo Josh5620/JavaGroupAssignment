@@ -327,9 +327,14 @@
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="UpdateUBtn" min="-2" pref="79" max="-2" attributes="0"/>
-                                          <Component id="AddUBtn" min="-2" pref="79" max="-2" attributes="0"/>
-                                          <Component id="DelUserBox" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="UpdateUBtn" min="-2" pref="79" max="-2" attributes="0"/>
+                                                  <Component id="AddUBtn" min="-2" pref="79" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="UserNBox1" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -375,7 +380,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel14" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                              <Component id="DelUserBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="UserNBox1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="7" max="32767" attributes="0"/>
                           <Component id="DeleteUBtn" min="-2" max="-2" attributes="0"/>
@@ -480,9 +485,6 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Delete"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DeleteUBtnActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="UpdateUBtn">
                   <Properties>
@@ -493,7 +495,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UpdateUBtnActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JTextField" name="DelUserBox">
+                <Component class="javax.swing.JTextField" name="UserNBox1">
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel14">
                   <Properties>
@@ -518,12 +520,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="FilterButton" min="-2" pref="79" max="-2" attributes="0"/>
+                              <Component id="jButton1" min="-2" pref="79" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jLabel13" min="-2" pref="43" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="RoleFilterBox" min="-2" max="-2" attributes="0"/>
+                                      <Component id="RoleFilter" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel12" min="-2" pref="43" max="-2" attributes="0"/>
                               </Group>
@@ -540,10 +542,10 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="RoleFilterBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="RoleFilter" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="FilterButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -565,16 +567,15 @@
                     <Property name="text" type="java.lang.String" value="Role:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="RoleFilterBox">
+                <Component class="javax.swing.JComboBox" name="RoleFilter">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="6">
-                        <StringItem index="0" value="All"/>
-                        <StringItem index="1" value="Admin"/>
-                        <StringItem index="2" value="Sales Manager"/>
-                        <StringItem index="3" value="Purchase Manager"/>
-                        <StringItem index="4" value="Finance Manager"/>
-                        <StringItem index="5" value="Inventory Manager"/>
+                      <StringArray count="5">
+                        <StringItem index="0" value="Select A Role"/>
+                        <StringItem index="1" value="Sales Manager"/>
+                        <StringItem index="2" value="Purchase Manager"/>
+                        <StringItem index="3" value="Finance Manager"/>
+                        <StringItem index="4" value="Inventory Manager"/>
                       </StringArray>
                     </Property>
                   </Properties>
@@ -582,13 +583,10 @@
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="FilterButton">
+                <Component class="javax.swing.JButton" name="jButton1">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Filter"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FilterButtonActionPerformed"/>
-                  </Events>
                 </Component>
               </SubComponents>
             </Container>
