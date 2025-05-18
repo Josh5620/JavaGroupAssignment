@@ -116,6 +116,7 @@ public class SMForm extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         txtSupplierPhone = new javax.swing.JTextField();
         btnSaveSupplier = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         panelEditSupplier = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -665,6 +666,8 @@ public class SMForm extends javax.swing.JFrame {
 
         btnSaveSupplier.setText("Save");
 
+        jButton1.setText("jButton1");
+
         javax.swing.GroupLayout panelAddSupplierLayout = new javax.swing.GroupLayout(panelAddSupplier);
         panelAddSupplier.setLayout(panelAddSupplierLayout);
         panelAddSupplierLayout.setHorizontalGroup(
@@ -690,6 +693,7 @@ public class SMForm extends javax.swing.JFrame {
             .addGroup(panelAddSupplierLayout.createSequentialGroup()
                 .addGap(199, 199, 199)
                 .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
                     .addComponent(btnSaveSupplier)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -699,7 +703,9 @@ public class SMForm extends javax.swing.JFrame {
             .addGroup(panelAddSupplierLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
+                .addGap(27, 27, 27)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(jLabel15))
@@ -1369,7 +1375,7 @@ public class SMForm extends javax.swing.JFrame {
         panelDeletePRLayout.setHorizontalGroup(
             panelDeletePRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDeletePRLayout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelDeletePRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDeletePRLayout.createSequentialGroup()
                         .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1422,7 +1428,7 @@ public class SMForm extends javax.swing.JFrame {
                     .addGroup(panelViewPRLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelViewPRLayout.setVerticalGroup(
             panelViewPRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1708,6 +1714,7 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboEditSaleItemID;
     private javax.swing.JComboBox<String> comboPRItemID;
     private javax.swing.JComboBox<String> comboSaleItemID;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
