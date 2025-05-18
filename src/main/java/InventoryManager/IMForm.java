@@ -91,7 +91,7 @@ public class IMForm extends javax.swing.JFrame {
         SmallTable = new javax.swing.JTable();
         UpdateBtn = new javax.swing.JButton();
         StockReport = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        Label8 = new javax.swing.JLabel();
         ViewPOs = new javax.swing.JPanel();
         Label6 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -100,10 +100,6 @@ public class IMForm extends javax.swing.JFrame {
         POTextArea = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        Panel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         SidePanel = new javax.swing.JPanel();
         ExitButton = new javax.swing.JButton();
         HomeButton = new javax.swing.JButton();
@@ -560,33 +556,31 @@ public class IMForm extends javax.swing.JFrame {
         UpdateStockLayout.setHorizontalGroup(
             UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(UpdateStockLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(37, 37, 37)
                 .addGroup(UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(UpdateStockLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(APOBtn)
                             .addGroup(UpdateStockLayout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(APOBtn)
-                                    .addGroup(UpdateStockLayout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(UpdateBtn)))
-                                .addContainerGap(27, Short.MAX_VALUE))))
-                    .addGroup(UpdateStockLayout.createSequentialGroup()
-                        .addComponent(Label7)
-                        .addContainerGap())))
+                                .addGap(6, 6, 6)
+                                .addComponent(UpdateBtn)))
+                        .addContainerGap(27, Short.MAX_VALUE))))
+            .addGroup(UpdateStockLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(Label7)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         UpdateStockLayout.setVerticalGroup(
             UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UpdateStockLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(24, 24, 24)
                 .addComponent(Label7, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -596,28 +590,29 @@ public class IMForm extends javax.swing.JFrame {
                         .addComponent(APOBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(UpdateBtn)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         MainPanel.add(UpdateStock, "card6");
 
-        jLabel4.setText("Panel4");
+        Label8.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Label8.setText("Generate Stock Report");
 
         javax.swing.GroupLayout StockReportLayout = new javax.swing.GroupLayout(StockReport);
         StockReport.setLayout(StockReportLayout);
         StockReportLayout.setHorizontalGroup(
             StockReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockReportLayout.createSequentialGroup()
-                .addContainerGap(334, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(291, 291, 291))
+            .addGroup(StockReportLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(Label8)
+                .addContainerGap(246, Short.MAX_VALUE))
         );
         StockReportLayout.setVerticalGroup(
             StockReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockReportLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(546, 546, 546))
+            .addGroup(StockReportLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(Label8, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(457, Short.MAX_VALUE))
         );
 
         MainPanel.add(StockReport, "card4");
@@ -699,69 +694,6 @@ public class IMForm extends javax.swing.JFrame {
 
         MainPanel.add(ViewPOs, "card5");
 
-        jLabel2.setText("Panel2");
-
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "ItemID", "ItemName", "Supplier", "Quantity"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-        }
-
-        javax.swing.GroupLayout Panel2Layout = new javax.swing.GroupLayout(Panel2);
-        Panel2.setLayout(Panel2Layout);
-        Panel2Layout.setHorizontalGroup(
-            Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
-                .addContainerGap(127, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(192, 192, 192)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
-        );
-        Panel2Layout.setVerticalGroup(
-            Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel2Layout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
-                .addGroup(Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(186, 186, 186))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49))))
-        );
-
-        MainPanel.add(Panel2, "card2");
-
         getContentPane().add(MainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 0, 660, 540));
 
         SidePanel.setBackground(new java.awt.Color(249, 143, 37));
@@ -798,7 +730,7 @@ public class IMForm extends javax.swing.JFrame {
         jLabel9.setRequestFocusEnabled(false);
 
         Button4.setBackground(new java.awt.Color(173, 216, 230));
-        Button4.setText("jButton3");
+        Button4.setText("Stock Report");
         Button4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ColouredHighlight(evt);
@@ -814,7 +746,7 @@ public class IMForm extends javax.swing.JFrame {
         });
 
         Button5.setBackground(new java.awt.Color(173, 216, 230));
-        Button5.setText("jButton3");
+        Button5.setText("Update Stock");
         Button5.setActionCommand("Button3");
         Button5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -1059,10 +991,10 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel Label5;
     private javax.swing.JLabel Label6;
     private javax.swing.JLabel Label7;
+    private javax.swing.JLabel Label8;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JList<String> POList;
     private javax.swing.JTextArea POTextArea;
-    private javax.swing.JPanel Panel2;
     private javax.swing.JPanel SidePanel;
     private javax.swing.JTable SmallTable;
     private javax.swing.JPanel StockReport;
@@ -1081,9 +1013,7 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1096,14 +1026,12 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JProgressBar jProgressBar4;
     private javax.swing.JProgressBar jProgressBar5;
     private javax.swing.JProgressBar jProgressBar6;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton specificUserBtn;
     private javax.swing.JTextField specificUserField;
