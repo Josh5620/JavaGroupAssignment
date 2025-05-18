@@ -9,21 +9,16 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 public class User {
-    public static void main(String[] args) {       
-
-      
-    }
-    
     public User(){
         makeBigList(LoginFilePath,FullUserList);
         
 }
 
     
-    private static String AlertFilePath = "src/AlertList.txt";
-    private static String LoginFilePath = "src/LoginTest.txt";
+    private static final String AlertFilePath = "src/AlertList.txt";
+    private static final String LoginFilePath = "src/LoginTest.txt";
 
-    private List<List<String>> FullUserList = new ArrayList<>();
+    private final List<List<String>> FullUserList = new ArrayList<>();
     static String TestFilePath = "src/Testing.txt";
     List<List<String>> SpecifiedUserList = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
@@ -63,7 +58,7 @@ public class User {
         
     }
     
-    public void ReloadUsers(){
+    public void reloadUsers(){
         makeBigList(LoginFilePath, FullUserList);
                 JOptionPane.showMessageDialog(
                 null,
@@ -121,7 +116,7 @@ public class User {
         }
     }
     
-    public void updateTextFile(List<List<String>> arrayList, String FilePathString){
+    public static void updateTextFile(List<List<String>> arrayList, String FilePathString){
          try (BufferedWriter writer = new BufferedWriter(new FileWriter(FilePathString))) {
             for (List<String> row : arrayList) {
                 String line = String.join("|", row);
@@ -134,4 +129,32 @@ public class User {
         }
         
     }
+    
+    public void sendAlert(String role, String username, String message) {
+            try {
+                int id = 1;
+
+                // Count lines to determine new ID
+                try (BufferedReader reader = new BufferedReader(new FileReader(AlertFilePath))) {
+                    while (reader.readLine() != null) {
+                        id++;
+                    }
+                }
+
+
+                String alert = "" + id + "|" + role + "|" + username + "|" + message + "|Not Done";
+
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(AlertFilePath, true))) {
+                    writer.newLine();
+                    writer.write(alert);
+                    
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    
+  
 }
