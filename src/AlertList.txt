@@ -9,3 +9,7 @@
 9|PM|user9|Low Item Alert : Packaging Tape|Done
 10|Admin|user10|System Notice : Inventory sync completed at 03:00 AM|Done
 11|SM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+12|SM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+13|SM|im3|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+14|SM|im3|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+15|IM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Done
