@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package SM;
-
+import javax.swing.JOptionPane;
 /**
  *
  * @author dhoom
@@ -17,6 +17,7 @@ public class SMForm extends javax.swing.JFrame {
      * Creates new form SMForm
      */
     public SMForm() {
+
         initComponents();
         panelMainContent.add(panelItemManagement, "panelItemManagement");
         panelMainContent.add(panelSupplierManagement, "panelSupplierManagement");
