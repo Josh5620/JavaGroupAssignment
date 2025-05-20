@@ -28,6 +28,7 @@ public class IMForm extends javax.swing.JFrame {
     String POFilePath = "src/PurchaseOrders.txt";
     int total; 
     String targetItemID;
+    List<String> focusAPO = new ArrayList<>();
     
     
     
@@ -473,8 +474,10 @@ public class IMForm extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Quantity before:");
 
+        AfterBox.setEditable(false);
         AfterBox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
+        BfrBox.setEditable(false);
         BfrBox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -1142,7 +1145,7 @@ public class IMForm extends javax.swing.JFrame {
         POList.setModel(model);
         
         for(List<String> order : PurchaseOrderList){
-            model.addElement(order.get(0));        
+            model.addElement(order.get(0));       
         }      
     }   
    
@@ -1178,7 +1181,7 @@ public class IMForm extends javax.swing.JFrame {
         ApprovedList.setModel(model);
         
         for(List<String> order : PurchaseOrderList){
-            if(order.get(6).equals("Approved")){
+            if(order.get(6).equals("Approved") && order.get(8).equals("Unresolved")){
                 ApprovedOrderList.add(order);
                 String displayText = String.format(
                 "PurchaseID: %s | ItemID: %s | Qty: %s | Date: %s | Supplier: %s | Price: %s | Status: %s | Approved By: %s",
@@ -1195,10 +1198,12 @@ public class IMForm extends javax.swing.JFrame {
         if(index == -1){
             return;
         }
+        System.out.println(index);
 
-        List<String> focusAPO = ApprovedOrderList.get(index);
+        focusAPO = ApprovedOrderList.get(index);
         targetItemID = focusAPO.get(1);
-        
+        System.out.println(focusAPO);
+        System.out.println(ApprovedList);
         for(List<String> item : user.getInvenList()){
             if(item.get(0).equals(targetItemID)){
                 IDNameBox.setText(item.get(0) + " || " + item.get(1));
@@ -1220,7 +1225,21 @@ public class IMForm extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if(choice == JOptionPane.YES_OPTION){
-            user.updateStock(targetItemID, total);    
+            user.updateStock(targetItemID, total);
+            
+            focusAPO.set(8, "Resolved");
+            
+            for (int i = 0; i < PurchaseOrderList.size(); i++) {
+                List<String> item = PurchaseOrderList.get(i);
+
+                if (focusAPO.get(0).equals(item.get(0))) {
+                    PurchaseOrderList.set(i, focusAPO); 
+                    break;
+                    }
+                }       
+                user.updateTextFile(PurchaseOrderList, POFilePath);
+            
+            
         } else { 
             System.out.println("Cancelled");
             
