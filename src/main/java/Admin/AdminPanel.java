@@ -1,5 +1,6 @@
 package Admin;
 import UserLogin.LoginPage;
+import InventoryManager.IMForm;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -562,6 +563,8 @@ public class AdminPanel extends javax.swing.JFrame {
 
     private void IMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IMBtnActionPerformed
         AdminLayout.show(AdminMainPanel, "IMCard");
+        IMForm imform = new IMForm("im4", "p18");
+        imform.setVisible(true);
     }//GEN-LAST:event_IMBtnActionPerformed
 
     private void FMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FMBtnActionPerformed
