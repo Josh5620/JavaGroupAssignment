@@ -29,13 +29,17 @@ public class SMForm extends javax.swing.JFrame {
         initComponents();
         comboEditItemID.addActionListener(e -> {
             String selectedItemID = (String) comboEditItemID.getSelectedItem();
+
+    // هنا بالضبط حط سطر الطباعة 👇
+            System.out.println("Selected Item ID: " + selectedItemID);
+
             if (selectedItemID != null) {
                 try {
                     BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Items.txt"));
                     String line;
                     while ((line = reader.readLine()) != null) {
                         String[] parts = line.split("\\|");
-                        if (parts.length >= 3 && parts[0].equals(selectedItemID)) {
+                        if (parts[0].equals(selectedItemID)) {
                             txtEditItemName.setText(parts[1]);
                             txtEditPrice.setText(parts[2]);
                             break;
@@ -43,10 +47,11 @@ public class SMForm extends javax.swing.JFrame {
                     }
                     reader.close();
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Error loading item data.");
+                    JOptionPane.showMessageDialog(null, "Error reading item data.");
                 }
             }
         });
+
        
         initComponents();
         panelMainContent.add(panelItemManagement, "panelItemManagement");
@@ -1805,51 +1810,30 @@ public class SMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_comboEditItemIDActionPerformed
 
     private void btnSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangesActionPerformed
-        String itemID = (String) comboEditItemID.getSelectedItem();
-        String name = txtEditItemName.getText().trim();
-        String priceText = txtEditPrice.getText().trim();
+       comboEditItemID.addActionListener(e -> {
+        String selectedItemID = (String) comboEditItemID.getSelectedItem();
 
-        if (name.isEmpty() || priceText.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please fill in all fields.");
-            return;
-        }
+    // هنا بالضبط حط سطر الطباعة 👇
+        System.out.println("Selected Item ID: " + selectedItemID);
 
-        try {
-            double price = Double.parseDouble(priceText);
-
-            File inputFile = new File("C:\\Users\\dhoom\\Downloads\\Items.txt");
-            File tempFile = new File("C:\\Users\\dhoom\\Downloads\\Items.txt");
-
-            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts[0].equals(itemID)) {
-                    writer.write(itemID + "|" + name + "|" + price + "|" + parts[3]); // نرجع نفس السبلاير ID
-                } else {
-                    writer.write(line);
+        if (selectedItemID != null) {
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Items.txt"));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split("\\|");
+                    if (parts[0].equals(selectedItemID)) {
+                        txtEditItemName.setText(parts[1]);
+                        txtEditPrice.setText(parts[2]);
+                        break;
+                        }
+                    }
+                    reader.close();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error reading item data.");
                 }
-                writer.newLine();
             }
-
-            reader.close();
-            writer.close();
-
-        // استبدال الملف القديم بالجديد
-            if (inputFile.delete()) {
-                tempFile.renameTo(inputFile);
-                JOptionPane.showMessageDialog(null, "Item updated successfully.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Failed to update item file.");
-            }
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Invalid price format.");
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error saving item: " + ex.getMessage());
-        }
+        });
 
 
     }//GEN-LAST:event_btnSaveChangesActionPerformed
