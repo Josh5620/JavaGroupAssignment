@@ -14,7 +14,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.CardLayout;
 
@@ -26,29 +27,27 @@ public class SMForm extends javax.swing.JFrame {
      */
     public SMForm() {
         initComponents();
-        DefaultTableModel model = (DefaultTableModel) supplierTable.getModel();
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Supplier.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length >= 4) {
-                    String id = parts[0];
-                    String name = parts[1];
-                    String email = parts[2];
-                    String phone = parts[3];
-                    model.addRow(new Object[]{id, name, email, phone});
+        comboEditItemID.addActionListener(e -> {
+            String selectedItemID = (String) comboEditItemID.getSelectedItem();
+            if (selectedItemID != null) {
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Items.txt"));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        String[] parts = line.split("\\|");
+                        if (parts.length >= 3 && parts[0].equals(selectedItemID)) {
+                            txtEditItemName.setText(parts[1]);
+                            txtEditPrice.setText(parts[2]);
+                            break;
+                        }
+                    }
+                    reader.close();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error loading item data.");
                 }
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Failed to load suppliers: " + e.getMessage());
-        }
-
-
-        
-
-        ItemManager itemManager = new ItemManager();
-        
-
+        });
+       
         initComponents();
         panelMainContent.add(panelItemManagement, "panelItemManagement");
         panelMainContent.add(panelSupplierManagement, "panelSupplierManagement");
@@ -119,7 +118,6 @@ public class SMForm extends javax.swing.JFrame {
         supplierTable = new javax.swing.JTable();
         EditItem = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        txtSearchItemID = new javax.swing.JTextField();
         btnSearchItem = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -129,6 +127,7 @@ public class SMForm extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         txtEditPrice = new javax.swing.JTextField();
         btnSaveChanges = new javax.swing.JButton();
+        comboEditItemID = new javax.swing.JComboBox<>();
         DeleteItem = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -167,6 +166,8 @@ public class SMForm extends javax.swing.JFrame {
         jScrollPane11 = new javax.swing.JScrollPane();
         jScrollPane12 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        AddItemSupplier = new javax.swing.JComboBox<>();
         panelDeleteSupplier = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableSuppliersDelete = new javax.swing.JTable();
@@ -237,9 +238,9 @@ public class SMForm extends javax.swing.JFrame {
         comboEditPRCode = new javax.swing.JComboBox<>();
         panelDeletePR = new javax.swing.JPanel();
         jLabel40 = new javax.swing.JLabel();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        tablePRDelete = new javax.swing.JTable();
         btnDeleteP_R = new javax.swing.JButton();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        DeletPRTable = new javax.swing.JTable();
         panelViewPR = new javax.swing.JPanel();
         jLabel43 = new javax.swing.JLabel();
         jScrollPane8 = new javax.swing.JScrollPane();
@@ -488,6 +489,17 @@ public class SMForm extends javax.swing.JFrame {
         jLabel10.setText("Price:");
 
         btnSaveChanges.setText("Save Changes");
+        btnSaveChanges.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveChangesActionPerformed(evt);
+            }
+        });
+
+        comboEditItemID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboEditItemIDActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout EditItemLayout = new javax.swing.GroupLayout(EditItem);
         EditItem.setLayout(EditItemLayout);
@@ -495,15 +507,12 @@ public class SMForm extends javax.swing.JFrame {
             EditItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(EditItemLayout.createSequentialGroup()
                 .addGap(51, 51, 51)
-                .addGroup(EditItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(EditItemLayout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(EditItemLayout.createSequentialGroup()
-                        .addComponent(txtSearchItemID, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 379, Short.MAX_VALUE)
-                        .addComponent(btnSearchItem)
-                        .addGap(119, 119, 119))))
+                .addGroup(EditItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(comboEditItemID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSearchItem)
+                .addGap(119, 119, 119))
             .addGroup(EditItemLayout.createSequentialGroup()
                 .addGap(176, 176, 176)
                 .addGroup(EditItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -515,7 +524,7 @@ public class SMForm extends javax.swing.JFrame {
                     .addComponent(txtEditQuantity, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(466, Short.MAX_VALUE))
         );
         EditItemLayout.setVerticalGroup(
             EditItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -526,8 +535,8 @@ public class SMForm extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(EditItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearchItemID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearchItem))
+                    .addComponent(btnSearchItem)
+                    .addComponent(comboEditItemID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -612,7 +621,7 @@ public class SMForm extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Item Name", "Item ID", "Quantity", "Price"
+                "Item Name", "Item ID", "Price", "Item ID"
             }
         ));
         jScrollPane1.setViewportView(tableItems);
@@ -622,22 +631,23 @@ public class SMForm extends javax.swing.JFrame {
         ViewItemLayout.setHorizontalGroup(
             ViewItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ViewItemLayout.createSequentialGroup()
-                .addGap(197, 197, 197)
-                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ViewItemLayout.createSequentialGroup()
-                .addContainerGap(280, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGroup(ViewItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ViewItemLayout.createSequentialGroup()
+                        .addGap(197, 197, 197)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ViewItemLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(276, Short.MAX_VALUE))
         );
         ViewItemLayout.setVerticalGroup(
             ViewItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ViewItemLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jPanel1.add(ViewItem, "card5");
@@ -724,27 +734,28 @@ public class SMForm extends javax.swing.JFrame {
             .addGroup(panelAddSupplierLayout.createSequentialGroup()
                 .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelAddSupplierLayout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addComponent(txtSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAddSupplierLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSupplierEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 349, Short.MAX_VALUE)
-                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSupplierID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSupplierPhone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(94, 94, 94))
-            .addGroup(panelAddSupplierLayout.createSequentialGroup()
-                .addGap(199, 199, 199)
-                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSaveSupplier)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(panelAddSupplierLayout.createSequentialGroup()
+                                .addGap(77, 77, 77)
+                                .addComponent(txtSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAddSupplierLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSupplierEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(95, 95, 95)
+                        .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelAddSupplierLayout.createSequentialGroup()
+                        .addGap(199, 199, 199)
+                        .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSaveSupplier)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(348, Short.MAX_VALUE))
         );
         panelAddSupplierLayout.setVerticalGroup(
             panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -760,14 +771,14 @@ public class SMForm extends javax.swing.JFrame {
                     .addComponent(txtSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel17)
+                .addGap(4, 4, 4)
                 .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel17))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelAddSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtSupplierEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(btnSaveSupplier)
                 .addGap(80, 80, 80))
         );
@@ -786,81 +797,96 @@ public class SMForm extends javax.swing.JFrame {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Supplier ID", "Supplier Name", "Email", "Phone", "Item ID"
             }
         ));
         jScrollPane12.setViewportView(jTable2);
 
         jScrollPane11.setViewportView(jScrollPane12);
 
+        jLabel1.setText("Item ID");
+
+        AddItemSupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout panelEditSupplierLayout = new javax.swing.GroupLayout(panelEditSupplier);
         panelEditSupplier.setLayout(panelEditSupplierLayout);
         panelEditSupplierLayout.setHorizontalGroup(
             panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditSupplierLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
                 .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtEditSupplierName, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
-                .addGap(59, 59, 59)
-                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEditSupplierEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(56, 56, 56)
-                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtEditSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelEditSupplierLayout.createSequentialGroup()
+                        .addContainerGap(43, Short.MAX_VALUE)
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelEditSupplierLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtEditSupplierName, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(AddItemSupplier, 0, 110, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEditSupplierEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(56, 56, 56)
+                        .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtEditSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(162, 162, 162))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditSupplierLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSaveSupplierChanges))
-                .addGap(280, 280, 280))
             .addGroup(panelEditSupplierLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelEditSupplierLayout.createSequentialGroup()
+                        .addGap(252, 252, 252)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelEditSupplierLayout.createSequentialGroup()
+                        .addGap(262, 262, 262)
+                        .addComponent(btnSaveSupplierChanges)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelEditSupplierLayout.setVerticalGroup(
             panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEditSupplierLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
                     .addComponent(jLabel20)
-                    .addComponent(jLabel22))
+                    .addComponent(jLabel22)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEditSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtEditSupplierEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEditSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                    .addComponent(txtEditSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AddItemSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addComponent(btnSaveSupplierChanges)
-                .addGap(42, 42, 42))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         jPanel2.add(panelEditSupplier, "card3");
 
         tableSuppliersDelete.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Name", "Supplier ID", "Email", "Phone"
+                "Name", "Supplier ID", "Email", "Phone", "Item ID"
             }
         ));
         jScrollPane2.setViewportView(tableSuppliersDelete);
@@ -916,7 +942,7 @@ public class SMForm extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Supplier Name", "Supplier ID", "Email", "Phone", "Item ID"
+                "Supplier ID", "Supplier Name", "Email", "Phone", "Item ID"
             }
         ));
         jScrollPane4.setViewportView(tableSuppliers);
@@ -958,9 +984,9 @@ public class SMForm extends javax.swing.JFrame {
                 .addComponent(btnEditSupplier)
                 .addGap(59, 59, 59)
                 .addComponent(btnDeleteSupplier)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(54, 54, 54)
                 .addComponent(btnViewSupplier)
-                .addGap(17, 17, 17))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSupplierManagementLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1152,18 +1178,17 @@ public class SMForm extends javax.swing.JFrame {
         panelDeleteSaleLayout.setHorizontalGroup(
             panelDeleteSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDeleteSaleLayout.createSequentialGroup()
-                .addContainerGap(273, Short.MAX_VALUE)
+                .addContainerGap(167, Short.MAX_VALUE)
                 .addGroup(panelDeleteSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDeleteSaleLayout.createSequentialGroup()
-                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(149, 149, 149))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDeleteSaleLayout.createSequentialGroup()
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15))))
-            .addGroup(panelDeleteSaleLayout.createSequentialGroup()
-                .addGap(201, 201, 201)
-                .addComponent(btnDeleteSelectedSale)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(121, 121, 121))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDeleteSaleLayout.createSequentialGroup()
+                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(277, 277, 277))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDeleteSaleLayout.createSequentialGroup()
+                        .addComponent(btnDeleteSelectedSale)
+                        .addGap(328, 328, 328))))
         );
         panelDeleteSaleLayout.setVerticalGroup(
             panelDeleteSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1230,9 +1255,9 @@ public class SMForm extends javax.swing.JFrame {
                 .addComponent(btnEditSale)
                 .addGap(54, 54, 54)
                 .addComponent(btnDeleteSale)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(67, 67, 67)
                 .addComponent(btnViewSales)
-                .addGap(16, 16, 16))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(panelDailySalesEntryLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1416,48 +1441,48 @@ public class SMForm extends javax.swing.JFrame {
 
         jLabel40.setText("Delete Purchase Requisition");
 
-        tablePRDelete.setModel(new javax.swing.table.DefaultTableModel(
+        btnDeleteP_R.setText("Delete");
+
+        DeletPRTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Item ID", "Quantity", "Required Date", "PR Code"
+                "PR Code", "Item ID", "Price", "Requir Date", "Supplier ID", "Salse Manager", "Status"
             }
         ));
-        jScrollPane7.setViewportView(tablePRDelete);
-
-        btnDeleteP_R.setText("Delete");
+        jScrollPane13.setViewportView(DeletPRTable);
 
         javax.swing.GroupLayout panelDeletePRLayout = new javax.swing.GroupLayout(panelDeletePR);
         panelDeletePR.setLayout(panelDeletePRLayout);
         panelDeletePRLayout.setHorizontalGroup(
             panelDeletePRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDeletePRLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(8, Short.MAX_VALUE)
                 .addGroup(panelDeletePRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDeletePRLayout.createSequentialGroup()
                         .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(152, 152, 152))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDeletePRLayout.createSequentialGroup()
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDeletePRLayout.createSequentialGroup()
                         .addComponent(btnDeleteP_R)
-                        .addGap(185, 185, 185))))
+                        .addGap(188, 188, 188))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDeletePRLayout.createSequentialGroup()
+                        .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         panelDeletePRLayout.setVerticalGroup(
             panelDeletePRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDeletePRLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
                 .addComponent(btnDeleteP_R)
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
         );
 
         jPanel4.add(panelDeletePR, "card4");
@@ -1466,13 +1491,13 @@ public class SMForm extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Item ID", "Quantity", "Required Date", "PRCode"
+                "PR Code", "Item ID", "Price", "Requir Date", "Supplier ID", "Salse Manager", "Status"
             }
         ));
         jScrollPane8.setViewportView(jTable1);
@@ -1635,11 +1660,44 @@ public class SMForm extends javax.swing.JFrame {
     private void btnEditItemFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditItemFormActionPerformed
       CardLayout cl = (CardLayout)(jPanel1.getLayout());
       cl.show(jPanel1, "EditItem");
+        cl.show(jPanel1, "EditItem");
+
+
+        comboEditItemID.removeAllItems();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Items.txt"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                if (parts.length >= 1) {
+                    comboEditItemID.addItem(parts[0]); // ITM001, ITM002...
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error loading items: " + e.getMessage());}
     }//GEN-LAST:event_btnEditItemFormActionPerformed
 
     private void btnAddItemFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemFormActionPerformed
       CardLayout cl = (CardLayout)(jPanel1.getLayout());
       cl.show(jPanel1, "AddItem");
+        DefaultTableModel model = (DefaultTableModel) supplierTable.getModel();
+        model.setRowCount(0); // امسح الجدول أول
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Supplier.txt"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                if (parts.length >= 4) {
+                    model.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3]}); // ID, Name, Email, Phone
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error loading suppliers: " + e.getMessage());
+        }
+
     }//GEN-LAST:event_btnAddItemFormActionPerformed
 
     private void btnDeleteItemFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteItemFormActionPerformed
@@ -1735,96 +1793,66 @@ public class SMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeletePRActionPerformed
 
     private void btnSaveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveItemActionPerformed
-        String id = txtItemID.getText();
-        String name = txtItemName.getText();
-        String priceText = txtPrice.getText();
 
-        if (id.isEmpty() || name.isEmpty() || priceText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+    }//GEN-LAST:event_btnSaveItemActionPerformed
+
+    private void btnDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteItemActionPerformed
+
+    }//GEN-LAST:event_btnDeleteItemActionPerformed
+
+    private void comboEditItemIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEditItemIDActionPerformed
+
+    }//GEN-LAST:event_comboEditItemIDActionPerformed
+
+    private void btnSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangesActionPerformed
+        String itemID = (String) comboEditItemID.getSelectedItem();
+        String name = txtEditItemName.getText().trim();
+        String priceText = txtEditPrice.getText().trim();
+
+        if (name.isEmpty() || priceText.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields.");
             return;
         }
 
         try {
             double price = Double.parseDouble(priceText);
 
-        // ✅ نعيد قراءة الموردين من الملف
-            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Supplier.txt"));
-            String supplierID = null;
-            String line;
+            File inputFile = new File("C:\\Users\\dhoom\\Downloads\\Items.txt");
+            File tempFile = new File("C:\\Users\\dhoom\\Downloads\\Items.txt");
 
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
-                if (parts.length >= 4) {
-                // ناخذ أول واحد كاختبار (تقدر تعدل حسب المطلوب)
-                    supplierID = parts[0];
-                    break;
-                }
-            }
-
-            reader.close();
-
-            if (supplierID == null) {
-                JOptionPane.showMessageDialog(this, "No supplier found.");
-                return;
-            }
-
-        // نضيف العنصر
-            Item item = new Item(id, name, price, supplierID);
-            itemManager.addItem(item);
-
-            JOptionPane.showMessageDialog(this, "Item added successfully!");
-
-            txtItemID.setText("");
-            txtItemName.setText("");
-            txtPrice.setText("");
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid price.");
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error reading supplier file.");
-        }
-    }//GEN-LAST:event_btnSaveItemActionPerformed
-
-    private void btnDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteItemActionPerformed
-        int selectedRow = Table_deletItem.getSelectedRow();
-
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select an item to delete.");
-            return;
-        }
-
-        String itemID = Table_deletItem.getValueAt(selectedRow, 0).toString();
-
-        int confirm = JOptionPane.showConfirmDialog(this, "Delete item " + itemID + "?", "Confirm", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) return;
-
-        File inputFile = new File("C:\\Users\\dhoom\\Downloads\\Items.txt");
-        File tempFile = new File("C:\\Users\\dhoom\\Downloads\\Items_temp.txt");
-
-        try (
-            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))
-        ) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (!line.startsWith(itemID + "|")) {
+                if (parts[0].equals(itemID)) {
+                    writer.write(itemID + "|" + name + "|" + price + "|" + parts[3]); // نرجع نفس السبلاير ID
+                } else {
                     writer.write(line);
-                    writer.newLine();
                 }
+                writer.newLine();
             }
 
             reader.close();
             writer.close();
-            inputFile.delete();
-            tempFile.renameTo(inputFile);
 
-            ((DefaultTableModel) Table_deletItem.getModel()).removeRow(selectedRow);
-            JOptionPane.showMessageDialog(this, "Item deleted successfully.");
+        // استبدال الملف القديم بالجديد
+            if (inputFile.delete()) {
+                tempFile.renameTo(inputFile);
+                JOptionPane.showMessageDialog(null, "Item updated successfully.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to update item file.");
+            }
 
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error deleting item: " + e.getMessage());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid price format.");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error saving item: " + ex.getMessage());
         }
-    }//GEN-LAST:event_btnDeleteItemActionPerformed
+
+
+    }//GEN-LAST:event_btnSaveChangesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1863,7 +1891,9 @@ public class SMForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddItem;
+    private javax.swing.JComboBox<String> AddItemSupplier;
     private javax.swing.JButton Daily_S_E;
+    private javax.swing.JTable DeletPRTable;
     private javax.swing.JPanel DeleteItem;
     private javax.swing.JPanel EditItem;
     private javax.swing.JButton Item_M;
@@ -1905,11 +1935,13 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JButton btnViewPR;
     private javax.swing.JButton btnViewSales;
     private javax.swing.JButton btnViewSupplier;
+    private javax.swing.JComboBox<String> comboEditItemID;
     private javax.swing.JComboBox<String> comboEditPRCode;
     private javax.swing.JComboBox<String> comboEditPRItemID;
     private javax.swing.JComboBox<String> comboEditSaleItemID;
     private javax.swing.JComboBox<String> comboPRItemID;
     private javax.swing.JComboBox<String> comboSaleItemID;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1960,13 +1992,13 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTable jTable1;
@@ -1993,7 +2025,6 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JPanel panelWelcome;
     private javax.swing.JTable supplierTable;
     private javax.swing.JTable tableItems;
-    private javax.swing.JTable tablePRDelete;
     private javax.swing.JTable tablePurchaseOrders;
     private javax.swing.JTable tableSales;
     private javax.swing.JTable tableSalesDelete;
@@ -2016,7 +2047,6 @@ public class SMForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtSaleDate;
     private javax.swing.JTextField txtSaleQuantity;
-    private javax.swing.JTextField txtSearchItemID;
     private javax.swing.JTextField txtSupplierEmail;
     private javax.swing.JTextField txtSupplierID;
     private javax.swing.JTextField txtSupplierName;
