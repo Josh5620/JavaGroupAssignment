@@ -218,7 +218,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Role:");
 
-        RoleBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select A Role", "Sales Manager", "Purchase Manager", "Finance Manager", "Inventory Manager" }));
+        RoleBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select A Role", "Sales Manager", "Purchase Manager", "Finance Manager", "Admin", "Inventory Manager" }));
 
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Functions:");
@@ -562,9 +562,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_PMBtnActionPerformed
 
     private void IMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IMBtnActionPerformed
-        AdminLayout.show(AdminMainPanel, "IMCard");
-        IMForm imform = new IMForm("im4", "p18");
-        imform.setVisible(true);
+        launchRoleDashboard("im4", "p18", "IM", this);
     }//GEN-LAST:event_IMBtnActionPerformed
 
     private void FMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FMBtnActionPerformed
@@ -661,6 +659,26 @@ public class AdminPanel extends javax.swing.JFrame {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + rolecode + "$", 3));
         }
         buildUserTable();
+    }
+    
+    public void launchRoleDashboard(String username, String password, String role, JFrame adminFrame) {
+        switch (role) {
+            case "IM" -> new IMForm(username, password, adminFrame).setVisible(true);
+            default -> JOptionPane.showMessageDialog(null, "Invalid role!");
+        }
+    //        case "SM":
+    //            new SMForm(username, password, adminFrame).setVisible(true);
+    //            break;
+    //        case "PM":
+    //            new PMForm(username, password, adminFrame).setVisible(true);
+    //            break;
+    //        case "FM":
+    //            new FMForm(username, password, adminFrame).setVisible(true);
+    //            break;
+
+        if (adminFrame != null) {
+            adminFrame.setVisible(false);
+        }
     }
     
     /**

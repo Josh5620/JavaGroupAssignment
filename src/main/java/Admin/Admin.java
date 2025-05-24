@@ -14,13 +14,22 @@ public class Admin extends User {
     User tmpuser = new User();
     String Userfilepath = tmpuser.getLoginFilePath();
     List<List<String>> UserList = tmpuser.getFullUserList();
+    protected String currentRole = "Admin";
+    
+    public String getCurrentRole(){
+        return currentRole;
+    }
+    
+    public boolean validateUserFields(String username, String password, String role){
+        return!(username == null || username.trim().isEmpty() ||
+                password == null || password.trim().isEmpty() ||
+                role == null || role.trim().isEmpty());
+    }
 
 
      
     public void AddUser(String username, String Passwd, String Role){
-        if(username == null || username.trim().isEmpty()|| Passwd == null ||
-                Passwd.trim().isEmpty() || Role == null || Role.trim().isEmpty()){
-            
+        if(!validateUserFields(username, Passwd, Role)){
             JOptionPane.showMessageDialog(
             null,
                     "All fields must be filled out!", 
@@ -44,6 +53,15 @@ public class Admin extends User {
                 );
                 return;
         }
+            else if (Role.equalsIgnoreCase("Admin") && !this.getCurrentRole().equals("SA")){
+                JOptionPane.showMessageDialog(
+                null,
+                "Only Super Admin can add Admins!",
+                "Permission Denied!",
+                JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
             else if (UserList == null) {
                 JOptionPane.showMessageDialog(
                 null,
@@ -82,6 +100,13 @@ public class Admin extends User {
                 userfound = true;
                 break;
             }
+            else if (username.equalsIgnoreCase("SuperAdmin")){
+                JOptionPane.showMessageDialog(null, 
+                        "Super Admin cannot be deleted.", 
+                        "Permission Denied", 
+                        JOptionPane.WARNING_MESSAGE);
+                break;
+            }
         };
         if (!userfound){
             JOptionPane.showMessageDialog(
@@ -99,9 +124,7 @@ public class Admin extends User {
     
     public void UpdateUser(String username, String Passwd, String Role){
         boolean userfound = false;
-        if(username == null || username.trim().isEmpty()|| Passwd == null ||
-                Passwd.trim().isEmpty() || Role == null || Role.trim().isEmpty()){
-            
+        if(!validateUserFields(username, Passwd, Role)){
             JOptionPane.showMessageDialog(
             null,
                     "All fields must be filled out!", 
@@ -123,6 +146,13 @@ public class Admin extends User {
                     userfound = true;
                     break;
                 }
+                else if (username.equalsIgnoreCase("SuperAdmin")){
+                JOptionPane.showMessageDialog(null, 
+                        "Super Admin cannot be deleted.", 
+                        "Permission Denied", 
+                        JOptionPane.WARNING_MESSAGE);
+                break;
+            }
             }
     };
         if (!userfound){
