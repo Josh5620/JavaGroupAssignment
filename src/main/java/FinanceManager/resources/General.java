@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.stream.Stream;
 import java.io.IOException;
 import java.util.List;
+import java.awt.CardLayout;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -36,6 +38,73 @@ import FinanceManager.controller.FinanceManagerController;
  * @author sumingfei
  */
 public class General extends javax.swing.JFrame {
+    private final CardLayout workAreaCards = new CardLayout();
+    private static final String[] CARD_TITLES = {
+  "Total Payables",
+  "Total Paid This Month",
+  "Pending POs",
+  "Cash on Hand"
+};
+private static final String[] CARD_VALUES = {
+  "$45,200",
+  "$18,950",
+  "8",
+  "$27,600"
+};  
+    
+    private JPanel cardsBar;
+    
+    private JPanel buildDashboardPanel() {
+        JPanel p = new JPanel(new BorderLayout());
+        // reuse the cardsBar you already constructed in the constructor
+        p.add(cardsBar, BorderLayout.NORTH);
+        return p;
+    }
+
+    private JPanel buildPurchaseRequisitionsPanel() {
+        JPanel p = new JPanel(new BorderLayout());
+        // you can move your table/dialog code here later; placeholder for now:
+        p.add(new JLabel("Purchase Requisitions", SwingConstants.CENTER),
+              BorderLayout.CENTER);
+        return p;
+    }
+
+    private JPanel buildPurchaseOrdersPanel() {
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(new JLabel("Purchase Orders", SwingConstants.CENTER),
+              BorderLayout.CENTER);
+        return p;
+    }
+
+    private JPanel buildInventoryPanel() {
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(new JLabel("Inventory", SwingConstants.CENTER),
+              BorderLayout.CENTER);
+        return p;
+    }
+
+    private JPanel buildProcessPaymentsPanel() {
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(new JLabel("Process Payments", SwingConstants.CENTER),
+              BorderLayout.CENTER);
+        return p;
+    }
+
+    private JPanel buildReportsPanel() {
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(new JLabel("Reports", SwingConstants.CENTER),
+              BorderLayout.CENTER);
+        return p;
+    }
+
+    private JPanel buildSettingsPanel() {
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(new JLabel("Settings", SwingConstants.CENTER),
+              BorderLayout.CENTER);
+        return p;
+    }
+    
+    
 
     /**
      * Creates new form General
@@ -57,9 +126,31 @@ public class General extends javax.swing.JFrame {
         initComponents();
         
         
+        // switch to CardLayout
         workAreaPanel.removeAll();
+        workAreaPanel.setLayout(workAreaCards);
+        // Build the cards bar and assign to the field
+// 1) Build the cards bar and assign to the field
+cardsBar = new JPanel(new GridLayout(1, CARD_TITLES.length, 16, 0));
+cardsBar.setOpaque(false);
+for (int i = 0; i < CARD_TITLES.length; i++) {
+    cardsBar.add(makeSummaryCard(CARD_TITLES[i], CARD_VALUES[i]));
+}
 
-        workAreaPanel.setLayout(new BorderLayout());
+// 2) Add it as the NORTH “card” in workAreaPanel
+workAreaPanel.add(cardsBar, BorderLayout.NORTH);
+
+        // register each “page” panel under a name
+        workAreaPanel.add(buildDashboardPanel(),             "DASHBOARD");
+        workAreaPanel.add(buildPurchaseRequisitionsPanel(),  "PR");
+        workAreaPanel.add(buildPurchaseOrdersPanel(),        "PO");
+        workAreaPanel.add(buildInventoryPanel(),             "INV");
+        workAreaPanel.add(buildProcessPaymentsPanel(),       "PAY");
+        workAreaPanel.add(buildReportsPanel(),               "REP");
+        workAreaPanel.add(buildSettingsPanel(),              "SET");
+
+// show DASHBOARD by default
+workAreaCards.show(workAreaPanel, "DASHBOARD");
         
         // 1) Build the cards bar
         JPanel cardsBar = new JPanel(new GridLayout(1, 4, 16, 0));
@@ -203,14 +294,32 @@ public class General extends javax.swing.JFrame {
         });
 
         btnProcessPayments.setText("Process Payments");
+        btnProcessPayments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcessPaymentsActionPerformed(evt);
+            }
+        });
 
         btnReports.setText("Reports");
+        btnReports.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportsActionPerformed(evt);
+            }
+        });
 
         btnPurchaseOrders.setText(" Purchase Orders");
-        btnPurchaseOrders.setActionCommand(" Purchase Orders");
+        btnPurchaseOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPurchaseOrdersActionPerformed(evt);
+            }
+        });
 
         btnSettings.setText("Settings");
-        btnSettings.setActionCommand("Settings");
+        btnSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSettingsActionPerformed(evt);
+            }
+        });
 
         btnColorMode.setText("Dark mdoe");
 
@@ -355,12 +464,13 @@ public class General extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-        
+workAreaCards.show(workAreaPanel, "DASHBOARD");      
 
 // TODO add your handling code here:
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnPurchaseRequisitionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPurchaseRequisitionsActionPerformed
+        workAreaCards.show(workAreaPanel, "PR");
         try {
             List<PurchaseRequisition> prs
                     = FinanceManagerController.getAllRequisitions();
@@ -403,8 +513,44 @@ public class General extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPurchaseRequisitionsActionPerformed
 
     private void btnInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventoryActionPerformed
-        // TODO add your handling code here:
+workAreaCards.show(workAreaPanel, "INV");        // TODO add your handling code here:
     }//GEN-LAST:event_btnInventoryActionPerformed
+
+    private void btnPurchaseOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPurchaseOrdersActionPerformed
+workAreaCards.show(workAreaPanel, "PO");        
+    }//GEN-LAST:event_btnPurchaseOrdersActionPerformed
+
+    private void btnProcessPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessPaymentsActionPerformed
+workAreaCards.show(workAreaPanel, "PAY");        // TODO add your handling code here:
+    }//GEN-LAST:event_btnProcessPaymentsActionPerformed
+
+    private void btnReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportsActionPerformed
+workAreaCards.show(workAreaPanel, "REP");        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReportsActionPerformed
+
+    private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
+workAreaCards.show(workAreaPanel, "SET");        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSettingsActionPerformed
+
+    
+    private JPanel makeSummaryCard(String title, String value) {
+    JPanel card = new JPanel(new BorderLayout());
+    card.setBackground(new Color(0x2E4053));
+    card.setBorder(BorderFactory.createEmptyBorder(12,12,12,12));
+
+    JLabel lblT = new JLabel(title, SwingConstants.CENTER);
+    lblT.setForeground(Color.WHITE);
+    lblT.setFont(lblT.getFont().deriveFont(Font.PLAIN, 14f));
+
+    JLabel lblV = new JLabel(value, SwingConstants.CENTER);
+    lblV.setForeground(Color.WHITE);
+    lblV.setFont(lblV.getFont().deriveFont(Font.BOLD, 24f));
+
+    card.add(lblT, BorderLayout.NORTH);
+    card.add(lblV, BorderLayout.CENTER);
+
+    return card;
+}
 
     /**
      * @param args the command line arguments

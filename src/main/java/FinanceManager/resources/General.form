@@ -186,21 +186,33 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Process Payments"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProcessPaymentsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnReports">
           <Properties>
             <Property name="text" type="java.lang.String" value="Reports"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReportsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnPurchaseOrders">
           <Properties>
             <Property name="text" type="java.lang.String" value=" Purchase Orders"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPurchaseOrdersActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnSettings">
           <Properties>
             <Property name="text" type="java.lang.String" value="Settings"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSettingsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="btnColorMode">
           <Properties>
