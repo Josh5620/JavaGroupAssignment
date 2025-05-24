@@ -215,7 +215,11 @@ public class LoginPage extends javax.swing.JFrame {
             else{
                 switch(RoleCombo.getSelectedIndex()){
                     case 0:
-                        AdminPanel adminPanel = new AdminPanel();
+                        AdminPanel adminPanel;
+                        if(userLog.equals("SuperAdmin")){
+                            adminPanel = new AdminPanel(true);
+                        } else { adminPanel = new AdminPanel(); }
+                        
                         adminPanel.setVisible(true);
                         this.dispose();
                         break;

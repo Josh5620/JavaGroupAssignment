@@ -34,7 +34,13 @@ public class AdminPanel extends javax.swing.JFrame {
         this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
         AdminLayout.show(AdminMainPanel, "HomeCard");
         buildUserTable();
-        
+    }
+    public AdminPanel(boolean SA){
+        this();
+        if(SA == true){
+            admin = new SuperAdmin();
+        }  
+        System.out.println(admin.getClass());
     }
 
     

@@ -24,6 +24,7 @@ public class IMForm extends javax.swing.JFrame {
     
     // Constructor for admin access to role dashboard
     private JFrame adminFrame; // For returning to Admin Panel
+    
     public IMForm(String username, String role, JFrame adminFrame) {
     this(username, role); // call existing constructor
     this.adminFrame = adminFrame;

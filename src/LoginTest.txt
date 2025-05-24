@@ -1,4 +1,4 @@
-1|SuperAdmin|root|SA
+1|SuperAdmin|root|Admin
 2|fm1|p2|FM
 3|im1|p3|IM
 4|pm1|p4|PM
