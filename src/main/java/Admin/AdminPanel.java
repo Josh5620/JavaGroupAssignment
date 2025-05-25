@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.swing.table.TableRowSorter;
 
 
+
 public class AdminPanel extends javax.swing.JFrame {
     CardLayout AdminLayout;
     Admin admin = new Admin();    
@@ -29,21 +30,27 @@ public class AdminPanel extends javax.swing.JFrame {
             put("Inventory Manager", "IM"); 
         }};
          
-    public AdminPanel() {
+    public AdminPanel(String username, String password) {
         initComponents();
         this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
         AdminLayout.show(AdminMainPanel, "HomeCard");
         buildUserTable();
     }
     public AdminPanel(boolean SA){
-        this();
+        initComponents();
         if(SA == true){
             admin = new SuperAdmin();
         }  
         System.out.println(admin.getClass());
     }
 
-    
+        private void homePageLoad(String username, String role){
+        this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
+        AdminLayout.show(AdminMainPanel, "HomeCard");  
+        admin.checkAlert(username, role);
+        jLabel11.setText("Welcome User: " + username);
+        jLabel10.setText("Role: " + role);
+    }
     
     
     
@@ -169,23 +176,24 @@ public class AdminPanel extends javax.swing.JFrame {
 
         AdminHPPanel.setBackground(new java.awt.Color(0, 102, 0));
 
-        jLabel1.setText("Hello Admin");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setText("Admin HomePage");
 
         javax.swing.GroupLayout AdminHPPanelLayout = new javax.swing.GroupLayout(AdminHPPanel);
         AdminHPPanel.setLayout(AdminHPPanelLayout);
         AdminHPPanelLayout.setHorizontalGroup(
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
-                .addGap(197, 197, 197)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(403, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(395, Short.MAX_VALUE))
         );
         AdminHPPanelLayout.setVerticalGroup(
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
-                .addGap(99, 99, 99)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(416, Short.MAX_VALUE))
         );
 
         jLabel1.getAccessibleContext().setAccessibleDescription("");
@@ -717,7 +725,7 @@ public class AdminPanel extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminPanel().setVisible(true);
+                new AdminPanel("adm2", "p6").setVisible(true);
             }
         });
     }
