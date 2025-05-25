@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author joshu
  */
-public class NewClass {
+public class testing {
     public static void main(String[] args) {
     ArrayList<String> parts = new ArrayList<>(List.of(
     "PO015", "2025-05-08", "ITM006/ITM005/ITM001", "40/18/6", "Approved", "PM001", "Unresolved"

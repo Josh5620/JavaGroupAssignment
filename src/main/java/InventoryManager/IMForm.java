@@ -47,6 +47,8 @@ public class IMForm extends javax.swing.JFrame {
     List<List<String>> PurchaseOrderTextList = new ArrayList<>();
     List<List<String>> ApprovedOrderList = new ArrayList<>();
     String POFilePath = "src/PurchaseOrders.txt";
+    String[] itemIDs;
+    String[] incomingQty;
     int total; 
     String targetItemID;
     List<String> focusAPO = new ArrayList<>();
@@ -1216,15 +1218,16 @@ public class IMForm extends javax.swing.JFrame {
             
         DefaultListModel<String> model = new DefaultListModel<>();
         ApprovedList.setModel(model);
+        System.out.println(PurchaseOrderTextList);
         
         for(List<String> order : PurchaseOrderTextList){
-            if(order.get(6).equals("Approved") && order.get(8).equals("Unresolved")){
+            if(order.get(4).equals("Approved") && order.get(6).equals("Unresolved")){
                 ApprovedOrderList.add(order);
-                String displayText = String.format(
-                "PurchaseID: %s | ItemID: %s | Qty: %s | Date: %s | Supplier: %s | Price: %s | Status: %s | Approved By: %s",
-                order.get(0), order.get(1), order.get(2), order.get(3),
-                order.get(4), order.get(5), order.get(6), order.get(7)
-            );
+                    String displayText = String.format(
+                    "PurchaseID: %s | Date: %s | ItemIDs: %s | Quantities: %s | Status: %s | Approved By: %s |",
+                    order.get(0), order.get(1), order.get(2), order.get(3),
+                    order.get(4), order.get(5) 
+                );
                 model.addElement(displayText);
             }
         }
@@ -1238,48 +1241,70 @@ public class IMForm extends javax.swing.JFrame {
         System.out.println(index);
 
         focusAPO = ApprovedOrderList.get(index);
-        targetItemID = focusAPO.get(1);
-        System.out.println(focusAPO);
-        System.out.println(ApprovedList);
-        for(List<String> item : user.getInvenList()){
-            if(item.get(0).equals(targetItemID)){
-                IDNameBox.setText(item.get(0) + " || " + item.get(1));
-                BfrBox.setText(item.get(2));
-                
-                total = Integer.parseInt(focusAPO.get(2)) + Integer.parseInt(item.get(2));
-                AfterBox.setText(String.valueOf(total));
-                
+        itemIDs = focusAPO.get(2).split("/");     
+        incomingQty = focusAPO.get(3).split("/"); 
+
+        StringBuilder bfr = new StringBuilder();
+        StringBuilder aft = new StringBuilder();
+
+        for (int i = 0; i < itemIDs.length; i++) {
+            String id = itemIDs[i];
+            String incoming = incomingQty[i];
+
+            for (List<String> item : user.getInvenList()) {
+                if (item.get(0).equals(id)) {
+                    int oldQty = Integer.parseInt(item.get(2));
+                    int newQty = oldQty + Integer.parseInt(incoming);
+
+                    bfr.append(oldQty).append("/");
+                    aft.append(newQty).append("/");
+                    break;
+                }
             }
         }
-        
+        if (bfr.length() > 0) bfr.setLength(bfr.length() - 1);
+        if (aft.length() > 0) aft.setLength(aft.length() - 1);
+
+        IDNameBox.setText(focusAPO.get(2));
+        BfrBox.setText(bfr.toString());
+        AfterBox.setText(aft.toString());
     }
     
     private void submitUpdate(){
+        
+        StringBuilder confirmText = new StringBuilder("Confirm Inventory Update:\n");
+        for (int i = 0; i < itemIDs.length; i++) {
+            confirmText.append("Item: ").append(itemIDs[i])
+                       .append(" | Add: ").append(incomingQty[i]).append("\n");
+            }
+        
         int choice = JOptionPane.showConfirmDialog(
-                null,
-                "New total: " + total,
-                "Confirm Approval",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-        if(choice == JOptionPane.YES_OPTION){
-            user.updateStock(targetItemID, total);
-            
-            focusAPO.set(8, "Resolved");
-            
-            for (int i = 0; i < PurchaseOrderTextList.size(); i++) {
-                List<String> item = PurchaseOrderTextList.get(i);
+            null,
+            confirmText.toString(),
+            "Inventory Update",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+        
+        if (choice == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < itemIDs.length; i++) {
+                String itemID = itemIDs[i];
+                int addQty = Integer.parseInt(incomingQty[i]);
 
-                if (focusAPO.get(0).equals(item.get(0))) {
-                    PurchaseOrderTextList.set(i, focusAPO); 
-                    break;
+                for (List<String> item : user.getInvenList()) {
+                    if (item.get(0).equals(itemID)) {
+                        int newTotal = Integer.parseInt(item.get(2)) + addQty;
+                        user.updateStock(itemID, newTotal);
+                        break;
                     }
-                }       
-                user.updateTextFile(PurchaseOrderTextList, POFilePath);
-            
-            
-        } else { 
-            System.out.println("Cancelled");
-            
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Inventory updated successfully.");
+            focusAPO.set(6, "Resolved");
+            user.updateTextFile(PurchaseOrderTextList, POFilePath);
+        } else {
+            JOptionPane.showMessageDialog(null, "Update cancelled.");
         }
     }
     
