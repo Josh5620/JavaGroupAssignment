@@ -31,4 +31,11 @@ public class FinanceManagerController {
         throw new IllegalArgumentException("PR not found: " + prId);
     }
     
+    public static void createRequisition(String desc, int qty) throws IOException {
+    // 1) Generate unique PR id
+    // 2) Write a new line to your PR data file:
+    //    id + "|" + LocalDate.now() + "|" + desc + "|" + qty + "|PENDING"
+    // 3) (Optional) Return or log success
+}
+    
 }

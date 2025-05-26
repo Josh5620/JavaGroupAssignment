@@ -9,35 +9,57 @@ import FinanceManager.model.PurchaseRequisition;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+import java.nio.file.Paths;
 
  
+
 public class PurchaseRequisitionDAO {
+    private static final Path FILE_PATH =
+     Paths.get("src", "main", "resources", "PurchaseRequisitions.txt");
     
-    // Path to your data file
-    private static final Path PATH
-            = Paths.get("src/main/resources/PurchaseRequisitions.txt");
+
+
+
+
+    
+
 
     /**
      * Load every requisition from the text file.
      */
     public static List<PurchaseRequisition> loadAll() throws IOException {
-        List<PurchaseRequisition> list = new ArrayList<>();
-        for (String line : Files.readAllLines(PATH)) {
-            // assume each line is: prId|YYYY-MM-DD|description|quantity|status
-            String[] p = line.split("\\|");
-            list.add(new PurchaseRequisition(
-                    p[0],
-                    LocalDate.parse(p[1]),
-                    p[2],
-                    Integer.parseInt(p[3]),
-                    p[4]
-            ));
+        // 1) Open the file from the classpath
+    try (InputStream in = 
+             PurchaseRequisitionDAO.class
+               .getClassLoader()
+               .getResourceAsStream("PurchaseRequisitions.txt")) {
+        if (in == null) {
+            throw new IOException(
+              "Could not find PurchaseRequisitions.txt on classpath");
         }
-        return list;
+
+        // 2) Read & parse each line
+        return new BufferedReader(new InputStreamReader(in))
+          .lines()
+          .map(line -> {
+              String[] p = line.split("\\|");
+              return new PurchaseRequisition(
+                p[0],
+                LocalDate.parse(p[1]),
+                p[2],
+                Integer.parseInt(p[3]),
+                p[4]
+              );
+          })
+          .collect(Collectors.toList());
+    }
     }
 
     /**
@@ -62,7 +84,8 @@ public class PurchaseRequisitionDAO {
                     pr.getStatus()
             ));
         }
-        Files.write(PATH, lines);
+        
+        Files.write(FILE_PATH, lines);
     }
     
 }
