@@ -637,10 +637,7 @@ workAreaCards.show(workAreaPanel, "SET");        // TODO add your handling code 
      */
     public static void main(String args[]) {
         
-        System.out.println(">>> General.main() starting!");   // <<<< add this
-    java.awt.EventQueue.invokeLater(() -> {
-        new General().setVisible(true);
-    });
+        
         
         
         /* Set the Nimbus look and feel */
