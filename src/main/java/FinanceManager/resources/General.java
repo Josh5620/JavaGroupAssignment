@@ -14,6 +14,13 @@ import java.util.stream.Stream;
 import java.io.IOException;
 import java.util.List;
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+
 
 
 import javax.swing.BorderFactory;
@@ -25,6 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import FinanceManager.model.PurchaseRequisition;
 import FinanceManager.controller.FinanceManagerController;
@@ -62,12 +70,121 @@ private static final String[] CARD_VALUES = {
     }
 
     private JPanel buildPurchaseRequisitionsPanel() {
-        JPanel p = new JPanel(new BorderLayout());
-        // you can move your table/dialog code here later; placeholder for now:
-        p.add(new JLabel("Purchase Requisitions", SwingConstants.CENTER),
-              BorderLayout.CENTER);
-        return p;
+        // 1) Main panel with padding
+    JPanel panel = new JPanel(new BorderLayout(10,10));
+    panel.setBorder(BorderFactory.createEmptyBorder(12,12,12,12));
+
+    // 2) Header label
+    JLabel header = new JLabel("Purchase Requisitions", SwingConstants.CENTER);
+    header.setFont(header.getFont().deriveFont(Font.BOLD, 18f));
+    panel.add(header, BorderLayout.NORTH);
+
+    // 3) Table setup
+    String[] cols = {"ID","Date","Item","Qty","Status"};
+    DefaultTableModel model = new DefaultTableModel(cols, 0);
+    JTable table = new JTable(model);
+    panel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+    // 4) Data‐loader runnable
+    Runnable loadData = () -> {
+        model.setRowCount(0);
+        try {
+            List<PurchaseRequisition> prs = FinanceManagerController.getAllRequisitions();
+            for (PurchaseRequisition pr : prs) {
+                model.addRow(new Object[]{
+                    pr.getPrId(),
+                    pr.getDate(),
+                    pr.getDescription(),
+                    pr.getQuantity(),
+                    pr.getStatus()
+                });
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                "Error loading requisitions:\n" + ex.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    };
+    loadData.run();  // initial load
+
+    // 5) Buttons at the bottom
+    JPanel btnBar = new JPanel(new FlowLayout(FlowLayout.RIGHT,8,0));
+    JButton btnRefresh  = new JButton("Refresh");
+    JButton btnApprove  = new JButton("Approve Selected");
+    JButton btnNew = new JButton("New Requisition");
+btnNew.addActionListener(e -> showNewRequisitionDialog(model, loadData));
+btnBar.add(btnNew);
+
+
+    btnRefresh.addActionListener(e -> loadData.run());
+
+    btnApprove.addActionListener(e -> {
+        int row = table.getSelectedRow();
+    if (row < 0) {
+        JOptionPane.showMessageDialog(this, "Please select a PR first.");
+        return;
     }
+    String id = model.getValueAt(row, 0).toString();
+    try {
+        FinanceManagerController.approveRequisition(id);
+        JOptionPane.showMessageDialog(this, "Approved PR " + id);
+    } catch (IOException ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(
+            this,
+            "Error approving requisition:\n" + ex.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
+    loadData.run();
+    });
+
+    btnBar.add(btnRefresh);
+    btnBar.add(btnApprove);
+    panel.add(btnBar, BorderLayout.SOUTH);
+
+    return panel;
+    }
+    
+    private void showNewRequisitionDialog(DefaultTableModel model, Runnable reload) {
+    JPanel form = new JPanel(new GridLayout(0,2,8,8));
+    JTextField txtItem = new JTextField();
+    JSpinner spnQty   = new JSpinner(new SpinnerNumberModel(1,1,1000,1));
+
+    form.add(new JLabel("Item Description:"));
+    form.add(txtItem);
+    form.add(new JLabel("Quantity:"));
+    form.add(spnQty);
+
+    int choice = JOptionPane.showConfirmDialog(
+        this, form, "New Purchase Requisition",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+    );
+    if (choice == JOptionPane.OK_OPTION) {
+        String desc = txtItem.getText().trim();
+        int qty     = (Integer) spnQty.getValue();
+        if (desc.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter an item description.");
+            return;
+        }
+        try {
+            FinanceManagerController.createRequisition(desc, qty);
+            JOptionPane.showMessageDialog(this, "Requisition created!");
+            reload.run();  // refresh the table
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(
+                this,
+                "Error creating requisition:\n" + ex.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+}
+
 
     private JPanel buildPurchaseOrdersPanel() {
         JPanel p = new JPanel(new BorderLayout());
@@ -470,46 +587,9 @@ workAreaCards.show(workAreaPanel, "DASHBOARD");
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnPurchaseRequisitionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPurchaseRequisitionsActionPerformed
-        workAreaCards.show(workAreaPanel, "PR");
-        try {
-            List<PurchaseRequisition> prs
-                    = FinanceManagerController.getAllRequisitions();
+        
 
-            // show in a dialog:
-            String[] cols = {"ID", "Date", "Item", "Qty", "Status"};
-            Object[][] data = new Object[prs.size()][5];
-            for (int i = 0; i < prs.size(); i++) {
-                PurchaseRequisition pr = prs.get(i);
-                data[i] = new Object[]{
-                    pr.getPrId(), pr.getDate(),
-                    pr.getDescription(), pr.getQuantity(), pr.getStatus()
-                };
-            }
-            JTable table = new JTable(data, cols);
-            int choice = JOptionPane.showConfirmDialog(
-                    this, new JScrollPane(table),
-                    "All Purchase Requisitions", JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE
-            );
-
-            if (choice == JOptionPane.OK_OPTION) {
-                int row = table.getSelectedRow();
-                if (row >= 0) {
-                    String selectedId = (String) table.getValueAt(row, 0);
-                    FinanceManagerController.approveRequisition(selectedId);
-                    JOptionPane.showMessageDialog(
-                            this, "Requisition " + selectedId + " approved!"
-                    );
-                }
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(
-                    this, "Error loading requisitions:\n" + ex.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE
-            );
-        }
+           workAreaCards.show(workAreaPanel, "PR");
     }//GEN-LAST:event_btnPurchaseRequisitionsActionPerformed
 
     private void btnInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventoryActionPerformed
@@ -556,6 +636,11 @@ workAreaCards.show(workAreaPanel, "SET");        // TODO add your handling code 
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+        System.out.println(">>> General.main() starting!");   // <<<< add this
+    java.awt.EventQueue.invokeLater(() -> {
+        new General().setVisible(true);
+    });
         
         
         /* Set the Nimbus look and feel */
