@@ -218,7 +218,7 @@ public class LoginPage extends javax.swing.JFrame {
                         AdminPanel adminPanel;
                         if(userLog.equals("SuperAdmin")){
                             adminPanel = new AdminPanel(true);
-                        } else { adminPanel = new AdminPanel(); }
+                        } else { adminPanel = new AdminPanel(userLog, focusUser.get(3)); }
                         
                         adminPanel.setVisible(true);
                         this.dispose();

@@ -1,5 +1,6 @@
 package InventoryManager;
 import javax.swing.*;
+import InventoryManager.PurchaseOrder;
 import UserLogin.LoginPage;
 import java.awt.event.*;
 import java.awt.Component;
@@ -43,12 +44,15 @@ public class IMForm extends javax.swing.JFrame {
 }
     
     InvenUser user = new InvenUser();
-    List<List<String>> PurchaseOrderList = new ArrayList<>();
+    List<List<String>> PurchaseOrderTextList = new ArrayList<>();
     List<List<String>> ApprovedOrderList = new ArrayList<>();
     String POFilePath = "src/PurchaseOrders.txt";
+    String[] itemIDs;
+    String[] incomingQty;
     int total; 
     String targetItemID;
     List<String> focusAPO = new ArrayList<>();
+    List<PurchaseOrder> PurchaseOrderList = new ArrayList<>();
     
     
     
@@ -121,6 +125,7 @@ public class IMForm extends javax.swing.JFrame {
         POTextArea = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        POForm = new javax.swing.JButton();
         SidePanel = new javax.swing.JPanel();
         ExitButton = new javax.swing.JButton();
         HomeButton = new javax.swing.JButton();
@@ -676,6 +681,13 @@ public class IMForm extends javax.swing.JFrame {
             }
         });
 
+        POForm.setText("Detail Form");
+        POForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                POFormActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ViewPOsLayout = new javax.swing.GroupLayout(ViewPOs);
         ViewPOs.setLayout(ViewPOsLayout);
         ViewPOsLayout.setHorizontalGroup(
@@ -688,31 +700,32 @@ public class IMForm extends javax.swing.JFrame {
                         .addGap(6, 6, 6)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButton3))))
-                .addContainerGap(8, Short.MAX_VALUE))
+                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(ViewPOsLayout.createSequentialGroup()
+                                .addComponent(jButton3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(POForm)))))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
         ViewPOsLayout.setVerticalGroup(
             ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ViewPOsLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(Label6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ViewPOsLayout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
-                            .addComponent(jScrollPane4))
-                        .addContainerGap(47, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ViewPOsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addGap(54, 54, 54))))
+                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton3)
+                            .addComponent(jButton1)
+                            .addComponent(POForm)))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         MainPanel.add(ViewPOs, "card5");
@@ -971,6 +984,10 @@ public class IMForm extends javax.swing.JFrame {
         customizeTable(SmallTable);
         customizeTable(InvenTable);
     }//GEN-LAST:event_SubmitBtnActionPerformed
+
+    private void POFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POFormActionPerformed
+        showPOForm();
+    }//GEN-LAST:event_POFormActionPerformed
     
     public static void main(String args[]) {
 
@@ -1016,6 +1033,7 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel Label7;
     private javax.swing.JLabel Label8;
     private javax.swing.JPanel MainPanel;
+    private javax.swing.JButton POForm;
     private javax.swing.JList<String> POList;
     private javax.swing.JTextArea POTextArea;
     private javax.swing.JPanel SidePanel;
@@ -1158,13 +1176,14 @@ public class IMForm extends javax.swing.JFrame {
     }
     
     private void loadPOs(){
-        PurchaseOrderList.clear();
-        user.makeBigList(POFilePath, PurchaseOrderList);
+        PurchaseOrderTextList.clear();
+        user.makeBigList(POFilePath, PurchaseOrderTextList);
         
         DefaultListModel<String> model = new DefaultListModel<>();
         POList.setModel(model);
-        
-        for(List<String> order : PurchaseOrderList){
+        PurchaseOrderList.clear();
+        for(List<String> order : PurchaseOrderTextList){
+            PurchaseOrderList.add(new PurchaseOrder(order));
             model.addElement(order.get(0));       
         }      
     }   
@@ -1172,16 +1191,16 @@ public class IMForm extends javax.swing.JFrame {
     private void PODetails(){
         StringBuilder builder = new StringBuilder();
         String selectedItem = POList.getSelectedValue();
-            for (List<String> parts : PurchaseOrderList) {
+        
+            for (List<String> parts : PurchaseOrderTextList) {
                 if (parts.get(0).equals(selectedItem)) {
-                    builder.append("PurchaseID: ").append(parts.get(0)).append("\n");
-                    builder.append("ItemID: ").append(parts.get(1)).append("\n");
-                    builder.append("Quantity: ").append(parts.get(2)).append("\n");
-                    builder.append("Date: ").append(parts.get(3)).append("\n");
-                    builder.append("SupplierID: ").append(parts.get(4)).append("\n");
-                    builder.append("Unit Price: ").append(parts.get(5)).append("\n");
-                    builder.append("Status: ").append(parts.get(6)).append("\n");
-                    builder.append("Approved By: ").append(parts.get(7)).append("\n\n");
+                    builder.append("Purchase ID: ").append(parts.get(0)).append("\n");
+                    builder.append("Date: ").append(parts.get(1)).append("\n");
+                    builder.append("Item IDs: ").append(parts.get(2)).append("\n");
+                    builder.append("Quantities: ").append(parts.get(3)).append("\n");
+                    builder.append("Status: ").append(parts.get(4)).append("\n");
+                    builder.append("Approved By: ").append(parts.get(5)).append("\n");
+                    builder.append("Resolution: ").append(parts.get(6)).append("\n\n");
                     break;
                 }
             }
@@ -1194,20 +1213,21 @@ public class IMForm extends javax.swing.JFrame {
         }
         
     private void loadAPOs(){
-        PurchaseOrderList.clear();
-        user.makeBigList(POFilePath, PurchaseOrderList);
+        PurchaseOrderTextList.clear();
+        user.makeBigList(POFilePath, PurchaseOrderTextList);
             
         DefaultListModel<String> model = new DefaultListModel<>();
         ApprovedList.setModel(model);
+        System.out.println(PurchaseOrderTextList);
         
-        for(List<String> order : PurchaseOrderList){
-            if(order.get(6).equals("Approved") && order.get(8).equals("Unresolved")){
+        for(List<String> order : PurchaseOrderTextList){
+            if(order.get(4).equals("Approved") && order.get(6).equals("Unresolved")){
                 ApprovedOrderList.add(order);
-                String displayText = String.format(
-                "PurchaseID: %s | ItemID: %s | Qty: %s | Date: %s | Supplier: %s | Price: %s | Status: %s | Approved By: %s",
-                order.get(0), order.get(1), order.get(2), order.get(3),
-                order.get(4), order.get(5), order.get(6), order.get(7)
-            );
+                    String displayText = String.format(
+                    "PurchaseID: %s | Date: %s | ItemIDs: %s | Quantities: %s | Status: %s | Approved By: %s |",
+                    order.get(0), order.get(1), order.get(2), order.get(3),
+                    order.get(4), order.get(5) 
+                );
                 model.addElement(displayText);
             }
         }
@@ -1221,50 +1241,81 @@ public class IMForm extends javax.swing.JFrame {
         System.out.println(index);
 
         focusAPO = ApprovedOrderList.get(index);
-        targetItemID = focusAPO.get(1);
-        System.out.println(focusAPO);
-        System.out.println(ApprovedList);
-        for(List<String> item : user.getInvenList()){
-            if(item.get(0).equals(targetItemID)){
-                IDNameBox.setText(item.get(0) + " || " + item.get(1));
-                BfrBox.setText(item.get(2));
-                
-                total = Integer.parseInt(focusAPO.get(2)) + Integer.parseInt(item.get(2));
-                AfterBox.setText(String.valueOf(total));
-                
+        itemIDs = focusAPO.get(2).split("/");     
+        incomingQty = focusAPO.get(3).split("/"); 
+
+        StringBuilder bfr = new StringBuilder();
+        StringBuilder aft = new StringBuilder();
+
+        for (int i = 0; i < itemIDs.length; i++) {
+            String id = itemIDs[i];
+            String incoming = incomingQty[i];
+
+            for (List<String> item : user.getInvenList()) {
+                if (item.get(0).equals(id)) {
+                    int oldQty = Integer.parseInt(item.get(2));
+                    int newQty = oldQty + Integer.parseInt(incoming);
+
+                    bfr.append(oldQty).append("/");
+                    aft.append(newQty).append("/");
+                    break;
+                }
             }
         }
-        
+        if (bfr.length() > 0) bfr.setLength(bfr.length() - 1);
+        if (aft.length() > 0) aft.setLength(aft.length() - 1);
+
+        IDNameBox.setText(focusAPO.get(2));
+        BfrBox.setText(bfr.toString());
+        AfterBox.setText(aft.toString());
     }
     
     private void submitUpdate(){
+        
+        StringBuilder confirmText = new StringBuilder("Confirm Inventory Update:\n");
+        for (int i = 0; i < itemIDs.length; i++) {
+            confirmText.append("Item: ").append(itemIDs[i])
+                       .append(" | Add: ").append(incomingQty[i]).append("\n");
+            }
+        
         int choice = JOptionPane.showConfirmDialog(
-                null,
-                "New total: " + total,
-                "Confirm Approval",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-        if(choice == JOptionPane.YES_OPTION){
-            user.updateStock(targetItemID, total);
-            
-            focusAPO.set(8, "Resolved");
-            
-            for (int i = 0; i < PurchaseOrderList.size(); i++) {
-                List<String> item = PurchaseOrderList.get(i);
+            null,
+            confirmText.toString(),
+            "Inventory Update",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+        
+        if (choice == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < itemIDs.length; i++) {
+                String itemID = itemIDs[i];
+                int addQty = Integer.parseInt(incomingQty[i]);
 
-                if (focusAPO.get(0).equals(item.get(0))) {
-                    PurchaseOrderList.set(i, focusAPO); 
-                    break;
+                for (List<String> item : user.getInvenList()) {
+                    if (item.get(0).equals(itemID)) {
+                        int newTotal = Integer.parseInt(item.get(2)) + addQty;
+                        user.updateStock(itemID, newTotal);
+                        break;
                     }
-                }       
-                user.updateTextFile(PurchaseOrderList, POFilePath);
-            
-            
-        } else { 
-            System.out.println("Cancelled");
-            
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Inventory updated successfully.");
+            focusAPO.set(6, "Resolved");
+            user.updateTextFile(PurchaseOrderTextList, POFilePath);
+        } else {
+            JOptionPane.showMessageDialog(null, "Update cancelled.");
         }
     }
     
-    
+    private void showPOForm(){
+        String selectedItem = POList.getSelectedValue();
+            for (PurchaseOrder PO : PurchaseOrderList) {
+                if (PO.getPoID().equals(selectedItem)) {
+                    PO.showPO();
+                }
+            }
+    }
 }
+
+
