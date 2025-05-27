@@ -1,11 +1,11 @@
 ITM001|Rice|58
-ITM002|Onions|43
+ITM002|Onions|57
 ITM003|Tomatoes|18
 ITM004|Sugar|27
 ITM005|Salt|320
 ITM006|Milk|7
 ITM007|Carrots|70
-ITM008|Cabbage|66
+ITM008|Cabbage|88
 ITM009|CookingOil|82
 ITM010|Flour|19
 ITM011|Potatoes|41

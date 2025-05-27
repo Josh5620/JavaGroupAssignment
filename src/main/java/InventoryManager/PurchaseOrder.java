@@ -17,7 +17,7 @@ public class PurchaseOrder extends JPanel{
     private String status;
     private String approvedBy;
     private String resolution;
-    private int total;
+    private double total;
     private static final List<List<String>> itemList = new ArrayList<>();
     private static final String filePath = "src/Items.txt";
 
@@ -57,7 +57,7 @@ public class PurchaseOrder extends JPanel{
     public String getStatus() { return status; }
     public String getApprovedBy() { return approvedBy; }
     public String getResolution() { return resolution; }
-    public int getTotal() { return total; }
+    public double getTotal() { return total; }
     
     public void showPO() {
         JDialog dialog = new JDialog();
@@ -140,6 +140,7 @@ public class PurchaseOrder extends JPanel{
         totalQtyLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
 
         JLabel totalPriceLabel = new JLabel("Total Price: RM" + String.format("%.2f", totalPrice));
+        total = totalPrice;
         totalPriceLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
 
         approvalPanel.add(totalQtyLabel);
