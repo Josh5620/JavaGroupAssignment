@@ -4,69 +4,31 @@
  */
 package FinanceManager.model;
 
-
-import java.time.LocalDate;
+import java.util.Date;
 /**
  *
  * @author sumingfei
  */
 public class PurchaseRequisition {
-    
-    private String prId;
-    private LocalDate date;
-    private String description;
-    private int quantity;
-    private String status;  // e.g. "PENDING", "APPROVED"
+     private int    id;
+    private String itemCode;
+    private int    quantity;
+    private Date   dateRequested;
 
-    public PurchaseRequisition(String prId, LocalDate date, String desc, int qty, String status) {
-        this.prId = prId;
-        this.date = date;
-        this.description = desc;
-        this.quantity = qty;
-        this.status = status;
+    // Constructor(s) …
+    public PurchaseRequisition(int id, String itemCode, int quantity, Date dateRequested) {
+        this.id            = id;
+        this.itemCode      = itemCode;
+        this.quantity      = quantity;
+        this.dateRequested = dateRequested;
     }
 
-    // getters & setters
-    public String getPrId() {
-        return prId;
-    }
+    // **Add these getters**:
+    public int    getId()            { return id; }
+    public String getItemCode()      { return itemCode; }
+    public int    getQuantity()      { return quantity; }
+    public Date   getDateRequested() { return dateRequested; }
 
-    public void setPrId(String prId) {
-        this.prId = prId;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    
-    
+    // (Optionally setters, if you need them)
     
 }
