@@ -4,13 +4,16 @@
  */
 package FinanceManager.model;
 
+import java.io.Serializable;
 import java.util.Date;
 /**
  *
  * @author sumingfei
  */
-public class PurchaseRequisition {
-     private int    id;
+public class PurchaseRequisition implements Serializable{
+    private static final long serialVersionUID = 1L;
+    
+    private int    id;
     private String itemCode;
     private int    quantity;
     private Date   dateRequested;

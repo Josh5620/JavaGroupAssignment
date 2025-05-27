@@ -5,11 +5,13 @@
 package FinanceManager.model;
 
 import java.util.Date;
+import java.io.Serializable;
 /**
  *
  * @author sumingfei
  */
-public class PurchaseOrder {
+public class PurchaseOrder implements Serializable{
+    private static final long serialVersionUID = 1L;
     private static int nextId = 1;       // simple auto-increment
 
     private int id;

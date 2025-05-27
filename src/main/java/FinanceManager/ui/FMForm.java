@@ -5,20 +5,27 @@
 package FinanceManager.ui;
 
 import javax.swing.*;
+import java.io.IOException;
 import FinanceManager.manager.*;
 import javax.swing.table.DefaultTableModel;
 import FinanceManager.model.*;
+import javax.swing.JOptionPane;
+import java.util.Date;
+import javax.swing.JMenuItem;
+import FinanceManager.ui.SupplierForm;
+
 
 /**
  *
  * @author sumingfei
  */
 public class FMForm extends javax.swing.JFrame {
-    private PurchaseOrderManager poMgr = new PurchaseOrderManager();
     private PurchaseRequisitionManager prMgr = new PurchaseRequisitionManager();
-    private SupplierManager supplierMgr = new SupplierManager();
-    
+    private PurchaseOrderManager       poMgr = new PurchaseOrderManager();
+    private SupplierManager            sMgr  = new SupplierManager();        // <— make sure this is here
+
     private DefaultTableModel tableModel;
+
 
 
     /**
@@ -26,6 +33,33 @@ public class FMForm extends javax.swing.JFrame {
      */
     public FMForm() {
         initComponents();
+        
+        
+        // add suppliers menu entry
+        JMenuItem miSuppliers = new JMenuItem("Manage Suppliers");
+        miSuppliers.addActionListener(e -> new SupplierForm().setVisible(true));
+        // jMenuBar1 is the JMenuBar NetBeans created under "Other Components"
+        jMenuBar1.add(miSuppliers);
+
+        
+        
+        
+        try {
+        prMgr.loadFromFile("prs.dat");
+        poMgr.loadFromFile("pos.dat");
+        sMgr .loadFromFile("suppliers.dat");
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this,
+            "Failed to load data: " + e.getMessage(),
+            "Load Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
+        
+        
+
+        
+        
         // 1. Create and attach our table model
         tableModel = new DefaultTableModel(
         new String[]{"ID","Item","Qty","Status","Date"}, 
@@ -44,6 +78,19 @@ public class FMForm extends javax.swing.JFrame {
         loadPendingRequisitions();
 
         loadPendingPRs();
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+    @Override
+    public void windowClosing(java.awt.event.WindowEvent e) {
+        try {
+            prMgr.saveToFile("prs.dat");
+            poMgr.saveToFile("pos.dat");
+            sMgr .saveToFile("suppliers.dat");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+});
     }
     
     private void loadPendingRequisitions() {
@@ -114,30 +161,67 @@ public class FMForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuBar4 = new javax.swing.JMenuBar();
+        jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
         jToolBar1 = new javax.swing.JToolBar();
-        btnLoadPOs = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
         btnLoadPRs = new javax.swing.JButton();
-        btnApprovePO = new javax.swing.JButton();
-        btnProcessPay = new javax.swing.JButton();
+        btnLoadPOs = new javax.swing.JButton();
         btnReport = new javax.swing.JButton();
+        btnApprovePO = new javax.swing.JButton();
+        btnAddPR = new javax.swing.JButton();
+        btnProcessPay = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRecords = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        jMenu3.setText("File");
+        jMenuBar2.add(jMenu3);
+
+        jMenu4.setText("Edit");
+        jMenuBar2.add(jMenu4);
+
+        jMenu7.setText("File");
+        jMenuBar4.add(jMenu7);
+
+        jMenu8.setText("Edit");
+        jMenuBar4.add(jMenu8);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
-
-        btnLoadPOs.setText("Load Orders");
-        btnLoadPOs.setActionCommand("Load Orders");
-        btnLoadPOs.setFocusable(false);
-        btnLoadPOs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnLoadPOs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnLoadPOs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoadPOsActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnLoadPOs);
 
         btnLoadPRs.setText("Load Requisitions");
         btnLoadPRs.addActionListener(new java.awt.event.ActionListener() {
@@ -145,7 +229,25 @@ public class FMForm extends javax.swing.JFrame {
                 btnLoadPRsActionPerformed(evt);
             }
         });
-        jToolBar1.add(btnLoadPRs);
+
+        btnLoadPOs.setText("Load Orders");
+        btnLoadPOs.setActionCommand("Load Orders");
+        btnLoadPOs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLoadPOs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLoadPOs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadPOsActionPerformed(evt);
+            }
+        });
+
+        btnReport.setText("Generate Report");
+        btnReport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnReport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportActionPerformed(evt);
+            }
+        });
 
         btnApprovePO.setText("Approve PO");
         btnApprovePO.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -155,10 +257,17 @@ public class FMForm extends javax.swing.JFrame {
                 btnApprovePOActionPerformed(evt);
             }
         });
-        jToolBar1.add(btnApprovePO);
+
+        btnAddPR.setText("Add Requisition");
+        btnAddPR.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAddPR.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAddPR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddPRActionPerformed(evt);
+            }
+        });
 
         btnProcessPay.setText("Process Payment");
-        btnProcessPay.setFocusable(false);
         btnProcessPay.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnProcessPay.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnProcessPay.addActionListener(new java.awt.event.ActionListener() {
@@ -166,18 +275,6 @@ public class FMForm extends javax.swing.JFrame {
                 btnProcessPayActionPerformed(evt);
             }
         });
-        jToolBar1.add(btnProcessPay);
-
-        btnReport.setText("Generate Report");
-        btnReport.setFocusable(false);
-        btnReport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnReport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReportActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnReport);
 
         tblRecords.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -192,31 +289,121 @@ public class FMForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblRecords);
 
-        jToolBar1.add(jScrollPane1);
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnApprovePO)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnReport)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnProcessPay)
+                                .addComponent(btnAddPR))))
+                    .addComponent(btnLoadPRs, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(btnLoadPOs)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(235, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnLoadPRs)
+                .addGap(24, 24, 24)
+                .addComponent(btnLoadPOs)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnReport)
+                .addGap(27, 27, 27)
+                .addComponent(btnApprovePO)
+                .addGap(34, 34, 34)
+                .addComponent(btnAddPR)
+                .addGap(52, 52, 52)
+                .addComponent(btnProcessPay)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(223, Short.MAX_VALUE))
+        jToolBar1.add(jPanel6);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
-                .addContainerGap())
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
+
+        jToolBar1.add(jPanel4);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
+        );
+
+        jToolBar1.add(jPanel3);
+
+        getContentPane().add(jToolBar1, java.awt.BorderLayout.CENTER);
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLoadPOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPOsActionPerformed
-         loadPendingRequisitions();
-    }//GEN-LAST:event_btnLoadPOsActionPerformed
+    private void btnProcessPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessPayActionPerformed
+        processPaymentForSelected();
+    }//GEN-LAST:event_btnProcessPayActionPerformed
+
+    private void btnAddPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPRActionPerformed
+        // 1) Ask user for item code
+        String code = JOptionPane.showInputDialog(this, "Enter item code:");
+        if (code == null || code.trim().isEmpty()) return;
+
+        // 2) Ask user for quantity
+        String qtyStr = JOptionPane.showInputDialog(this, "Enter quantity:");
+        int qty;
+        try {
+            qty = Integer.parseInt(qtyStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid number for quantity.");
+            return;
+        }
+
+        // 3) Compute a new ID (simple auto‐increment based on list size)
+        int newId = prMgr.getAll().size() + 1;
+
+        // 4) Create and add the new requisition
+        PurchaseRequisition pr = new PurchaseRequisition(newId, code, qty, new Date());
+        prMgr.add(pr);
+
+        // 5) Refresh the table
+        loadPendingRequisitions();
+        
+    }//GEN-LAST:event_btnAddPRActionPerformed
 
     private void btnApprovePOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApprovePOActionPerformed
         approveSelected();
@@ -226,13 +413,13 @@ public class FMForm extends javax.swing.JFrame {
         loadPendingOrders();
     }//GEN-LAST:event_btnLoadPRsActionPerformed
 
-    private void btnProcessPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessPayActionPerformed
-        processPaymentForSelected();
-    }//GEN-LAST:event_btnProcessPayActionPerformed
-
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
-        showReportDialog(); 
+        showReportDialog();
     }//GEN-LAST:event_btnReportActionPerformed
+
+    private void btnLoadPOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPOsActionPerformed
+        loadPendingRequisitions();
+    }//GEN-LAST:event_btnLoadPOsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -270,11 +457,26 @@ public class FMForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddPR;
     private javax.swing.JButton btnApprovePO;
     private javax.swing.JButton btnLoadPOs;
     private javax.swing.JButton btnLoadPRs;
     private javax.swing.JButton btnProcessPay;
     private javax.swing.JButton btnReport;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuBar jMenuBar4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblRecords;
