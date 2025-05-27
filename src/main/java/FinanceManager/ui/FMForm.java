@@ -23,6 +23,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.table.DefaultTableModel;
 import java.awt.GridLayout; 
+import javax.swing.JButton;
+import javax.swing.JTable;
 
 import FinanceManager.manager.PurchaseOrderManager;
 import FinanceManager.manager.PurchaseRequisitionManager;
@@ -31,6 +33,11 @@ import FinanceManager.model.PurchaseOrder;
 import FinanceManager.model.PurchaseRequisition;
 import FinanceManager.model.Supplier;
 import FinanceManager.MailUtil;
+import FinanceManager.manager.InventoryManager;
+import FinanceManager.model.InventoryEntry;
+
+
+
 
 /**
  *
@@ -41,6 +48,11 @@ public class FMForm extends javax.swing.JFrame {
     private PurchaseRequisitionManager prMgr = new PurchaseRequisitionManager();
     private PurchaseOrderManager       poMgr = new PurchaseOrderManager();
     private SupplierManager            sMgr  = new SupplierManager();        // <— make sure this is here
+    private InventoryManager invMgr = new InventoryManager();
+    private DefaultTableModel tableModelRequisitions;
+    private DefaultTableModel tableModelOrders;
+    
+
 
     private DefaultTableModel tableModel;
 
@@ -51,6 +63,15 @@ public class FMForm extends javax.swing.JFrame {
      */
     public FMForm() {
         initComponents();
+        
+        tableModelRequisitions = (DefaultTableModel) tblRecords.getModel();
+
+        // and you probably already have:
+        tableModelOrders       = (DefaultTableModel) tblOrders     .getModel();
+
+    
+
+
         
         
         // add suppliers menu entry
@@ -65,7 +86,8 @@ public class FMForm extends javax.swing.JFrame {
         try {
         prMgr.loadFromFile("prs.dat");
         poMgr.loadFromFile("pos.dat");
-        sMgr .loadFromFile("suppliers.dat");
+        sMgr.loadFromFile("suppliers.dat");
+        invMgr.loadFromFile("inventory.dat");
     } catch (IOException e) {
         JOptionPane.showMessageDialog(this,
             "Failed to load data: " + e.getMessage(),
@@ -73,6 +95,10 @@ public class FMForm extends javax.swing.JFrame {
             JOptionPane.ERROR_MESSAGE
         );
     }
+        
+        JButton btnReceiveShipment = new JButton("Receive Shipment");
+        btnReceiveShipment.addActionListener(e -> receiveShipment());
+        jToolBar1.add(btnReceiveShipment);    // or wherever your other buttons live
         
         
 
@@ -113,46 +139,112 @@ public class FMForm extends javax.swing.JFrame {
     }
     
     private void loadPendingRequisitions() {
-    tableModel.setRowCount(0);
+    tableModelRequisitions.setRowCount(0);
     for (PurchaseRequisition pr : prMgr.getAll()) {
-        tableModel.addRow(new Object[]{
+        tableModelRequisitions.addRow(new Object[]{
             pr.getId(),
             pr.getItemCode(),
             pr.getQuantity(),
-            "REQUIRED",
-            pr.getDateRequested()
+            pr.getStatus(),                          // ← now exists
+            DF.format(pr.getDateRequested())
         });
     }
 }
 
     private void approveSelected() {
-        int row = tblRecords.getSelectedRow();
+   // 0) Make sure a row is selected
+    int row = tblRecords.getSelectedRow();
     if (row < 0) return;
+
+    // 1) Look up the PR
     int prId = (int) tableModel.getValueAt(row, 0);
     PurchaseRequisition pr = prMgr.findById(prId);
-    PurchaseOrder po = new PurchaseOrder(pr);
+    if (pr == null) {
+        JOptionPane.showMessageDialog(this,
+            "Couldn't find that requisition!",
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // 2) Compute a new PO ID
+    int newPoId = poMgr.getAll().size() + 1;
+
+    // 3) Ask user for dollar amount
+    String amtStr = JOptionPane.showInputDialog(
+        this,
+        "Enter dollar amount for PO #" + newPoId + ":",
+        "Approve Requisition",
+        JOptionPane.PLAIN_MESSAGE
+    );
+    if (amtStr == null) return;
+
+    double amount;
+    try {
+        amount = Double.parseDouble(amtStr.trim());
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Invalid amount",
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    // 4) Use the PR's supplier
+    int supplierId = pr.getSupplierId();
+
+    // 5) Build & save the new 4-arg PurchaseOrder
+    PurchaseOrder po = new PurchaseOrder(
+        newPoId,
+        pr,
+        amount,
+        supplierId
+    );
     poMgr.add(po);
 
-    // ——— SEND EMAIL ———
+    // 6) Send notification email
     try {
-      String to = sMgr.findById(pr.getSupplierId()).getEmail();
-      String sub = "New Purchase Order #"+po.getId();
-      StringBuilder body = new StringBuilder();
-      body.append("Dear ").append(sMgr.findById(pr.getSupplierId()).getName()).append(",\n\n")
-          .append("Please find your PO details below:\n")
-          .append("PO #: ").append(po.getId()).append("\n")
-          .append("Item: ").append(pr.getItemCode()).append("\n")
-          .append("Qty: ").append(pr.getQuantity()).append("\n\n")
-          .append("Thank you,\nFinance Manager Team");
-      MailUtil.send(to, sub, body.toString());
-      JOptionPane.showMessageDialog(this, "Created PO #"+po.getId()+" and emailed to "+to);
-    } catch (Exception ex) {
-      JOptionPane.showMessageDialog(this, "PO created, but failed to email: "+ex.getMessage(),
-          "Email Error", JOptionPane.ERROR_MESSAGE);
-    }
-    // ——————————————————
+  // look up the supplier once
+  Supplier sup = sMgr.findById(pr.getSupplierId());
+  if (sup == null) {
+    JOptionPane.showMessageDialog(
+      this,
+      "No supplier found with ID " + pr.getSupplierId(),
+      "Email Error",
+      JOptionPane.ERROR_MESSAGE
+    );
+  } else {
+    String to  = sup.getEmail();
+    String sub = "New Purchase Order #" + po.getId();
+    StringBuilder body = new StringBuilder()
+      .append("Dear ").append(sup.getName()).append(",\n\n")
+      .append("Your PO details:\n")
+      .append("PO #: ").append(po.getId()).append("\n")
+      .append("Item: ").append(pr.getItemCode()).append("\n")
+      .append("Qty : ").append(pr.getQuantity()).append("\n\n")
+      .append("Thanks,\nFinance Manager Team");
 
+    MailUtil.send(to, sub, body.toString());
+    JOptionPane.showMessageDialog(
+      this,
+      "Created PO #" + po.getId() + " and emailed to " + to
+    );
+  }
+} catch (Exception ex) {
+  JOptionPane.showMessageDialog(
+    this,
+    "PO created, but failed to email: " + ex.getMessage(),
+    "Email Error",
+    JOptionPane.ERROR_MESSAGE
+  );
+}
+
+
+    // 7) Refresh both tables
     loadPendingRequisitions();
+    loadPendingOrders();
    }
     
     private void addRequisition() {
@@ -193,26 +285,125 @@ public class FMForm extends javax.swing.JFrame {
     
 
     private void loadPendingOrders() {
-    tableModel.setRowCount(0);
-    for (PurchaseOrder po : poMgr.getAll()) {
-        tableModel.addRow(new Object[]{
-            po.getId(),
-            po.getRequisition().getItemCode(),
-            po.getRequisition().getQuantity(),
-            po.getStatus(),
-            po.getDateIssued()
-        });
-    }
+   
 }
 
     private void processPaymentForSelected() {
-    int row = tblRecords.getSelectedRow();
+        
+     // 0) Make sure a PO is selected
+    int row = tblOrders.getSelectedRow();
     if (row < 0) return;
-    int poId = (int) tableModel.getValueAt(row, 0);
+
+    // 1) Look up the PO
+    int poId = (int) tableModelOrders.getValueAt(row, 0);
     PurchaseOrder po = poMgr.findById(poId);
+    if (po == null) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Couldn't find that purchase order!",
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    // 2) Verify stock has been received
+    InventoryEntry inv = invMgr.findByItem(po.getRequisition().getItemCode());
+    if (inv == null || inv.getQuantity() < po.getRequisition().getQuantity()) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Cannot pay: you still need to receive "
+            + po.getRequisition().getQuantity()
+            + " of \""
+            + po.getRequisition().getItemCode()
+            + "\"",
+            "Stock Error",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    // 3) Deduct from inventory
+    inv.setQuantity(inv.getQuantity() - po.getRequisition().getQuantity());
+    try {
+        invMgr.saveToFile("inventory.dat");
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Failed to update stock: " + ex.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    // 4) Ask user to confirm / enter the payment amount
+    String amtStr = JOptionPane.showInputDialog(
+        this,
+        "Enter payment amount for PO #" + po.getId() + ":",
+        "Process Payment",
+        JOptionPane.PLAIN_MESSAGE
+    );
+    if (amtStr == null) return;
+
+    double amt;
+    try {
+        amt = Double.parseDouble(amtStr.trim());
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Invalid amount",
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    // 5) Mark the PO as paid
     po.setStatus("PAID");
-    JOptionPane.showMessageDialog(this, "Payment processed for PO #" + po.getId());
+    po.setAmount(amt);
+    try {
+        poMgr.saveToFile("pos.dat");
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Failed to save payment: " + ex.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    // 6) Send confirmation email
+    try {
+        String to  = sMgr.findById(po.getSupplierId()).getEmail();
+        String sub = "Payment received for PO #" + po.getId();
+        StringBuilder body = new StringBuilder();
+        body.append("Dear ")
+            .append(sMgr.findById(po.getSupplierId()).getName())
+            .append(",\n\n")
+            .append("We have processed your payment for Purchase Order #")
+            .append(po.getId())
+            .append(".\n\nThank you,\nFinance Manager Team");
+        MailUtil.send(to, sub, body.toString());
+        JOptionPane.showMessageDialog(
+            this,
+            "PO #" + po.getId() + " marked PAID and emailed to " + to
+        );
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(
+            this,
+            "PO paid, but failed to email: " + ex.getMessage(),
+            "Email Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    // 7) Refresh the orders table
+    loadPendingRequisitions();
     loadPendingOrders();
+ 
+
 }
 
     private void showReportDialog() {
@@ -287,6 +478,62 @@ public class FMForm extends javax.swing.JFrame {
         // e.g. jTable1.setModel( new MyTableModel(prMgr.getAll()) );
     }
     
+    private void receiveShipment() {
+     // 1) Which order?
+    int row = tblOrders.getSelectedRow();  
+    if (row < 0) return;  // nothing selected
+    int poId = (int) tableModelOrders.getValueAt(row, 0);
+    PurchaseOrder po = poMgr.findById(poId);
+
+    // 2) Ask for quantity received
+    String qtyStr = JOptionPane.showInputDialog(
+      this,
+      "Enter quantity received for PO #"+poId+":",
+      "Receive Shipment",
+      JOptionPane.PLAIN_MESSAGE
+    );
+    if (qtyStr == null) return;
+
+    int recQty;
+    try {
+      recQty = Integer.parseInt(qtyStr.trim());
+    } catch (NumberFormatException ex) {
+      JOptionPane.showMessageDialog(this,
+        "Invalid number",
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+      );
+      return;
+    }
+
+    // 3) Create & store the inventory entry
+    int newInvId = invMgr.getAll().size() + 1;
+    InventoryEntry entry = new InventoryEntry(
+      newInvId,
+      po.getItemCode(),
+      recQty,
+      new Date(),
+      po.getSupplierId()
+    );
+    invMgr.add(entry);
+
+    // 4) Persist both inventory and orders
+    try {
+      invMgr.saveToFile("inventory.dat");
+      poMgr.saveToFile("pos.dat");
+    } catch (IOException ioe) {
+      JOptionPane.showMessageDialog(this,
+        "Failed to save data: "+ioe.getMessage(),
+        "Save Error",
+        JOptionPane.ERROR_MESSAGE
+      );
+    }
+
+    // 5) Refresh your tables
+    loadPendingOrders();
+    loadPendingRequisitions();
+}
+
 
 
     /**
@@ -306,6 +553,10 @@ public class FMForm extends javax.swing.JFrame {
         jMenuBar4 = new javax.swing.JMenuBar();
         jMenu7 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         jPanel6 = new javax.swing.JPanel();
         btnLoadPRs = new javax.swing.JButton();
@@ -316,6 +567,9 @@ public class FMForm extends javax.swing.JFrame {
         btnProcessPay = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRecords = new javax.swing.JTable();
+        btnReceiveShipment = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblOrders = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -355,6 +609,32 @@ public class FMForm extends javax.swing.JFrame {
 
         jMenu8.setText("Edit");
         jMenuBar4.add(jMenu8);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -426,48 +706,76 @@ public class FMForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblRecords);
 
+        btnReceiveShipment.setText("Receive Shipment");
+        btnReceiveShipment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReceiveShipmentActionPerformed(evt);
+            }
+        });
+
+        tblOrders.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(tblOrders);
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnApprovePO)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnReport)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnProcessPay)
-                                .addComponent(btnAddPR))))
-                    .addComponent(btnLoadPRs, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(btnLoadPOs)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(235, Short.MAX_VALUE))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnApprovePO)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnReport)
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnProcessPay)
+                                        .addComponent(btnAddPR))))
+                            .addComponent(btnLoadPRs, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(btnLoadPOs))
+                            .addComponent(btnReceiveShipment))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(240, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnLoadPRs)
-                .addGap(24, 24, 24)
-                .addComponent(btnLoadPOs)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(btnLoadPRs)
+                        .addGap(24, 24, 24)
+                        .addComponent(btnLoadPOs)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReport)
+                        .addGap(27, 27, 27)
+                        .addComponent(btnApprovePO)
+                        .addGap(34, 34, 34)
+                        .addComponent(btnAddPR)
+                        .addGap(52, 52, 52)
+                        .addComponent(btnProcessPay)
+                        .addGap(58, 58, 58)
+                        .addComponent(btnReceiveShipment)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnReport)
-                .addGap(27, 27, 27)
-                .addComponent(btnApprovePO)
-                .addGap(34, 34, 34)
-                .addComponent(btnAddPR)
-                .addGap(52, 52, 52)
-                .addComponent(btnProcessPay)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(119, Short.MAX_VALUE))
         );
 
         jToolBar1.add(jPanel6);
@@ -480,7 +788,7 @@ public class FMForm extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 926, Short.MAX_VALUE)
         );
 
         jToolBar1.add(jPanel4);
@@ -493,7 +801,7 @@ public class FMForm extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 926, Short.MAX_VALUE)
         );
 
         jToolBar1.add(jPanel3);
@@ -561,7 +869,7 @@ public class FMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddPRActionPerformed
 
     private void btnApprovePOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApprovePOActionPerformed
-        approveSelected();
+          approveSelected();
     }//GEN-LAST:event_btnApprovePOActionPerformed
 
     private void btnLoadPRsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPRsActionPerformed
@@ -575,6 +883,10 @@ public class FMForm extends javax.swing.JFrame {
     private void btnLoadPOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPOsActionPerformed
         loadPendingRequisitions();
     }//GEN-LAST:event_btnLoadPOsActionPerformed
+
+    private void btnReceiveShipmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceiveShipmentActionPerformed
+        receiveShipment();
+    }//GEN-LAST:event_btnReceiveShipmentActionPerformed
 
     /**
      * @param args the command line arguments
@@ -617,6 +929,7 @@ public class FMForm extends javax.swing.JFrame {
     private javax.swing.JButton btnLoadPOs;
     private javax.swing.JButton btnLoadPRs;
     private javax.swing.JButton btnProcessPay;
+    private javax.swing.JButton btnReceiveShipment;
     private javax.swing.JButton btnReport;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -633,7 +946,13 @@ public class FMForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTable tblOrders;
     private javax.swing.JTable tblRecords;
     // End of variables declaration//GEN-END:variables
 }

@@ -22,6 +22,7 @@ public class SupplierForm extends javax.swing.JFrame {
     
     private SupplierManager      sMgr       = new SupplierManager();
     private DefaultTableModel    tableModel;
+    private DefaultTableModel tableModelSuppliers;
     // (tblSuppliers, btnLoadSuppliers, etc. are generated for you)
 
     /**
@@ -29,6 +30,8 @@ public class SupplierForm extends javax.swing.JFrame {
      */
     public SupplierForm() {
         initComponents();
+        tableModelSuppliers = (DefaultTableModel) tblSuppliers.getModel();
+        loadSuppliers();
         
             // 1) load persisted list
     try {
@@ -70,16 +73,14 @@ public class SupplierForm extends javax.swing.JFrame {
     }
     
     private void loadSuppliers() {
-       tableModel.setRowCount(0);
+      tableModelSuppliers.setRowCount(0);
   for (Supplier s : sMgr.getAll()) {
-    // join the item codes list into a comma‐separated String:
-    String items = String.join(",", s.getItemCodes());
-    tableModel.addRow(new Object[]{
-        s.getId(),
-        s.getName(),
-        s.getEmail(),
-        s.getContactInfo(),
-        items
+    tableModelSuppliers.addRow(new Object[]{
+      s.getId(),
+      s.getName(),
+      s.getEmail(),
+      s.getContactInfo(),
+      String.join(",", s.getItemCodes())  // however you store their catalog
     });
   }
 }

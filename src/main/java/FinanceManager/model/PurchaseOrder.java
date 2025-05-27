@@ -11,44 +11,42 @@ import java.io.Serializable;
  * @author sumingfei
  */
 public class PurchaseOrder implements Serializable{
-    private static final long serialVersionUID = 1L;
-    private static int nextId = 1;       // simple auto-increment
+     private static final long serialVersionUID = 1L;
 
     private int id;
     private PurchaseRequisition requisition;
-    private String status;               // e.g. "PENDING", "PAID"
+    private double amount;
+    private int supplierId;
+    private String status;
     private Date dateIssued;
 
-    // Existing getters/setters...
-
-    /** 
-     * New constructor: create a PO from a PR, assign unique id, initial status & date 
+    /**
+     * New constructor with amount & supplierId.
      */
-    public PurchaseOrder(PurchaseRequisition pr) {
-        this.id = nextId++;
-        this.requisition = pr;
-        this.status = "PENDING";
-        this.dateIssued = new Date();
+    public PurchaseOrder(int id,
+                         PurchaseRequisition requisition,
+                         double amount,
+                         int supplierId) {
+        this.id           = id;
+        this.requisition  = requisition;
+        this.amount       = amount;
+        this.supplierId   = supplierId;
+        this.dateIssued   = new Date();
+        this.status       = "PENDING";    // default
     }
 
-    // You’ll need a getter for requisition to call getItemCode() later:
-    public PurchaseRequisition getRequisition() {
-        return requisition;
-    }
+    public int    getId()          { return id; }
+    public PurchaseRequisition getRequisition() { return requisition; }
+    public double getAmount()      { return amount; }
+    public int    getSupplierId()  { return supplierId; }
+    public String getStatus()      { return status; }
+    public Date   getDateIssued()  { return dateIssued; }
 
-    public int getId() {
-        return id;
-    }
+    // These two allow your UI to call po.getItemCode() / po.getQuantity()
+    public String getItemCode()    { return requisition.getItemCode(); }
+    public int    getQuantity()    { return requisition.getQuantity(); }
 
-    public String getStatus() {
-        return status;
-    }
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getDateIssued() {
-        return dateIssued;
-    }
-    
+    // Optional setters if you ever need them
+    public void setStatus(String status) { this.status = status; }
+    public void setAmount(double amount) { this.amount = amount; }
 }
