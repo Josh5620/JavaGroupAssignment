@@ -32,15 +32,21 @@ public class AdminPanel extends javax.swing.JFrame {
          
     public AdminPanel(String username, String password) {
         initComponents();
-        this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
-        AdminLayout.show(AdminMainPanel, "HomeCard");
-        buildUserTable();
+        setupAdminDashboard();
+        homePageLoad(username, password);
     }
     public AdminPanel(boolean SA){
         initComponents();
+        
+        this.AdminLayout = (CardLayout) (AdminMainPanel).getLayout();
+        AdminLayout.show(AdminMainPanel, "HomeCard");
         if(SA == true){
             admin = new SuperAdmin();
-        }  
+        }
+        else{
+            admin = new Admin(); // Fallback if unexpected error happens
+        }
+        buildUserTable();
         System.out.println(admin.getClass());
     }
 
@@ -48,8 +54,14 @@ public class AdminPanel extends javax.swing.JFrame {
         this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
         AdminLayout.show(AdminMainPanel, "HomeCard");  
         admin.checkAlert(username, role);
-        jLabel11.setText("Welcome User: " + username);
-        jLabel10.setText("Role: " + role);
+        WelcomUserLabel.setText("Welcome User: " + username);
+        RoleLabel.setText("Role: " + role);
+    }
+        
+    private void setupAdminDashboard(){
+        this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
+        AdminLayout.show(AdminMainPanel, "HomeCard");
+        buildUserTable();
     }
     
     
@@ -69,7 +81,8 @@ public class AdminPanel extends javax.swing.JFrame {
         IMPanel = new javax.swing.JPanel();
         FMPanel = new javax.swing.JPanel();
         AdminHPPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        WelcomUserLabel = new javax.swing.JLabel();
+        RoleLabel = new javax.swing.JLabel();
         ManageUserP = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -119,7 +132,7 @@ public class AdminPanel extends javax.swing.JFrame {
         SMPanel.setLayout(SMPanelLayout);
         SMPanelLayout.setHorizontalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 676, Short.MAX_VALUE)
+            .addGap(0, 692, Short.MAX_VALUE)
         );
         SMPanelLayout.setVerticalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +147,7 @@ public class AdminPanel extends javax.swing.JFrame {
         PMPanel.setLayout(PMPanelLayout);
         PMPanelLayout.setHorizontalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 676, Short.MAX_VALUE)
+            .addGap(0, 692, Short.MAX_VALUE)
         );
         PMPanelLayout.setVerticalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,7 +163,7 @@ public class AdminPanel extends javax.swing.JFrame {
         IMPanel.setLayout(IMPanelLayout);
         IMPanelLayout.setHorizontalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 676, Short.MAX_VALUE)
+            .addGap(0, 692, Short.MAX_VALUE)
         );
         IMPanelLayout.setVerticalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,7 +178,7 @@ public class AdminPanel extends javax.swing.JFrame {
         FMPanel.setLayout(FMPanelLayout);
         FMPanelLayout.setHorizontalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 676, Short.MAX_VALUE)
+            .addGap(0, 692, Short.MAX_VALUE)
         );
         FMPanelLayout.setVerticalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,10 +187,16 @@ public class AdminPanel extends javax.swing.JFrame {
 
         AdminMainPanel.add(FMPanel, "FMCard");
 
-        AdminHPPanel.setBackground(new java.awt.Color(0, 102, 0));
+        AdminHPPanel.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel1.setText("Admin HomePage");
+        WelcomUserLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        WelcomUserLabel.setForeground(new java.awt.Color(0, 0, 0));
+        WelcomUserLabel.setText("Welcome, ");
+        WelcomUserLabel.setToolTipText("");
+
+        RoleLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        RoleLabel.setForeground(new java.awt.Color(0, 0, 0));
+        RoleLabel.setToolTipText("");
 
         javax.swing.GroupLayout AdminHPPanelLayout = new javax.swing.GroupLayout(AdminHPPanel);
         AdminHPPanel.setLayout(AdminHPPanelLayout);
@@ -185,18 +204,22 @@ public class AdminPanel extends javax.swing.JFrame {
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(395, Short.MAX_VALUE))
+                .addComponent(WelcomUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(130, Short.MAX_VALUE))
         );
         AdminHPPanelLayout.setVerticalGroup(
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(416, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(WelcomUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(424, Short.MAX_VALUE))
         );
 
-        jLabel1.getAccessibleContext().setAccessibleDescription("");
+        WelcomUserLabel.getAccessibleContext().setAccessibleDescription("");
 
         AdminMainPanel.add(AdminHPPanel, "HomeCard");
 
@@ -409,7 +432,7 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addGroup(ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(FilterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(UserMPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         ManageUserPLayout.setVerticalGroup(
             ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -752,12 +775,13 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JTextField PasswdBox;
     private javax.swing.JComboBox<String> RoleBox;
     private javax.swing.JComboBox<String> RoleFilterBox;
+    private javax.swing.JLabel RoleLabel;
     private javax.swing.JButton SMBtn;
     private javax.swing.JPanel SMPanel;
     private javax.swing.JButton UpdateUBtn;
     private javax.swing.JPanel UserMPanel;
     private javax.swing.JTextField UserNBox;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel WelcomUserLabel;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
