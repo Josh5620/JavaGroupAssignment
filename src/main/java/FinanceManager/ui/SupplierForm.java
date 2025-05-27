@@ -6,11 +6,14 @@ package FinanceManager.ui;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JMenuItem;
+import javax.swing.JToolBar;
 import FinanceManager.manager.SupplierManager;
 import FinanceManager.model.Supplier;
-
 /**
  *
  * @author sumingfei
@@ -35,12 +38,15 @@ public class SupplierForm extends javax.swing.JFrame {
     }
 
     // 2) set up the table model
-    tableModel = new DefaultTableModel(new String[]{"ID","Name","Contact"}, 0);
+    tableModel = new DefaultTableModel(new String[]{"ID","Name","Email","Contact","Items"}, 0);
     tblSuppliers.setModel(tableModel);
     tblSuppliers.setAutoResizeMode(tblSuppliers.AUTO_RESIZE_OFF);
     tblSuppliers.getColumnModel().getColumn(0).setPreferredWidth(40);
-    tblSuppliers.getColumnModel().getColumn(1).setPreferredWidth(150);
-    tblSuppliers.getColumnModel().getColumn(2).setPreferredWidth(200);
+    tblSuppliers.getColumnModel().getColumn(1).setPreferredWidth(120);
+    tblSuppliers.getColumnModel().getColumn(2).setPreferredWidth(180);
+    tblSuppliers.getColumnModel().getColumn(3).setPreferredWidth(100);
+    tblSuppliers.getColumnModel().getColumn(4).setPreferredWidth(200);
+
 
     // 3) wire buttons
     btnLoadSuppliers .addActionListener(e -> loadSuppliers());
@@ -66,20 +72,34 @@ public class SupplierForm extends javax.swing.JFrame {
     private void loadSuppliers() {
        tableModel.setRowCount(0);
   for (Supplier s : sMgr.getAll()) {
+    // join the item codes list into a comma‐separated String:
+    String items = String.join(",", s.getItemCodes());
     tableModel.addRow(new Object[]{
-      s.getId(),
-      s.getName(),
-      s.getContactInfo()
+        s.getId(),
+        s.getName(),
+        s.getEmail(),
+        s.getContactInfo(),
+        items
     });
   }
 }
 
     private void addSupplier() {
-    String name = JOptionPane.showInputDialog(this, "Supplier name:");
+    String name    = JOptionPane.showInputDialog(this, "Supplier name:");
     if (name == null || name.isBlank()) return;
-    String contact = JOptionPane.showInputDialog(this, "Contact info:");
+
+    String email   = JOptionPane.showInputDialog(this, "Supplier email:");
+    if (email == null || email.isBlank()) return;
+
+    String contact = JOptionPane.showInputDialog(this, "Contact number:");
+    if (contact == null || contact.isBlank()) return;
+
+    String itemsCsv = JOptionPane.showInputDialog(this,
+       "Item codes (comma-separated), e.g. ITM001,ITM002:");
+    List<String> items = List.of(itemsCsv.split("\\s*,\\s*"));
+
     int newId = sMgr.getAll().size() + 1;
-    Supplier s = new Supplier(newId, name, contact);
+    Supplier s = new Supplier(newId, name, email, contact, items);
     sMgr.add(s);
     loadSuppliers();
 }
@@ -89,11 +109,22 @@ public class SupplierForm extends javax.swing.JFrame {
     if (row < 0) return;
     int id = (int) tableModel.getValueAt(row, 0);
     Supplier s = sMgr.findById(id);
-    String name = JOptionPane.showInputDialog(this, "New name:", s.getName());
-    if (name == null) return;
-    String contact = JOptionPane.showInputDialog(this, "New contact:", s.getContactInfo());
-    s.setName(name);           // you’ll need setters in Supplier
-    s.setContactInfo(contact);
+
+    String name    = JOptionPane.showInputDialog(this, "Name:", s.getName());
+    if (name != null)    s.setName(name);
+
+    String email   = JOptionPane.showInputDialog(this, "Email:", s.getEmail());
+    if (email != null)   s.setEmail(email);
+
+    String contact = JOptionPane.showInputDialog(this, "Contact:", s.getContactInfo());
+    if (contact != null) s.setContactInfo(contact);
+
+    String itemsCsv = JOptionPane.showInputDialog(this,
+       "Items (comma-separated):", String.join(",", s.getItemCodes()));
+    if (itemsCsv != null) {
+        s.setItemCodes(List.of(itemsCsv.split("\\s*,\\s*")));
+    }
+
     loadSuppliers();
 }
 

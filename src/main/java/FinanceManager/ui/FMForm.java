@@ -4,22 +4,40 @@
  */
 package FinanceManager.ui;
 
-import javax.swing.*;
-import java.io.IOException;
-import FinanceManager.manager.*;
-import javax.swing.table.DefaultTableModel;
-import FinanceManager.model.*;
-import javax.swing.JOptionPane;
-import java.util.Date;
-import javax.swing.JMenuItem;
-import FinanceManager.ui.SupplierForm;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import java.awt.Font;
+import javax.swing.JMenuItem;
+import javax.swing.JToolBar;
+import javax.swing.table.DefaultTableModel;
+import java.awt.GridLayout; 
+
+import FinanceManager.manager.PurchaseOrderManager;
+import FinanceManager.manager.PurchaseRequisitionManager;
+import FinanceManager.manager.SupplierManager;
+import FinanceManager.model.PurchaseOrder;
+import FinanceManager.model.PurchaseRequisition;
+import FinanceManager.model.Supplier;
+import FinanceManager.MailUtil;
 
 /**
  *
  * @author sumingfei
  */
 public class FMForm extends javax.swing.JFrame {
+    private SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
     private PurchaseRequisitionManager prMgr = new PurchaseRequisitionManager();
     private PurchaseOrderManager       poMgr = new PurchaseOrderManager();
     private SupplierManager            sMgr  = new SupplierManager();        // <— make sure this is here
@@ -74,6 +92,7 @@ public class FMForm extends javax.swing.JFrame {
         btnProcessPay.addActionListener(e -> processPaymentForSelected());
         btnReport    .addActionListener(e -> showReportDialog());
 
+        btnReport    .addActionListener(e -> showReportDialog());
         // 3. Perform an initial load
         loadPendingRequisitions();
 
@@ -107,15 +126,71 @@ public class FMForm extends javax.swing.JFrame {
 }
 
     private void approveSelected() {
-    int row = tblRecords.getSelectedRow();
+        int row = tblRecords.getSelectedRow();
     if (row < 0) return;
     int prId = (int) tableModel.getValueAt(row, 0);
-    PurchaseRequisition pr = prMgr.findById(prId);        // you’ll need a findById method
-    PurchaseOrder       po = new PurchaseOrder(pr);       // ctor that builds a PO from a PR
+    PurchaseRequisition pr = prMgr.findById(prId);
+    PurchaseOrder po = new PurchaseOrder(pr);
     poMgr.add(po);
-    JOptionPane.showMessageDialog(this, "Created PO #" + po.getId());
+
+    // ——— SEND EMAIL ———
+    try {
+      String to = sMgr.findById(pr.getSupplierId()).getEmail();
+      String sub = "New Purchase Order #"+po.getId();
+      StringBuilder body = new StringBuilder();
+      body.append("Dear ").append(sMgr.findById(pr.getSupplierId()).getName()).append(",\n\n")
+          .append("Please find your PO details below:\n")
+          .append("PO #: ").append(po.getId()).append("\n")
+          .append("Item: ").append(pr.getItemCode()).append("\n")
+          .append("Qty: ").append(pr.getQuantity()).append("\n\n")
+          .append("Thank you,\nFinance Manager Team");
+      MailUtil.send(to, sub, body.toString());
+      JOptionPane.showMessageDialog(this, "Created PO #"+po.getId()+" and emailed to "+to);
+    } catch (Exception ex) {
+      JOptionPane.showMessageDialog(this, "PO created, but failed to email: "+ex.getMessage(),
+          "Email Error", JOptionPane.ERROR_MESSAGE);
+    }
+    // ——————————————————
+
     loadPendingRequisitions();
    }
+    
+    private void addRequisition() {
+     // 1) Gather the usual fields
+    String itemCode = JOptionPane.showInputDialog(this, "Item code:");
+    if (itemCode == null) return;
+
+    int quantity;
+    try {
+        quantity = Integer.parseInt(
+            JOptionPane.showInputDialog(this, "Quantity:")
+        );
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "Invalid number"); 
+        return;
+    }
+
+    Date dateRequested = new Date();
+
+    // 2) Prompt the user for which supplier this comes from
+    String supInput = JOptionPane.showInputDialog(
+        this, "Supplier ID (e.g. 1,2,3):"
+    );
+    if (supInput == null) return;
+
+    int supplierId;
+    try {
+        supplierId = Integer.parseInt(supInput);
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "Invalid supplier ID");
+        return;
+    }
+
+    // 3) Create the PR with all five args
+    int newId = prMgr.getAll().size() + 1;
+  
+}
+    
 
     private void loadPendingOrders() {
     tableModel.setRowCount(0);
@@ -141,8 +216,70 @@ public class FMForm extends javax.swing.JFrame {
 }
 
     private void showReportDialog() {
-        // you can pop up a JSpinner-based date range selector here
-    JOptionPane.showMessageDialog(this, "Report feature coming soon!");
+    // 1) Create two date spinners
+    SpinnerDateModel fromModel = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
+    JSpinner spinnerFrom = new JSpinner(fromModel);
+    spinnerFrom.setEditor(new JSpinner.DateEditor(spinnerFrom, "yyyy-MM-dd"));
+
+    SpinnerDateModel toModel = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
+    JSpinner spinnerTo = new JSpinner(toModel);
+    spinnerTo.setEditor(new JSpinner.DateEditor(spinnerTo, "yyyy-MM-dd"));
+
+    // 2) Lay them out in a panel
+    JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
+    panel.add(new JLabel("From:"));
+    panel.add(spinnerFrom);
+    panel.add(new JLabel("To:"));
+    panel.add(spinnerTo);
+
+    // 3) Show OK/CANCEL dialog
+    int result = JOptionPane.showConfirmDialog(
+      this,
+      panel,
+      "Select Report Date Range",
+      JOptionPane.OK_CANCEL_OPTION,
+      JOptionPane.PLAIN_MESSAGE
+    );
+    if (result != JOptionPane.OK_OPTION) return;
+
+    // 4) Pull the dates
+    Date from = (Date) spinnerFrom.getValue();
+    Date to   = (Date) spinnerTo.getValue();
+
+    // 5) Filter POs in range
+    List<PurchaseOrder> filtered = poMgr.getAll().stream()
+      .filter(po -> !po.getDateIssued().before(from) && !po.getDateIssued().after(to))
+      .collect(Collectors.toList());
+
+    // 6) Compute summary
+    long total   = filtered.size();
+    long paid    = filtered.stream().filter(po -> "PAID".equals(po.getStatus())).count();
+    long pending = total - paid;
+
+    // 7) Build a simple report string
+    StringBuilder rpt = new StringBuilder();
+    rpt.append("Orders from ")
+       .append(DF.format(from))
+       .append(" to ")
+       .append(DF.format(to))
+       .append(":\n\n")
+       .append(" Total orders: ").append(total).append("\n")
+       .append(" Paid:         ").append(paid).append("\n")
+       .append(" Pending:      ").append(pending).append("\n\n")
+       .append("Details:\n");
+    for (PurchaseOrder po : filtered) {
+      rpt.append("  PO#").append(po.getId())
+         .append(" [").append(po.getStatus()).append("] ")
+         .append(po.getRequisition().getItemCode())
+         .append(" x").append(po.getRequisition().getQuantity())
+         .append("\n");
+    }
+
+    // 8) Show the report
+    JTextArea text = new JTextArea(rpt.toString());
+    text.setEditable(false);
+    text.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+    JOptionPane.showMessageDialog(this, new JScrollPane(text), "PO Report", JOptionPane.INFORMATION_MESSAGE);
 }
 
     
@@ -395,13 +532,31 @@ public class FMForm extends javax.swing.JFrame {
 
         // 3) Compute a new ID (simple auto‐increment based on list size)
         int newId = prMgr.getAll().size() + 1;
+        
+            String supInput = JOptionPane.showInputDialog(
+      this, "Supplier ID (e.g. 1,2,3):"
+    );
+    if (supInput == null) return;
+    int supplierId;
+    try {
+      supplierId = Integer.parseInt(supInput.trim());
+    } catch (NumberFormatException ex) {
+      JOptionPane.showMessageDialog(this, "Invalid supplier ID");
+      return;
+    }
 
-        // 4) Create and add the new requisition
-        PurchaseRequisition pr = new PurchaseRequisition(newId, code, qty, new Date());
-        prMgr.add(pr);
+    // now call the 5-arg constructor:
+    PurchaseRequisition pr = new PurchaseRequisition(
+      newId,
+      code,
+      qty,
+      new Date(),
+      supplierId     // ← fifth argument
+    );
+    prMgr.add(pr);
+    loadPendingRequisitions();
 
-        // 5) Refresh the table
-        loadPendingRequisitions();
+        
         
     }//GEN-LAST:event_btnAddPRActionPerformed
 

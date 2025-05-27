@@ -6,6 +6,7 @@ package FinanceManager.model;
 
 
 import java.io.Serializable;
+import java.util.List;
 /**
  *
  * @author sumingfei
@@ -13,25 +14,28 @@ import java.io.Serializable;
 public class Supplier implements Serializable{
      private static final long serialVersionUID = 1L;
 
-    private int    id;
-    private String name;
-    private String contactInfo;
-
-    public Supplier(int id, String name, String contactInfo) {
-        this.id          = id;
-        this.name        = name;
-        this.contactInfo = contactInfo;
+    private int           id;
+    private String        name;
+    private String        email;
+    private String        contactInfo;
+    private List<String>  itemCodes;    // the “last thing” column
+    
+    public Supplier(int id, String name, String email, String contactInfo, List<String> itemCodes) {
+        this.id           = id;
+        this.name         = name;
+        this.email        = email;
+        this.contactInfo  = contactInfo;
+        this.itemCodes    = itemCodes;
     }
 
-    public int    getId()           { return id; }
-    public String getName()         { return name; }
-    public String getContactInfo()  { return contactInfo; }
+    public int           getId()          { return id; }
+    public String        getName()        { return name; }
+    public String        getEmail()       { return email; }
+    public String        getContactInfo() { return contactInfo; }
+    public List<String>  getItemCodes()   { return itemCodes; }
 
-    // ← Add these if you haven’t already
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
-    }
+    public void setName(String n)            { this.name        = n; }
+    public void setEmail(String e)           { this.email       = e; }
+    public void setContactInfo(String c)     { this.contactInfo = c; }
+    public void setItemCodes(List<String> l) { this.itemCodes   = l; }
 }

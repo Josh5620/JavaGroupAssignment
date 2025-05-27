@@ -12,26 +12,33 @@ import java.util.Date;
  */
 public class PurchaseRequisition implements Serializable{
     private static final long serialVersionUID = 1L;
-    
+
     private int    id;
     private String itemCode;
     private int    quantity;
     private Date   dateRequested;
+    private int    supplierId;    // ← new field
 
-    // Constructor(s) …
-    public PurchaseRequisition(int id, String itemCode, int quantity, Date dateRequested) {
-        this.id            = id;
-        this.itemCode      = itemCode;
-        this.quantity      = quantity;
-        this.dateRequested = dateRequested;
+    // Constructor must accept 5 arguments:
+    public PurchaseRequisition(int id,
+                               String itemCode,
+                               int quantity,
+                               Date dateRequested,
+                               int supplierId)
+    {
+        this.id             = id;
+        this.itemCode       = itemCode;
+        this.quantity       = quantity;
+        this.dateRequested  = dateRequested;
+        this.supplierId     = supplierId;
     }
 
-    // **Add these getters**:
-    public int    getId()            { return id; }
-    public String getItemCode()      { return itemCode; }
-    public int    getQuantity()      { return quantity; }
-    public Date   getDateRequested() { return dateRequested; }
+    public int    getId()             { return id; }
+    public String getItemCode()       { return itemCode; }
+    public int    getQuantity()       { return quantity; }
+    public Date   getDateRequested()  { return dateRequested; }
+    public int    getSupplierId()     { return supplierId; }   // ← new getter
 
-    // (Optionally setters, if you need them)
+    // (add setters here if you need to be able to change any of these fields later)
     
 }
