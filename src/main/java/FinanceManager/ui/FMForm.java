@@ -638,36 +638,36 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
    
 }
     
-private void generateReport() {
-  // 1) total revenue = sum of every SalesEntry.getAmount()
-  double revenue = salesMgr.getAll().stream()
-    .mapToDouble(se -> se.getAmount())
-    .sum();
-
-  // 2) direct cost = sum of every PurchaseOrder.getAmount()
-  double cost = poMgr.getAll().stream()
-    .mapToDouble(po -> po.getAmount())
-    .sum();
-
-  // 3) profit
-  double profit = revenue - cost;
-
-  // 4) build a little JTable
-  DefaultTableModel model = new DefaultTableModel(
-    new String[]{"Category", "Amount"}, 0
-  );
-  model.addRow(new Object[]{"Revenue", String.format("$%.2f", revenue)});
-  model.addRow(new Object[]{"Cost",    String.format("$%.2f", cost)});
-  model.addRow(new Object[]{"Profit",  String.format("$%.2f", profit)});
-
-  JTable tbl = new JTable(model);
-  JOptionPane.showMessageDialog(
-    this,
-    new JScrollPane(tbl),
-    "Financial Report",
-    JOptionPane.INFORMATION_MESSAGE
-  );
-}
+//private void generateReport() {
+//   1) total revenue = sum of every SalesEntry.getAmount()
+//  double revenue = salesMgr.getAll().stream()
+//    .mapToDouble(se -> se.getAmount())
+//    .sum();
+//
+//   2) direct cost = sum of every PurchaseOrder.getAmount()
+//  double cost = poMgr.getAll().stream()
+//    .mapToDouble(po -> po.getAmount())
+//    .sum();
+//
+//   3) profit
+//  double profit = revenue - cost;
+//
+//   4) build a little JTable
+//  DefaultTableModel model = new DefaultTableModel(
+//    new String[]{"Category", "Amount"}, 0
+//  );
+//  model.addRow(new Object[]{"Revenue", String.format("$%.2f", revenue)});
+//  model.addRow(new Object[]{"Cost",    String.format("$%.2f", cost)});
+//  model.addRow(new Object[]{"Profit",  String.format("$%.2f", profit)});
+//
+//  JTable tbl = new JTable(model);
+//  JOptionPane.showMessageDialog(
+//    this,
+//    new JScrollPane(tbl),
+//    "Financial Report",
+//    JOptionPane.INFORMATION_MESSAGE
+//  );
+//}
 
 
 
@@ -975,7 +975,7 @@ addRequisition();
     }//GEN-LAST:event_btnLoadPRsActionPerformed
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
-    showReportDialog();
+
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void btnLoadPOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPOsActionPerformed

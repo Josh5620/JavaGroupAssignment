@@ -25,12 +25,12 @@ public class SalesManager {
     }
 
     /** Find one sale by its ID, or return null if not found. */
-    public SalesEntry findById(int id) {
-        for (SalesEntry s : sales) {
-            if (s.getId() == id) return s;
-        }
-        return null;
-    }
+//    public SalesEntry findById(int id) {
+//        for (SalesEntry s : sales) {
+//            if (s.getId() == id) return s;
+//        }
+//        return null;
+//    }
 
     /** Add a new sale to the in‐memory list. */
     public void add(SalesEntry sale) {

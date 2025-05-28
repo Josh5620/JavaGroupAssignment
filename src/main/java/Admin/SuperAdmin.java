@@ -48,7 +48,8 @@ public class SuperAdmin extends Admin {
                 return;
             }
         }
-
+        
+        logUserAction("added", username , Role);
         userList.add(tmpUserList);
         getTmpUser().updateTextFile(userList, getUserFilepath());
 
