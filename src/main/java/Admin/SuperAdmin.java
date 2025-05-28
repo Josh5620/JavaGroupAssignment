@@ -29,15 +29,16 @@ public class SuperAdmin extends Admin {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-        int NewUserID = UserList.size() + 1;
+        
+        List<List<String>> userList = getUserList();
+        int NewUserID = userList.size() + 1;
         List<String> tmpUserList = new ArrayList<>();
         tmpUserList.add(String.valueOf(NewUserID));
         tmpUserList.add(username);
         tmpUserList.add(Passwd);
         tmpUserList.add(Role);
 
-        for (List<String> user : UserList) {
+        for (List<String> user : userList) {
             if (username.equalsIgnoreCase(user.get(1))) {
                 JOptionPane.showMessageDialog(
                         null,
@@ -48,10 +49,10 @@ public class SuperAdmin extends Admin {
             }
         }
 
-        UserList.add(tmpUserList);
-        tmpuser.updateTextFile(UserList, Userfilepath);
+        userList.add(tmpUserList);
+        getTmpUser().updateTextFile(userList, getUserFilepath());
 
         System.out.println("User was successfully added! "
-                + "Current number of users: " + UserList.size());
+                + "Current number of users: " + userList.size());
     }
 }
