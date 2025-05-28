@@ -35,11 +35,10 @@ public class AdminPanel extends javax.swing.JFrame {
         setupAdminDashboard();
         homePageLoad(username, password);
     }
-    public AdminPanel(boolean SA){
+    public AdminPanel(String username, String password, boolean SA){
         initComponents();
         
-        this.AdminLayout = (CardLayout) (AdminMainPanel).getLayout();
-        AdminLayout.show(AdminMainPanel, "HomeCard");
+        homePageLoad(username, password);
         if(SA == true){
             admin = new SuperAdmin();
         }
@@ -50,12 +49,13 @@ public class AdminPanel extends javax.swing.JFrame {
         System.out.println(admin.getClass());
     }
 
-        private void homePageLoad(String username, String role){
-        this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
-        AdminLayout.show(AdminMainPanel, "HomeCard");  
-        admin.checkAlert(username, role);
-        WelcomUserLabel.setText("Welcome User: " + username);
-        RoleLabel.setText("Role: " + role);
+    // Method used to load the home page 
+    private void homePageLoad(String username, String role){
+    this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
+    AdminLayout.show(AdminMainPanel, "HomeCard");  
+    admin.checkAlert(username, role);
+    WelcomUserLabel.setText("Welcome User: " + username);
+    RoleLabel.setText("Role: " + role);
     }
         
     private void setupAdminDashboard(){
@@ -64,8 +64,7 @@ public class AdminPanel extends javax.swing.JFrame {
         buildUserTable();
     }
     
-    
-//blahblah blah blah changes    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,6 +82,7 @@ public class AdminPanel extends javax.swing.JFrame {
         AdminHPPanel = new javax.swing.JPanel();
         WelcomUserLabel = new javax.swing.JLabel();
         RoleLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         ManageUserP = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -198,16 +198,32 @@ public class AdminPanel extends javax.swing.JFrame {
         RoleLabel.setForeground(new java.awt.Color(0, 0, 0));
         RoleLabel.setToolTipText("");
 
+        jPanel1.setBackground(new java.awt.Color(255, 153, 51));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 669, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 412, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout AdminHPPanelLayout = new javax.swing.GroupLayout(AdminHPPanel);
         AdminHPPanel.setLayout(AdminHPPanelLayout);
         AdminHPPanelLayout.setHorizontalGroup(
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(WelcomUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addGroup(AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdminHPPanelLayout.createSequentialGroup()
+                        .addComponent(WelcomUserLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         AdminHPPanelLayout.setVerticalGroup(
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,10 +232,10 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addGroup(AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(WelcomUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(424, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
-
-        WelcomUserLabel.getAccessibleContext().setAccessibleDescription("");
 
         AdminMainPanel.add(AdminHPPanel, "HomeCard");
 
@@ -795,6 +811,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables

@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * @author Dylan
  */
 public class Admin extends User {
-    User tmpuser = new User();
-    String Userfilepath = tmpuser.getLoginFilePath();
-    List<List<String>> UserList = tmpuser.getFullUserList();
+    private User tmpuser = new User();
+    private final String Userfilepath = tmpuser.getLoginFilePath();
+    public List<List<String>> UserList = tmpuser.getFullUserList();
     protected String currentRole = "Admin";
     
     public String getCurrentRole(){
