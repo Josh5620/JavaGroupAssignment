@@ -43,6 +43,7 @@ public class SupplierForm extends javax.swing.JFrame {
     // 2) set up the table model
     tableModel = new DefaultTableModel(new String[]{"ID","Name","Email","Contact","Items"}, 0);
     tblSuppliers.setModel(tableModel);
+    tableModelSuppliers = tableModel;
     tblSuppliers.setAutoResizeMode(tblSuppliers.AUTO_RESIZE_OFF);
     tblSuppliers.getColumnModel().getColumn(0).setPreferredWidth(40);
     tblSuppliers.getColumnModel().getColumn(1).setPreferredWidth(120);
@@ -263,7 +264,7 @@ public class SupplierForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SupplierForm().setVisible(true);
+                new SupplierForm();
             }
         });
     }
