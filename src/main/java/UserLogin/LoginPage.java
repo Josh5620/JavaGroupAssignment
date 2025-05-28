@@ -1,6 +1,6 @@
-package UserLogin;
+ package UserLogin;
 import Admin.AdminPanel;
-import FinanceManager.resources.General;
+import FinanceManager.ui.FMForm;
 import InventoryManager.IMForm;
 import PM.PMForm1;
 import SM.SalesManagerDashboard;
@@ -215,12 +215,16 @@ public class LoginPage extends javax.swing.JFrame {
             else{
                 switch(RoleCombo.getSelectedIndex()){
                     case 0:
-                        AdminPanel adminPanel = new AdminPanel();
+                        AdminPanel adminPanel;
+                        if(userLog.equals("SuperAdmin")){
+                            adminPanel = new AdminPanel(userLog, focusUser.get(3),true);
+                        } else { adminPanel = new AdminPanel(userLog, focusUser.get(3)); }
+                        
                         adminPanel.setVisible(true);
                         this.dispose();
                         break;
                     case 1:
-                        FinanceManager.resources.General FMFormGeneral = new FinanceManager.resources.General();
+                        FinanceManager.ui.FMForm FMFormGeneral = new FinanceManager.ui.FMForm();
                         FMFormGeneral.setVisible(true);
                         this.dispose();
                         break;

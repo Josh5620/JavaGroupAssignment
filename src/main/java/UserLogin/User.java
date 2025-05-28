@@ -67,54 +67,62 @@ public class User {
                 JOptionPane.INFORMATION_MESSAGE);
     }
     
-    public void checkAlert(String username, String role){
-        List<List<String>> Alerts = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(AlertFilePath))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split("\\|");
-            Alerts.add(Arrays.asList(parts));
+        public void checkAlert(String username, String role) {
+            List<List<String>> Alerts = new ArrayList<>();
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(AlertFilePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split("\\|");
+                    if (parts.length < 5) {
+                        System.err.println("⚠️ Malformed alert line: " + line);
+                        continue;
+                    }
+                    Alerts.add(Arrays.asList(parts));
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading file: " + e.getMessage());
             }
-        
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
+
+            for (List<String> Alert : Alerts) {
+                if (Alert.size() < 5) continue;
+
+                String roleString = Alert.get(1);
+                String userString = Alert.get(2);
+                String message = Alert.get(3);
+                String status = Alert.get(4);
+
+                if (status.equalsIgnoreCase("Done")) continue;
+
+                if (roleString.equals(role)) {
+                    if (userString.equals("all")) {
+                        makeBigList(LoginFilePath, FullUserList); // Refresh if needed
+                        JOptionPane.showMessageDialog(
+                            null,
+                            "Alert for all " + roleString + ":\n" + message,
+                            "Alert",
+                            JOptionPane.INFORMATION_MESSAGE
+                        );
+                        Alert.set(4, "Done");
+                        updateTextFile(Alerts, AlertFilePath);
+                    } else if (userString.equals(username)) {
+                        makeBigList(LoginFilePath, FullUserList); // Refresh if needed
+                        JOptionPane.showMessageDialog(
+                            null,
+                            "Username Alert: " + userString + "\n" + message,
+                            "Alert",
+                            JOptionPane.INFORMATION_MESSAGE
+                        );
+                        Alert.set(4, "Done");
+                        updateTextFile(Alerts, AlertFilePath);
+                    }
+                }
+            }
         }
-        
-        for(List<String> Alert : Alerts){
-            String roleString = Alert.get(1);
-            String userString = Alert.get(2);
-            
-            if(Alert.get(4).equals("Done")){
-                continue;
-            }
-            if(roleString.equals(role)){
-                System.out.println(Alert);
-                System.out.println(userString);
-                if(userString.equals("all")){
-                    makeBigList(LoginFilePath, FullUserList);
-                    JOptionPane.showMessageDialog(
-                    null,
-                    "Alert for all " + roleString + ": \n" + Alert.get(3),
-                    "Alert",
-                    JOptionPane.INFORMATION_MESSAGE);
-                    Alert.set(4, "Done");
-                    updateTextFile(Alerts, AlertFilePath);
-                }
-                if(userString.equals(username)){
-                    makeBigList(LoginFilePath, FullUserList);
-                    JOptionPane.showMessageDialog(
-                    null,
-                    "Username Alert: " + userString + "\n" + Alert.get(3),
-                    "Alert",
-                    JOptionPane.INFORMATION_MESSAGE);
-                    Alert.set(4, "Done");
-                    updateTextFile(Alerts, AlertFilePath);
-                }
-            }
+
             
                     
-        }
-    }
+ 
     
     public static void updateTextFile(List<List<String>> arrayList, String FilePathString){
          try (BufferedWriter writer = new BufferedWriter(new FileWriter(FilePathString))) {
