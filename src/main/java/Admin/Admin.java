@@ -13,11 +13,34 @@ import java.util.ArrayList;
 public class Admin extends User {
     private User tmpuser = new User();
     private final String Userfilepath = tmpuser.getLoginFilePath();
-    public List<List<String>> UserList = tmpuser.getFullUserList();
+    private List<List<String>> UserList = tmpuser.getFullUserList();
     protected String currentRole = "Admin";
+    protected String currentUsername;
+    public void setCurrentUsername(String username) {
+        this.currentUsername = username; 
+    }
+    public String getCurrentUsername() {
+        return currentUsername;
+    }
     
     public String getCurrentRole(){
         return currentRole;
+    }
+    
+    protected List<List<String>> getUserList(){
+        return UserList;
+    }
+    
+    protected void setUserList(List<List<String>> updatedList){
+        this.UserList = updatedList;
+    }
+    
+    protected String getUserFilepath(){
+        return Userfilepath;
+    }
+    
+    protected User getTmpUser(){
+        return tmpuser;
     }
     
     public boolean validateUserFields(String username, String password, String role){
@@ -69,6 +92,7 @@ public class Admin extends User {
                 );
             }
         }
+        logUserAction("added", username, Role);
         UserList.add(tmpUserList);
         tmpuser.updateTextFile(UserList, Userfilepath);
         System.out.println("User was successfully added! "
@@ -164,5 +188,42 @@ public class Admin extends User {
         }
         
         this.updateTextFile(UserList, Userfilepath);
+    }
+    
+        protected void logUserAction(String action, String targetUsername, String targetRole) {
+        try (FileWriter fw = new FileWriter("user_action_log.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+
+            String timestamp = java.time.LocalDateTime.now()
+                                 .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            String logLine = timestamp + " | " +
+                             getCurrentRole() + " " + getCurrentUsername() +
+                             " " + action + " " + targetRole + " " + targetUsername;
+
+            out.println(logLine);
+
+        } catch (IOException e) {
+            System.err.println("Failed to log user action: " + e.getMessage());
+        }
+    }
+
+        public String getLastAddedUser(){
+        List<List<String>> users = getUserList();
+        
+        if (users == null || users.isEmpty()) {
+            return "No users found.";
+        }
+        
+        List<String> lastUser = users.get(users.size() - 1);
+        
+        if (lastUser.size() >= 4) {
+            String username = lastUser.get(1);
+            String role = lastUser.get(3);
+            return role + " " + username;
+        }else {
+            return "Invalid User Format.";
+        }
     }
 }
