@@ -972,23 +972,23 @@ public class PMForm1 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnRefreshItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshItemsActionPerformed
-        ItemManager manager = new ItemManager();
-        List<Item> itemList = manager.getAllItems();
-
-        DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
-        model.setRowCount(0);
-
-        for (Item item : itemList) {
-            model.addRow(new Object[] {
-                item.getItemId(),
-                item.getItemName(),
-                item.getPrice(),
-                item.getSupplierId()
-            });
-        }
-
-        tblItems.setModel(model);
-        
+//        ItemManager manager = new ItemManager();
+//        List<Item> itemList = manager.getAllItems();
+//
+//        DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
+//        model.setRowCount(0);
+//
+//        for (Item item : itemList) {
+//            model.addRow(new Object[] {
+//                item.getItemId(),
+//                item.getItemName(),
+//                item.getPrice(),
+//                item.getSupplierId()
+//            });
+//        }
+//
+//        tblItems.setModel(model);
+//        
 
     }//GEN-LAST:event_btnRefreshItemsActionPerformed
 
@@ -1105,15 +1105,15 @@ public class PMForm1 extends javax.swing.JFrame {
         String pmID = "PM001";
         double price = 0.0;
 
-        // احسب السعر من جديد بنفس المنطق اللي كنا نستخدمه
-        ItemManager itemManager = new ItemManager();
-        List<Item> itemList = itemManager.getAllItems();
-        for (Item item : itemList) {
-            if (item.getItemId().equals(itemID)) {
-                price = item.getPrice() * quantity;
-                break;
-            }
-        }
+//        // احسب السعر من جديد بنفس المنطق اللي كنا نستخدمه
+//        ItemManager itemManager = new ItemManager();
+//        List<Item> itemList = itemManager.getAllItems();
+//        for (Item item : itemList) {
+//            if (item.getItemId().equals(itemID)) {
+//                price = item.getPrice() * quantity;
+//                break;
+//            }
+//        }
 
         PurchaseOrder updatedPO = new PurchaseOrder(poID, itemID, quantity, date, supplierID, price, pmID, "Processing");
 

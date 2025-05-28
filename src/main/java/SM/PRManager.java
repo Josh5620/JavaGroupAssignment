@@ -8,74 +8,63 @@ package SM;
  *
  * @author dhoom
  */
+
+
 import java.io.*;
 import java.util.*;
 
-public class SupplierManager {
-    private final String FILE_PATH = "C:\\Users\\dhoom\\Downloads\\Supplier.txt"; 
-
-    
-    public List<String[]> loadSuppliers() throws IOException {
-        List<String[]> suppliers = new ArrayList<>();
+public class PRManager {
+    private final String FILE_PATH = "C:\\Users\\dhoom\\Downloads\\PurchaseRequisitions.txt";  
+   
+    public List<String[]> loadPRs() throws IOException {
+        List<String[]> prs = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split("\\|");
-            if (parts.length >= 5) {  // ID, Name, Email, Phone, ItemIDs
-                suppliers.add(parts);
-            }
+            prs.add(parts);
         }
         br.close();
-        return suppliers;
+        return prs;
     }
 
-  
-    public String generateNextSupplierID() throws IOException {
-        List<String[]> suppliers = loadSuppliers();
+    public String generateNextPRID() throws IOException {
+        List<String[]> prs = loadPRs();
         int maxNum = 0;
-        for (String[] s : suppliers) {
-            String id = s[0];  // SUP001
-            if (id.startsWith("SUP")) {
+        for (String[] p : prs) {
+            String id = p[0];  
+            if (id.startsWith("PR")) {
                 try {
-                    int num = Integer.parseInt(id.substring(3));
+                    int num = Integer.parseInt(id.substring(2));
                     if (num > maxNum) maxNum = num;
                 } catch (NumberFormatException ignored) {}
             }
         }
-        int nextNum = maxNum + 1;
-        return String.format("SUP%03d", nextNum);
+        return String.format("PR%03d", maxNum + 1);
     }
 
-  
-    public void addSupplier(String id, String name, String email, String phone) throws IOException {
+    
+    public void addPR(String prid, String itemIDs, String quantities, String date, String supplierID, String smID, String status) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true));
-        bw.write(id + "|" + name + "|" + email + "|" + phone + "|" + "NoItems");
+        bw.write(prid + "|" + itemIDs + "|" + quantities + "|" + date + "|" + supplierID + "|" + smID + "|" + status);
         bw.newLine();
         bw.close();
     }
 
     
-    public void editSupplier(String id, String newName, String newEmail, String newPhone, String newItemID) throws IOException {
+    public void editPR(String prid, String newItemIDs, String newQuantities, String newDate, String newSupplierID, String newSMID, String newStatus) throws IOException {
         List<String> lines = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split("\\|");
-            if (parts[0].equals(id)) {
-          
-                String currentItems = parts.length >= 5 ? parts[4] : "NoItems";
-                if (currentItems.equals("NoItems")) {
-                    currentItems = newItemID;  
-                } else if (!currentItems.contains(newItemID)) {
-                    currentItems += "\\" + newItemID;  
-                }
-                lines.add(id + "|" + newName + "|" + newEmail + "|" + newPhone + "|" + currentItems);
+            if (parts[0].equals(prid)) {
+                lines.add(prid + "|" + newItemIDs + "|" + newQuantities + "|" + newDate + "|" + newSupplierID + "|" + newSMID + "|" + newStatus);
             } else {
                 lines.add(line);
             }
         }
         br.close();
-
         BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH));
         for (String l : lines) {
             bw.write(l);
@@ -84,14 +73,14 @@ public class SupplierManager {
         bw.close();
     }
 
-    // حذف Supplier
-    public void deleteSupplier(String id) throws IOException {
+    
+    public void deletePR(String prid) throws IOException {
         List<String> lines = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split("\\|");
-            if (!parts[0].equals(id)) {
+            if (!parts[0].equals(prid)) {
                 lines.add(line);
             }
         }
@@ -104,3 +93,5 @@ public class SupplierManager {
         bw.close();
     }
 }
+
+

@@ -3,7 +3,7 @@ import Admin.AdminPanel;
 import FinanceManager.resources.General;
 import InventoryManager.IMForm;
 import PM.PMForm1;
-import SM.SMForm;
+import SM.SalesManagerDashboard;
 import java.util.*;
 import javax.swing.JOptionPane;
 
@@ -235,7 +235,7 @@ public class LoginPage extends javax.swing.JFrame {
                         this.dispose();
                         break;
                     case 4:
-                        SMForm sMForm = new SMForm();
+                        SalesManagerDashboard sMForm = new SalesManagerDashboard();
                         sMForm.setVisible(true);
                         this.dispose();
                         break;
