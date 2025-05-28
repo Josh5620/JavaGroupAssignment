@@ -35,6 +35,8 @@ import FinanceManager.model.Supplier;
 import FinanceManager.MailUtil;
 import FinanceManager.manager.InventoryManager;
 import FinanceManager.model.InventoryEntry;
+import FinanceManager.model.SalesEntry;
+import FinanceManager.manager.SalesManager;
 
 
 
@@ -49,8 +51,11 @@ public class FMForm extends javax.swing.JFrame {
     private PurchaseOrderManager       poMgr = new PurchaseOrderManager();
     private SupplierManager            sMgr  = new SupplierManager();        // <— make sure this is here
     private InventoryManager invMgr = new InventoryManager();
+    private SalesManager               salesMgr = new SalesManager();
+    
     private DefaultTableModel tableModelRequisitions;
     private DefaultTableModel tableModelOrders;
+    
     
 
 
@@ -63,6 +68,18 @@ public class FMForm extends javax.swing.JFrame {
      */
     public FMForm() {
         initComponents();
+        
+        try {
+        prMgr .loadFromFile("prs.dat");
+        poMgr .loadFromFile("pos.dat");
+        sMgr  .loadFromFile("suppliers.dat");
+        invMgr.loadFromFile("inventory.dat");
+        salesMgr.loadFromFile("sales.dat");     // ← load your sales entries
+        } catch(IOException e) {
+        JOptionPane.showMessageDialog(this,
+        "Failed to load data: "+e.getMessage(),
+         "Load Error", JOptionPane.ERROR_MESSAGE);
+}
         
         tableModelRequisitions = (DefaultTableModel) tblRecords.getModel();
 
@@ -533,6 +550,38 @@ public class FMForm extends javax.swing.JFrame {
     loadPendingOrders();
     loadPendingRequisitions();
 }
+    
+private void generateReport() {
+  // 1) total revenue = sum of every SalesEntry.getAmount()
+  double revenue = salesMgr.getAll().stream()
+    .mapToDouble(se -> se.getAmount())
+    .sum();
+
+  // 2) direct cost = sum of every PurchaseOrder.getAmount()
+  double cost = poMgr.getAll().stream()
+    .mapToDouble(po -> po.getAmount())
+    .sum();
+
+  // 3) profit
+  double profit = revenue - cost;
+
+  // 4) build a little JTable
+  DefaultTableModel model = new DefaultTableModel(
+    new String[]{"Category", "Amount"}, 0
+  );
+  model.addRow(new Object[]{"Revenue", String.format("$%.2f", revenue)});
+  model.addRow(new Object[]{"Cost",    String.format("$%.2f", cost)});
+  model.addRow(new Object[]{"Profit",  String.format("$%.2f", profit)});
+
+  JTable tbl = new JTable(model);
+  JOptionPane.showMessageDialog(
+    this,
+    new JScrollPane(tbl),
+    "Financial Report",
+    JOptionPane.INFORMATION_MESSAGE
+  );
+}
+
 
 
 
@@ -873,15 +922,15 @@ public class FMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnApprovePOActionPerformed
 
     private void btnLoadPRsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPRsActionPerformed
-        loadPendingOrders();
+        loadPendingRequisitions();
     }//GEN-LAST:event_btnLoadPRsActionPerformed
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
-        showReportDialog();
+        generateReport();
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void btnLoadPOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPOsActionPerformed
-        loadPendingRequisitions();
+        loadPendingOrders();
     }//GEN-LAST:event_btnLoadPOsActionPerformed
 
     private void btnReceiveShipmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceiveShipmentActionPerformed
