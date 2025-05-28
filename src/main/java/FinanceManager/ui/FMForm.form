@@ -238,7 +238,6 @@
             <Component class="javax.swing.JButton" name="btnLoadPOs">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Load Orders"/>
-                <Property name="actionCommand" type="java.lang.String" value="Load Orders"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>

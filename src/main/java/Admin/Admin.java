@@ -114,7 +114,10 @@ public class Admin extends User {
         for(int i = 0; i < UserList.size(); i++){
             String selectedUser = UserList.get(i).get(1);
             if (selectedUser.equalsIgnoreCase(username)){
+                String role = UserList.get(i).get(3);
                 UserList.remove(i);
+                
+                logUserAction("deleted", username, role);
                 
                 JOptionPane.showMessageDialog(
                     null,
@@ -186,12 +189,23 @@ public class Admin extends User {
                     "Update Failed",
                     JOptionPane.WARNING_MESSAGE);
         }
-        
+        logUserAction("updated", username, Role);
         this.updateTextFile(UserList, Userfilepath);
     }
     
-        protected void logUserAction(String action, String targetUsername, String targetRole) {
-        try (FileWriter fw = new FileWriter("user_action_log.txt", true);
+       protected void logUserAction(String action, String targetUsername, String targetRole) {
+    String logFilePath = "user_action_log.txt"; // You can change this to a full path if needed
+    
+    try {
+        // Create the file if it doesn't exist
+        File logFile = new File(logFilePath);
+        if (!logFile.exists()) {
+            logFile.createNewFile();
+            System.out.println("Created new log file: " + logFile.getAbsolutePath());
+        }
+        
+        // Use try-with-resources for automatic resource management
+        try (FileWriter fw = new FileWriter(logFile, true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
 
@@ -203,11 +217,26 @@ public class Admin extends User {
                              " " + action + " " + targetRole + " " + targetUsername;
 
             out.println(logLine);
+            out.flush(); // Explicitly flush the buffer
+            
+            System.out.println("Log entry written: " + logLine);
+            System.out.println("Log file location: " + logFile.getAbsolutePath());
 
-        } catch (IOException e) {
-            System.err.println("Failed to log user action: " + e.getMessage());
         }
+        
+    } catch (IOException e) {
+        System.err.println("Failed to log user action: " + e.getMessage());
+        e.printStackTrace(); // This will show you the full stack trace
+        
+        // Show error dialog to user as well
+        JOptionPane.showMessageDialog(
+            null,
+            "Failed to log user action: " + e.getMessage(),
+            "Logging Error",
+            JOptionPane.ERROR_MESSAGE
+        );
     }
+}
 
         public String getLastAddedUser(){
         List<List<String>> users = getUserList();
