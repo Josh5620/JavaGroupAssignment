@@ -11,8 +11,10 @@ package PM;
 import java.io.*;
 import java.util.*;
 
+
+
 public class PurchaseRequisitionManager {
-    private final String filePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
+    private final String filePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions.txt";
 
     public List<PurchaseRequisition> getAllPRs() {
         List<PurchaseRequisition> prList = new ArrayList<>();
@@ -23,14 +25,14 @@ public class PurchaseRequisitionManager {
                 String[] parts = line.split("\\|");
                 if (parts.length == 7) {
                     String prID = parts[0].trim();
-                    String itemID = parts[1].trim();
-                    int quantity = Integer.parseInt(parts[2].trim());
+                    String itemIDs = parts[1].trim();
+                    String quantities = parts[2].trim();
                     String date = parts[3].trim();
                     String supplierID = parts[4].trim();
                     String smID = parts[5].trim();
                     String status = parts[6].trim();
 
-                    PurchaseRequisition pr = new PurchaseRequisition(prID, itemID, quantity, date, supplierID, smID, status);
+                    PurchaseRequisition pr = new PurchaseRequisition(prID, itemIDs, quantities, date, supplierID, smID, status);
                     prList.add(pr);
                 }
             }
@@ -41,3 +43,4 @@ public class PurchaseRequisitionManager {
         return prList;
     }
 }
+

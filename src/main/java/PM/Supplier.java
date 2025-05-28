@@ -15,7 +15,7 @@ public class Supplier {
     private String name;
     private String email;
     private String phone;
-    private List<String> itemIDs; // ← صارت List بدل String
+    private List<String> itemIDs; 
 
     public Supplier(String supplierID, String name, String email, String phone, List<String> itemIDs) {
         this.supplierID = supplierID;

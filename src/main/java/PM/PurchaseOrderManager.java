@@ -12,69 +12,117 @@ import java.io.*;
 import java.util.*;
 
 public class PurchaseOrderManager {
-    private final String itemsFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt";
+    private final String itemsFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt" ;
     private final String poFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseOrders.txt";
+    private final String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions.txt";
 
-    // ✅ إضافة PO جديدة
-    public void addPO(String poID, String itemID, int quantity, String date, String supplierID, String pmID) {
+    public void addPOFromPR(String prID, String date, String pmID) {
         try {
-            if (poID.isEmpty() || itemID.isEmpty() || date.isEmpty() || supplierID.isEmpty() || pmID.isEmpty()) {
-                System.out.println("One or more fields are empty. Cannot proceed.");
-                return;
-            }
+            String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions.txt";
+            String itemIDs = "", quantities = "", supplierID = "", smID = "", status = "";
+            boolean found = false;
 
-            // 1. Get price per unit from Items.txt
-            double unitPrice = -1;
-            try (BufferedReader reader = new BufferedReader(new FileReader(itemsFilePath))) {
+        
+            List<String> updatedPRLines = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader(prFilePath))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("\\|");
-                    if (parts.length >= 3 && parts[0].trim().equals(itemID)) {
-                        unitPrice = Double.parseDouble(parts[2].trim());
-                        break;
+                    if (parts[0].equals(prID)) {
+                        status = parts[6];
+                        if (!status.equalsIgnoreCase("Pending")) {
+                            javax.swing.JOptionPane.showMessageDialog(null,
+                                    "This PR is not pending and cannot be converted to PO.",
+                                    "Error",
+                                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        itemIDs = parts[1];
+                        quantities = parts[2];
+                        supplierID = parts[4];
+                        smID = parts[5];
+                        found = true;
+                        updatedPRLines.add(parts[0] + "|" + parts[1] + "|" + parts[2] + "|" + parts[3] + "|" + parts[4] + "|" + parts[5] + "|Approved");
+                    } else {
+                        updatedPRLines.add(line);
                     }
                 }
             }
 
-            if (unitPrice == -1) {
-                System.out.println("Item ID not found in items file.");
+            if (!found) {
+                javax.swing.JOptionPane.showMessageDialog(null,
+                        "PR not found.",
+                        "Error",
+                        javax.swing.JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            double totalPrice = unitPrice * quantity;
-            String status = "Processing";
+        
+            String lastPOID = "PO000";
+            try (BufferedReader reader = new BufferedReader(new FileReader(poFilePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split("\\|");
+                    if (parts.length > 0 && parts[0].startsWith("PO") && parts[0].length() >= 5) {
+                        String numberPart = parts[0].substring(2);
+                        if (numberPart.matches("\\d+")) {
+                            lastPOID = parts[0];
+                        }
+                    }
+                }
+            }
+            int nextID = Integer.parseInt(lastPOID.substring(2)) + 1;
+            String newPOID = String.format("PO%03d", nextID);
 
-            PurchaseOrder po = new PurchaseOrder(poID, itemID, quantity, date, supplierID, totalPrice, pmID, status);
+            String poStatus = "Processing";
+            String resolution = "Unresolved";
 
-            // 2. Append to file
+        
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(poFilePath, true))) {
-                writer.write(po.toString());
+                writer.write(newPOID + "|" + date + "|" + itemIDs + "|" + quantities + "|" + poStatus + "|" + pmID + "|" + resolution);
                 writer.newLine();
             }
 
-            System.out.println("PO added successfully.");
-        } catch (Exception e) {
-            System.out.println("Error while adding PO: " + e.getMessage());
+        
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(prFilePath))) {
+                for (String l : updatedPRLines) {
+                    writer.write(l);
+                    writer.newLine();
+                }
+            }
+
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Purchase Order generated successfully and PR status updated to Approved.",
+                    "Success",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (IOException e) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Error generating PO or updating PR status: " + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // ✅ قراءة جميع الـ POs
+
+
+
     public List<PurchaseOrder> getAllPOs() {
         List<PurchaseOrder> poList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(poFilePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
-                if (parts.length >= 8) {
+                if (parts.length >= 7) {
                     String poID = parts[0];
-                    String itemID = parts[1];
-                    int quantity = Integer.parseInt(parts[2]);
-                    String date = parts[3];
-                    String supplierID = parts[4];
-                    double price = Double.parseDouble(parts[5]);
-                    String pmID = parts[6];
-                    String status = parts[7];
-                    PurchaseOrder po = new PurchaseOrder(poID, itemID, quantity, date, supplierID, price, pmID, status);
+                    String date = parts[1];
+                    String itemIDs = parts[2];
+                    String quantities = parts[3];
+                    String status = parts[4];
+                    String pmID = parts[5];
+                    String resolution = parts[6];
+
+                    PurchaseOrder po = new PurchaseOrder(poID, date, itemIDs, quantities, status, pmID, resolution);
                     poList.add(po);
                 }
             }
@@ -84,7 +132,6 @@ public class PurchaseOrderManager {
         return poList;
     }
 
-    // ✅ تعديل PO موجود
     public void editPO(PurchaseOrder updatedPO) {
         List<String> updatedLines = new ArrayList<>();
 
@@ -92,8 +139,15 @@ public class PurchaseOrderManager {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
-                if (parts[0].equals(updatedPO.getPoID())) {
-                    updatedLines.add(updatedPO.toString());
+                if (parts.length >= 7 && parts[0].equals(updatedPO.getPoID())) {
+                    String updatedLine = updatedPO.getPoID() + "|" + 
+                                         updatedPO.getDate() + "|" + 
+                                         updatedPO.getItemIDs() + "|" + 
+                                         updatedPO.getQuantities() + "|" + 
+                                         updatedPO.getStatus() + "|" + 
+                                         updatedPO.getPmID() + "|" + 
+                                         updatedPO.getResolution();
+                    updatedLines.add(updatedLine);
                 } else {
                     updatedLines.add(line);
                 }
@@ -105,13 +159,14 @@ public class PurchaseOrderManager {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(poFilePath))) {
             for (String l : updatedLines) {
                 writer.write(l);
-                writer.newLine();
+                writer.newLine(); 
             }
         } catch (IOException e) {
             System.out.println("Error writing PO file: " + e.getMessage());
         }
     }
-    
+
+
     public boolean deletePO(String poID) {
         boolean deleted = false;
         List<String> updatedLines = new ArrayList<>();
@@ -122,7 +177,7 @@ public class PurchaseOrderManager {
                 if (!line.trim().startsWith(poID + "|")) {
                     updatedLines.add(line);
                 } else {
-                    deleted = true;
+                    deleted = true;  
                 }
             }
         } catch (IOException e) {
@@ -134,7 +189,7 @@ public class PurchaseOrderManager {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(poFilePath))) {
                 for (String l : updatedLines) {
                     writer.write(l);
-                    writer.newLine();
+                    writer.newLine();  
                 }
             } catch (IOException e) {
                 System.out.println("Error writing PO file: " + e.getMessage());
@@ -145,6 +200,14 @@ public class PurchaseOrderManager {
         return deleted;
     }
     
-    
+    public PurchaseOrder getPOByID(String poID) {
+        List<PurchaseOrder> allPOs = getAllPOs();
+        for (PurchaseOrder po : allPOs) {
+            if (po.getPoID().equals(poID)) {
+                return po;
+            }
+        }
+        return null;
+    }
 
 }
