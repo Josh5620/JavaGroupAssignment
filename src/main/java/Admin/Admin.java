@@ -255,4 +255,22 @@ public class Admin extends User {
             return "Invalid User Format.";
         }
     }
+        
+        public String getLastUserActionLog() {
+        String lastLine = "";
+
+        try (BufferedReader br = new BufferedReader(new FileReader("user_action_log.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    lastLine = line;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading action log: " + e.getMessage());
+            lastLine = "No user actions found.";
+        }
+
+        return lastLine.isEmpty() ? "No user actions found." : lastLine;
+    }
 }
