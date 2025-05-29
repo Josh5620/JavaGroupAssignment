@@ -1364,23 +1364,23 @@ public class PMForm1 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnRefreshItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshItemsActionPerformed
-//        ItemManager manager = new ItemManager();
-//        List<Item> itemList = manager.getAllItems();
-//
-//        DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
-//        model.setRowCount(0);
-//
-//        for (Item item : itemList) {
-//            model.addRow(new Object[] {
-//                item.getItemId(),
-//                item.getItemName(),
-//                item.getPrice(),
-//                item.getSupplierId()
-//            });
-//        }
-//
-//        tblItems.setModel(model);
-//        
+        ItemManager manager = new ItemManager();
+        List<Item> itemList = manager.getAllItems();
+
+        DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
+        model.setRowCount(0);
+
+        for (Item item : itemList) {
+            model.addRow(new Object[] {
+                item.getItemId(),
+                item.getItemName(),
+                item.getPrice(),
+                item.getSupplierId()
+            });
+        }
+
+        tblItems.setModel(model);
+        
 
     }//GEN-LAST:event_btnRefreshItemsActionPerformed
 
@@ -1456,30 +1456,30 @@ public class PMForm1 extends javax.swing.JFrame {
         String poID = comboPOIDEdit.getSelectedItem().toString();
         String date = txtDate2.getText().trim();
         String status = ComboStatus.getSelectedItem().toString();
-
-
-    
-        String itemIDs = txtItemID2.getText().trim();
-        String quantities = txtQuantity2.getText().trim();
         String pmID = txtPMID.getText().trim();
         String resolution = txtResolution.getText().trim();
-
-        int quantity;
-        try {
-            quantity = Integer.parseInt(quantities);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Quantity must be a number.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+    
+        PurchaseOrderManager manager = new PurchaseOrderManager();
+        List<PurchaseOrder> poList = manager.getAllPOs();
+        PurchaseOrder selectedPO = null;
+        for (PurchaseOrder po : poList) {
+            if (po.getPoID().equals(poID)) {
+                selectedPO = po;
+                break;
+            }
         }
 
-        double price = 0.0;
+        if (selectedPO != null) {
+            String itemIDs = selectedPO.getItemIDs();
+            String quantities = selectedPO.getQuantities();
 
-        PurchaseOrder updatedPO = new PurchaseOrder(poID, itemID, quantity, date, supplierID, price, pmID, "Processing");    
-        PurchaseOrder updatedPO = new PurchaseOrder(poID, date, itemIDs, quantities, status, pmID, resolution);
-        PurchaseOrderManager manager = new PurchaseOrderManager();
-        manager.editPO(updatedPO);
+            PurchaseOrder updatedPO = new PurchaseOrder(poID, date, itemIDs, quantities, status, pmID, resolution);
+            manager.editPO(updatedPO);
 
-        JOptionPane.showMessageDialog(this, "PO updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "PO updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Selected PO not found!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEdit2ActionPerformed
 
     private void btnBack7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack7ActionPerformed
