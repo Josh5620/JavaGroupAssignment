@@ -1364,23 +1364,23 @@ public class PMForm1 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnRefreshItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshItemsActionPerformed
-        ItemManager manager = new ItemManager();
-        List<Item> itemList = manager.getAllItems();
-
-        DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
-        model.setRowCount(0);
-
-        for (Item item : itemList) {
-            model.addRow(new Object[] {
-                item.getItemId(),
-                item.getItemName(),
-                item.getPrice(),
-                item.getSupplierId()
-            });
-        }
-
-        tblItems.setModel(model);
-        
+//        ItemManager manager = new ItemManager();
+//        List<Item> itemList = manager.getAllItems();
+//
+//        DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
+//        model.setRowCount(0);
+//
+//        for (Item item : itemList) {
+//            model.addRow(new Object[] {
+//                item.getItemId(),
+//                item.getItemName(),
+//                item.getPrice(),
+//                item.getSupplierId()
+//            });
+//        }
+//
+//        tblItems.setModel(model);
+//        
 
     }//GEN-LAST:event_btnRefreshItemsActionPerformed
 
@@ -1457,13 +1457,24 @@ public class PMForm1 extends javax.swing.JFrame {
         String date = txtDate2.getText().trim();
         String status = ComboStatus.getSelectedItem().toString();
 
+
     
         String itemIDs = txtItemID2.getText().trim();
         String quantities = txtQuantity2.getText().trim();
         String pmID = txtPMID.getText().trim();
         String resolution = txtResolution.getText().trim();
 
-    
+        int quantity;
+        try {
+            quantity = Integer.parseInt(quantities);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Quantity must be a number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double price = 0.0;
+
+        PurchaseOrder updatedPO = new PurchaseOrder(poID, itemID, quantity, date, supplierID, price, pmID, "Processing");    
         PurchaseOrder updatedPO = new PurchaseOrder(poID, date, itemIDs, quantities, status, pmID, resolution);
         PurchaseOrderManager manager = new PurchaseOrderManager();
         manager.editPO(updatedPO);

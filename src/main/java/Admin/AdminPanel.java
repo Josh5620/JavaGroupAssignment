@@ -1,5 +1,6 @@
 package Admin;
 import UserLogin.LoginPage;
+import InventoryManager.IMForm;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -8,11 +9,18 @@ import javax.swing.table.DefaultTableModel;
 import InventoryManager.InvenUser;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.table.TableRowSorter;
+import javax.swing.Timer;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 
 public class AdminPanel extends javax.swing.JFrame {
@@ -28,18 +36,61 @@ public class AdminPanel extends javax.swing.JFrame {
             put("Inventory Manager", "IM"); 
         }};
          
-    public AdminPanel() {
+    public AdminPanel(String username, String password) {
         initComponents();
+        setupAdminDashboard();
+        homePageLoad(username, password);
+        
+        admin.setCurrentUsername(username);
+        System.out.println("Admin username set to: " + admin.getCurrentUsername());
+    }
+    public AdminPanel(String username, String password, boolean SA){
+        initComponents();
+        
+        homePageLoad(username, password);
+        if(SA == true){
+            admin = new SuperAdmin();
+        }
+        else{
+            admin = new Admin(); // Fallback if unexpected error happens
+        }
+        
+        admin.setCurrentUsername(username);
+        System.out.println("Admin username set to: " + admin.getCurrentUsername());
+        buildUserTable();
+        System.out.println(admin.getClass());
+    }
+
+    private Timer clockTimer;
+    
+    private void startDateTime() {
+        clockTimer = new Timer(1000, e -> {
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            
+            DateTimeLabel.setText("Current Time: " + now.format(formatter));
+        });
+        clockTimer.start();
+    }
+    
+    
+    // Method used to load the home page 
+    private void homePageLoad(String username, String role){
+    this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
+    AdminLayout.show(AdminMainPanel, "HomeCard");  
+    admin.checkAlert(username, role);
+    WelcomUserLabel.setText("Welcome User: " + username);
+    RoleLabel.setText("Role: " + role);
+    startDateTime();
+    }
+        
+    private void setupAdminDashboard(){
         this.AdminLayout = (CardLayout)(AdminMainPanel.getLayout());
         AdminLayout.show(AdminMainPanel, "HomeCard");
         buildUserTable();
-        
     }
+    
 
-    
-    
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,7 +106,12 @@ public class AdminPanel extends javax.swing.JFrame {
         IMPanel = new javax.swing.JPanel();
         FMPanel = new javax.swing.JPanel();
         AdminHPPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        WelcomUserLabel = new javax.swing.JLabel();
+        RoleLabel = new javax.swing.JLabel();
+        RoleLabel1 = new javax.swing.JLabel();
+        RoleLabel2 = new javax.swing.JLabel();
+        DateTimeLabel = new javax.swing.JLabel();
         ManageUserP = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -105,7 +161,7 @@ public class AdminPanel extends javax.swing.JFrame {
         SMPanel.setLayout(SMPanelLayout);
         SMPanelLayout.setHorizontalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 676, Short.MAX_VALUE)
+            .addGap(0, 753, Short.MAX_VALUE)
         );
         SMPanelLayout.setVerticalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,7 +176,7 @@ public class AdminPanel extends javax.swing.JFrame {
         PMPanel.setLayout(PMPanelLayout);
         PMPanelLayout.setHorizontalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 676, Short.MAX_VALUE)
+            .addGap(0, 753, Short.MAX_VALUE)
         );
         PMPanelLayout.setVerticalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,7 +192,7 @@ public class AdminPanel extends javax.swing.JFrame {
         IMPanel.setLayout(IMPanelLayout);
         IMPanelLayout.setHorizontalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 676, Short.MAX_VALUE)
+            .addGap(0, 753, Short.MAX_VALUE)
         );
         IMPanelLayout.setVerticalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,7 +207,7 @@ public class AdminPanel extends javax.swing.JFrame {
         FMPanel.setLayout(FMPanelLayout);
         FMPanelLayout.setHorizontalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 676, Short.MAX_VALUE)
+            .addGap(0, 753, Short.MAX_VALUE)
         );
         FMPanelLayout.setVerticalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,28 +216,88 @@ public class AdminPanel extends javax.swing.JFrame {
 
         AdminMainPanel.add(FMPanel, "FMCard");
 
-        AdminHPPanel.setBackground(new java.awt.Color(0, 102, 0));
+        AdminHPPanel.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel1.setText("Hello Admin");
+        jPanel1.setBackground(new java.awt.Color(255, 153, 51));
+
+        WelcomUserLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        WelcomUserLabel.setForeground(new java.awt.Color(0, 0, 0));
+        WelcomUserLabel.setText("Welcome, username");
+        WelcomUserLabel.setToolTipText("");
+
+        RoleLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        RoleLabel.setForeground(new java.awt.Color(0, 0, 0));
+        RoleLabel.setText("Role: role");
+        RoleLabel.setToolTipText("");
+
+        RoleLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        RoleLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        RoleLabel1.setText("Last User Added:");
+        RoleLabel1.setToolTipText("");
+
+        RoleLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        RoleLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        RoleLabel2.setText("Number of users registered in system:");
+        RoleLabel2.setToolTipText("");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(RoleLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(WelcomUserLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                        .addGap(14, 14, 14)
+                        .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(59, 59, 59))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(RoleLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(WelcomUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(RoleLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(RoleLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(243, Short.MAX_VALUE))
+        );
+
+        DateTimeLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        DateTimeLabel.setForeground(new java.awt.Color(0, 0, 0));
+        DateTimeLabel.setText("Timedate");
+        DateTimeLabel.setToolTipText("");
 
         javax.swing.GroupLayout AdminHPPanelLayout = new javax.swing.GroupLayout(AdminHPPanel);
         AdminHPPanel.setLayout(AdminHPPanelLayout);
         AdminHPPanelLayout.setHorizontalGroup(
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
-                .addGap(197, 197, 197)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(403, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(DateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(AdminHPPanelLayout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 54, Short.MAX_VALUE))
         );
         AdminHPPanelLayout.setVerticalGroup(
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
-                .addGap(99, 99, 99)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addComponent(DateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(12, 12, 12))
         );
-
-        jLabel1.getAccessibleContext().setAccessibleDescription("");
 
         AdminMainPanel.add(AdminHPPanel, "HomeCard");
 
@@ -217,7 +333,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Role:");
 
-        RoleBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select A Role", "Sales Manager", "Purchase Manager", "Finance Manager", "Inventory Manager" }));
+        RoleBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select A Role", "Sales Manager", "Purchase Manager", "Finance Manager", "Admin", "Inventory Manager" }));
 
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Functions:");
@@ -394,7 +510,7 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addGroup(ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(FilterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(UserMPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
         ManageUserPLayout.setVerticalGroup(
             ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -561,7 +677,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_PMBtnActionPerformed
 
     private void IMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IMBtnActionPerformed
-        AdminLayout.show(AdminMainPanel, "IMCard");
+        launchRoleDashboard("im4", "p18", "IM", this);
     }//GEN-LAST:event_IMBtnActionPerformed
 
     private void FMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FMBtnActionPerformed
@@ -621,7 +737,8 @@ public class AdminPanel extends javax.swing.JFrame {
         Usermodel.setRowCount(0);
         
         // Add users from the UserList
-        for (List<String> user: admin.UserList){
+        List<List<String>> userList = admin.getUserList();
+        for (List<String> user: userList){
             Usermodel.addRow(new Object[]{
             user.get(0),
             user.get(1),
@@ -660,6 +777,27 @@ public class AdminPanel extends javax.swing.JFrame {
         buildUserTable();
     }
     
+    public void launchRoleDashboard(String username, String password, String role, JFrame adminFrame) {
+        switch (role) {
+            case "IM" -> new IMForm(username, password, adminFrame).setVisible(true);
+            default -> JOptionPane.showMessageDialog(null, "Invalid role!");
+        }
+    //        case "SM":
+    //            new SMForm(username, password, adminFrame).setVisible(true);
+    //            break;
+    //        case "PM":
+    //            new PMForm(username, password, adminFrame).setVisible(true);
+    //            break;
+    //        case "FM":
+    //            new FMForm(username, password, adminFrame).setVisible(true);
+    //            break;
+
+        if (adminFrame != null) {
+            adminFrame.setVisible(false);
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -690,7 +828,7 @@ public class AdminPanel extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminPanel().setVisible(true);
+                new AdminPanel("adm2", "p6").setVisible(true);
             }
         });
     }
@@ -700,6 +838,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPanel AdminHPPanel;
     private javax.swing.JPanel AdminMainPanel;
     private javax.swing.JPanel AdminSidePanel;
+    private javax.swing.JLabel DateTimeLabel;
     private javax.swing.JTextField DelUserBox;
     private javax.swing.JButton DeleteUBtn;
     private javax.swing.JButton FMBtn;
@@ -717,12 +856,15 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JTextField PasswdBox;
     private javax.swing.JComboBox<String> RoleBox;
     private javax.swing.JComboBox<String> RoleFilterBox;
+    private javax.swing.JLabel RoleLabel;
+    private javax.swing.JLabel RoleLabel1;
+    private javax.swing.JLabel RoleLabel2;
     private javax.swing.JButton SMBtn;
     private javax.swing.JPanel SMPanel;
     private javax.swing.JButton UpdateUBtn;
     private javax.swing.JPanel UserMPanel;
     private javax.swing.JTextField UserNBox;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel WelcomUserLabel;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -736,6 +878,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables

@@ -1,5 +1,6 @@
 package InventoryManager;
 import javax.swing.*;
+import InventoryManager.PurchaseOrder;
 import UserLogin.LoginPage;
 import java.awt.event.*;
 import java.awt.Component;
@@ -15,15 +16,43 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class IMForm extends javax.swing.JFrame {
 
     public IMForm(String username, String role) {
-                
+        
         initComponents();
-        customizeTable();
+        customizeTable(InvenTable);
+        customizeTable(SmallTable);
         homePageLoad(username,role);
     }
     
+    // Constructor for admin access to role dashboard
+    private JFrame adminFrame; // For returning to Admin Panel
+    
+    public IMForm(String username, String role, JFrame adminFrame) {
+    this(username, role); // call existing constructor
+    this.adminFrame = adminFrame;
+
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+    
+    // Add listener to bring back admin panel when IMForm closes
+    this.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            if (adminFrame != null) {
+                adminFrame.setVisible(true);
+            }
+        }
+    });
+}
+    
     InvenUser user = new InvenUser();
-    List<List<String>> PurchaseOrderList = new ArrayList<>();
+    List<List<String>> PurchaseOrderTextList = new ArrayList<>();
+    List<List<String>> ApprovedOrderList = new ArrayList<>();
     String POFilePath = "src/PurchaseOrders.txt";
+    String[] itemIDs;
+    String[] incomingQty;
+    int total; 
+    String targetItemID;
+    List<String> focusAPO = new ArrayList<>();
+    List<PurchaseOrder> PurchaseOrderList = new ArrayList<>();
     
     
     
@@ -70,9 +99,24 @@ public class IMForm extends javax.swing.JFrame {
         specificUserField = new javax.swing.JTextField();
         specificUserBtn = new javax.swing.JButton();
         UpdateStock = new javax.swing.JPanel();
+        Label7 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        ApprovedList = new javax.swing.JList<>();
+        APOBtn = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        ClearBtn = new javax.swing.JButton();
+        SubmitBtn = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        AfterBox = new javax.swing.JTextField();
+        BfrBox = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        IDNameBox = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        SmallTable = new javax.swing.JTable();
+        UpdateBtn = new javax.swing.JButton();
         StockReport = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        Label8 = new javax.swing.JLabel();
         ViewPOs = new javax.swing.JPanel();
         Label6 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -81,10 +125,7 @@ public class IMForm extends javax.swing.JFrame {
         POTextArea = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        Panel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        POForm = new javax.swing.JButton();
         SidePanel = new javax.swing.JPanel();
         ExitButton = new javax.swing.JButton();
         HomeButton = new javax.swing.JButton();
@@ -417,66 +458,235 @@ public class IMForm extends javax.swing.JFrame {
 
         MainPanel.add(InvenNAlerts, "card3");
 
-        jLabel6.setText("Panel6");
+        UpdateStock.setBackground(new java.awt.Color(153, 153, 153));
+
+        Label7.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Label7.setText("Update Stock");
+
+        ApprovedList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Load APOs to View", " " };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane6.setViewportView(ApprovedList);
+
+        APOBtn.setBackground(new java.awt.Color(153, 153, 255));
+        APOBtn.setText("Load APOs");
+        APOBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                APOBtnActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
+
+        ClearBtn.setBackground(new java.awt.Color(255, 51, 51));
+        ClearBtn.setText("Clear");
+        ClearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearBtnActionPerformed(evt);
+            }
+        });
+
+        SubmitBtn.setBackground(new java.awt.Color(102, 255, 102));
+        SubmitBtn.setText("Submit");
+        SubmitBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SubmitBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setText("Quantity before:");
+
+        AfterBox.setEditable(false);
+        AfterBox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        BfrBox.setEditable(false);
+        BfrBox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setText("Quantity after:");
+
+        IDNameBox.setEditable(false);
+        IDNameBox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setText("Details:");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel5)
+                        .addComponent(IDNameBox, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(BfrBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                            .addComponent(AfterBox, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addComponent(jLabel6))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(SubmitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ClearBtn)
+                        .addGap(6, 6, 6)))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(IDNameBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BfrBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AfterBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ClearBtn)
+                    .addComponent(SubmitBtn))
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        SmallTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "ID", "Name", "Quantity"
+            }
+        ));
+        jScrollPane7.setViewportView(SmallTable);
+
+        UpdateBtn.setBackground(new java.awt.Color(153, 153, 255));
+        UpdateBtn.setText("Update");
+        UpdateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout UpdateStockLayout = new javax.swing.GroupLayout(UpdateStock);
         UpdateStock.setLayout(UpdateStockLayout);
         UpdateStockLayout.setHorizontalGroup(
             UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(UpdateStockLayout.createSequentialGroup()
-                .addGap(252, 252, 252)
-                .addComponent(jLabel6)
-                .addContainerGap(373, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addGroup(UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(UpdateStockLayout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(APOBtn)
+                            .addGroup(UpdateStockLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(UpdateBtn)))
+                        .addContainerGap(27, Short.MAX_VALUE))))
+            .addGroup(UpdateStockLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(Label7)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         UpdateStockLayout.setVerticalGroup(
             UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UpdateStockLayout.createSequentialGroup()
-                .addContainerGap(280, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(244, 244, 244))
+                .addGap(24, 24, 24)
+                .addComponent(Label7, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(UpdateStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(UpdateStockLayout.createSequentialGroup()
+                        .addComponent(APOBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(UpdateBtn)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         MainPanel.add(UpdateStock, "card6");
 
-        jLabel4.setText("Panel4");
+        Label8.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Label8.setText("Generate Stock Report");
 
         javax.swing.GroupLayout StockReportLayout = new javax.swing.GroupLayout(StockReport);
         StockReport.setLayout(StockReportLayout);
         StockReportLayout.setHorizontalGroup(
             StockReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockReportLayout.createSequentialGroup()
-                .addContainerGap(334, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(291, 291, 291))
+            .addGroup(StockReportLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(Label8)
+                .addContainerGap(246, Short.MAX_VALUE))
         );
         StockReportLayout.setVerticalGroup(
             StockReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StockReportLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(546, 546, 546))
+            .addGroup(StockReportLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(Label8, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(457, Short.MAX_VALUE))
         );
 
         MainPanel.add(StockReport, "card4");
 
+        ViewPOs.setBackground(new java.awt.Color(153, 153, 153));
+        ViewPOs.setForeground(new java.awt.Color(153, 153, 153));
+
         Label6.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Label6.setText("Purchase Orders");
 
-        POList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        POList.setBackground(new java.awt.Color(204, 204, 204));
+        POList.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         POList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "Refresh List", "To Load" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane5.setViewportView(POList);
 
+        POTextArea.setEditable(false);
+        POTextArea.setBackground(new java.awt.Color(204, 204, 204));
         POTextArea.setColumns(20);
+        POTextArea.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         POTextArea.setRows(5);
         jScrollPane4.setViewportView(POTextArea);
 
         jButton1.setText("Load Details");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Refresh");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        POForm.setText("Detail Form");
+        POForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                POFormActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ViewPOsLayout = new javax.swing.GroupLayout(ViewPOs);
         ViewPOs.setLayout(ViewPOsLayout);
@@ -490,97 +700,35 @@ public class IMForm extends javax.swing.JFrame {
                         .addGap(6, 6, 6)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButton3))))
-                .addContainerGap(8, Short.MAX_VALUE))
+                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(ViewPOsLayout.createSequentialGroup()
+                                .addComponent(jButton3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(POForm)))))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
         ViewPOsLayout.setVerticalGroup(
             ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ViewPOsLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(Label6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ViewPOsLayout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
-                            .addComponent(jScrollPane4))
-                        .addContainerGap(47, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ViewPOsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addGap(54, 54, 54))))
+                        .addGroup(ViewPOsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton3)
+                            .addComponent(jButton1)
+                            .addComponent(POForm)))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         MainPanel.add(ViewPOs, "card5");
-
-        jLabel2.setText("Panel2");
-
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "ItemID", "ItemName", "Supplier", "Quantity"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-        }
-
-        javax.swing.GroupLayout Panel2Layout = new javax.swing.GroupLayout(Panel2);
-        Panel2.setLayout(Panel2Layout);
-        Panel2Layout.setHorizontalGroup(
-            Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
-                .addContainerGap(127, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(192, 192, 192)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
-        );
-        Panel2Layout.setVerticalGroup(
-            Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel2Layout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
-                .addGroup(Panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(186, 186, 186))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49))))
-        );
-
-        MainPanel.add(Panel2, "card2");
 
         getContentPane().add(MainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 0, 660, 540));
 
@@ -618,7 +766,7 @@ public class IMForm extends javax.swing.JFrame {
         jLabel9.setRequestFocusEnabled(false);
 
         Button4.setBackground(new java.awt.Color(173, 216, 230));
-        Button4.setText("jButton3");
+        Button4.setText("Stock Report");
         Button4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ColouredHighlight(evt);
@@ -634,7 +782,7 @@ public class IMForm extends javax.swing.JFrame {
         });
 
         Button5.setBackground(new java.awt.Color(173, 216, 230));
-        Button5.setText("jButton3");
+        Button5.setText("Update Stock");
         Button5.setActionCommand("Button3");
         Button5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -651,7 +799,7 @@ public class IMForm extends javax.swing.JFrame {
         });
 
         Button3.setBackground(new java.awt.Color(173, 216, 230));
-        Button3.setText("jButton3");
+        Button3.setText("Purchase Orders");
         Button3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 ColouredHighlight(evt);
@@ -785,11 +933,11 @@ public class IMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_Button2Action
 
     private void Button3Action(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button3Action
-        cl.show(MainPanel, "card2");  
+        cl.show(MainPanel, "card5");   
     }//GEN-LAST:event_Button3Action
 
     private void Button4Action(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button4Action
-        cl.show(MainPanel, "card5");  
+        cl.show(MainPanel, "card2");  
     }//GEN-LAST:event_Button4Action
 
     private void AllUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AllUserBtnActionPerformed
@@ -805,6 +953,41 @@ public class IMForm extends javax.swing.JFrame {
        
         user.lowItemAlertSend(specificUserField.getText());
     }//GEN-LAST:event_specificUserBtnActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        loadPOs();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        PODetails();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void APOBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_APOBtnActionPerformed
+       loadAPOs();
+    }//GEN-LAST:event_APOBtnActionPerformed
+
+    private void UpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBtnActionPerformed
+        UpdatePO();
+    }//GEN-LAST:event_UpdateBtnActionPerformed
+
+    private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
+        IDNameBox.setText("");
+        BfrBox.setText("");
+        AfterBox.setText("");
+    }//GEN-LAST:event_ClearBtnActionPerformed
+
+    private void SubmitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitBtnActionPerformed
+        submitUpdate();
+        IDNameBox.setText("");
+        BfrBox.setText("");
+        AfterBox.setText("");
+        customizeTable(SmallTable);
+        customizeTable(InvenTable);
+    }//GEN-LAST:event_SubmitBtnActionPerformed
+
+    private void POFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POFormActionPerformed
+        showPOForm();
+    }//GEN-LAST:event_POFormActionPerformed
     
     public static void main(String args[]) {
 
@@ -819,15 +1002,21 @@ public class IMForm extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton APOBtn;
+    private javax.swing.JTextField AfterBox;
     private javax.swing.JButton AllUserBtn;
+    private javax.swing.JList<String> ApprovedList;
+    private javax.swing.JTextField BfrBox;
     private javax.swing.JButton Button1;
     private javax.swing.JButton Button2;
     private javax.swing.JButton Button3;
     private javax.swing.JButton Button4;
     private javax.swing.JButton Button5;
+    private javax.swing.JButton ClearBtn;
     private javax.swing.JButton ExitButton;
     private javax.swing.JButton HomeButton;
     private javax.swing.JPanel HomePanel;
+    private javax.swing.JTextField IDNameBox;
     private javax.swing.JPanel InvenNAlerts;
     private javax.swing.JTable InvenTable;
     private javax.swing.JLabel LSA1;
@@ -841,14 +1030,19 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel Label4;
     private javax.swing.JLabel Label5;
     private javax.swing.JLabel Label6;
+    private javax.swing.JLabel Label7;
+    private javax.swing.JLabel Label8;
     private javax.swing.JPanel MainPanel;
+    private javax.swing.JButton POForm;
     private javax.swing.JList<String> POList;
     private javax.swing.JTextArea POTextArea;
-    private javax.swing.JPanel Panel2;
     private javax.swing.JPanel SidePanel;
+    private javax.swing.JTable SmallTable;
     private javax.swing.JPanel StockReport;
+    private javax.swing.JButton SubmitBtn;
     private javax.swing.JLabel TAI;
     private javax.swing.JLabel UAP;
+    private javax.swing.JButton UpdateBtn;
     private javax.swing.JPanel UpdateStock;
     private javax.swing.JPanel ViewPOs;
     private javax.swing.JButton jButton1;
@@ -860,40 +1054,41 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JProgressBar jProgressBar2;
     private javax.swing.JProgressBar jProgressBar3;
     private javax.swing.JProgressBar jProgressBar4;
     private javax.swing.JProgressBar jProgressBar5;
     private javax.swing.JProgressBar jProgressBar6;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton specificUserBtn;
     private javax.swing.JTextField specificUserField;
     // End of variables declaration//GEN-END:variables
     
-    private void customizeTable(){
-        InvenTable.getTableHeader().setReorderingAllowed(false);
-        InvenTable.getTableHeader().setResizingAllowed(false);
-        InvenTable.setRowSelectionAllowed(true);
+    private void customizeTable(JTable table){
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setResizingAllowed(false);
+        table.setRowSelectionAllowed(true);
 
         // Adjust column widths for 3 columns
-        InvenTable.getColumnModel().getColumn(0).setPreferredWidth(75);   // ID
-        InvenTable.getColumnModel().getColumn(1).setPreferredWidth(150);  // Name
-        InvenTable.getColumnModel().getColumn(2).setPreferredWidth(100);  // Quantity
+        table.getColumnModel().getColumn(0).setPreferredWidth(75);   // ID
+        table.getColumnModel().getColumn(1).setPreferredWidth(150);  // Name
+        table.getColumnModel().getColumn(2).setPreferredWidth(100);  // Quantity
 
-        DefaultTableModel model = (DefaultTableModel) InvenTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0); 
 
         // Add only 3 columns worth of data
@@ -902,7 +1097,7 @@ public class IMForm extends javax.swing.JFrame {
         }
 
         // Custom renderer to highlight low stock (quantity < 10)
-        InvenTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
                     boolean isSelected, boolean hasFocus, int row, int column){
@@ -926,7 +1121,7 @@ public class IMForm extends javax.swing.JFrame {
             }
         });
 
-        InvenTable.repaint();
+        table.repaint();
     }
 
     private void homePageLoad(String username, String role){
@@ -981,11 +1176,146 @@ public class IMForm extends javax.swing.JFrame {
     }
     
     private void loadPOs(){
-        user.makeBigList(POFilePath, PurchaseOrderList);
+        PurchaseOrderTextList.clear();
+        user.makeBigList(POFilePath, PurchaseOrderTextList);
+        
+        DefaultListModel<String> model = new DefaultListModel<>();
+        POList.setModel(model);
+        PurchaseOrderList.clear();
+        for(List<String> order : PurchaseOrderTextList){
+            PurchaseOrderList.add(new PurchaseOrder(order));
+            model.addElement(order.get(0));       
+        }      
+    }   
+   
+    private void PODetails(){
         StringBuilder builder = new StringBuilder();
-        for(List<String> order : PurchaseOrderList){
+        String selectedItem = POList.getSelectedValue();
+        
+            for (List<String> parts : PurchaseOrderTextList) {
+                if (parts.get(0).equals(selectedItem)) {
+                    builder.append("Purchase ID: ").append(parts.get(0)).append("\n");
+                    builder.append("Date: ").append(parts.get(1)).append("\n");
+                    builder.append("Item IDs: ").append(parts.get(2)).append("\n");
+                    builder.append("Quantities: ").append(parts.get(3)).append("\n");
+                    builder.append("Status: ").append(parts.get(4)).append("\n");
+                    builder.append("Approved By: ").append(parts.get(5)).append("\n");
+                    builder.append("Resolution: ").append(parts.get(6)).append("\n\n");
+                    break;
+                }
+            }
+
+            if (builder.length() == 0) {
+                builder.append("No purchase orders found for this item.");
+            }
+
+            POTextArea.setText(builder.toString());
+        }
+        
+    private void loadAPOs(){
+        PurchaseOrderTextList.clear();
+        user.makeBigList(POFilePath, PurchaseOrderTextList);
             
-            
+        DefaultListModel<String> model = new DefaultListModel<>();
+        ApprovedList.setModel(model);
+        System.out.println(PurchaseOrderTextList);
+        
+        for(List<String> order : PurchaseOrderTextList){
+            if(order.get(4).equals("Approved") && order.get(6).equals("Unresolved")){
+                ApprovedOrderList.add(order);
+                    String displayText = String.format(
+                    "PurchaseID: %s | Date: %s | ItemIDs: %s | Quantities: %s | Status: %s | Approved By: %s |",
+                    order.get(0), order.get(1), order.get(2), order.get(3),
+                    order.get(4), order.get(5) 
+                );
+                model.addElement(displayText);
+            }
         }
     }
+    
+    private void UpdatePO(){
+        int index = ApprovedList.getSelectedIndex();
+        if(index == -1){
+            return;
+        }
+        System.out.println(index);
+
+        focusAPO = ApprovedOrderList.get(index);
+        itemIDs = focusAPO.get(2).split("/");     
+        incomingQty = focusAPO.get(3).split("/"); 
+
+        StringBuilder bfr = new StringBuilder();
+        StringBuilder aft = new StringBuilder();
+
+        for (int i = 0; i < itemIDs.length; i++) {
+            String id = itemIDs[i];
+            String incoming = incomingQty[i];
+
+            for (List<String> item : user.getInvenList()) {
+                if (item.get(0).equals(id)) {
+                    int oldQty = Integer.parseInt(item.get(2));
+                    int newQty = oldQty + Integer.parseInt(incoming);
+
+                    bfr.append(oldQty).append("/");
+                    aft.append(newQty).append("/");
+                    break;
+                }
+            }
+        }
+        if (bfr.length() > 0) bfr.setLength(bfr.length() - 1);
+        if (aft.length() > 0) aft.setLength(aft.length() - 1);
+
+        IDNameBox.setText(focusAPO.get(2));
+        BfrBox.setText(bfr.toString());
+        AfterBox.setText(aft.toString());
+    }
+    
+    private void submitUpdate(){
+        
+        StringBuilder confirmText = new StringBuilder("Confirm Inventory Update:\n");
+        for (int i = 0; i < itemIDs.length; i++) {
+            confirmText.append("Item: ").append(itemIDs[i])
+                       .append(" | Add: ").append(incomingQty[i]).append("\n");
+            }
+        
+        int choice = JOptionPane.showConfirmDialog(
+            null,
+            confirmText.toString(),
+            "Inventory Update",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+        
+        if (choice == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < itemIDs.length; i++) {
+                String itemID = itemIDs[i];
+                int addQty = Integer.parseInt(incomingQty[i]);
+
+                for (List<String> item : user.getInvenList()) {
+                    if (item.get(0).equals(itemID)) {
+                        int newTotal = Integer.parseInt(item.get(2)) + addQty;
+                        user.updateStock(itemID, newTotal);
+                        break;
+                    }
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Inventory updated successfully.");
+            focusAPO.set(6, "Resolved");
+            user.updateTextFile(PurchaseOrderTextList, POFilePath);
+        } else {
+            JOptionPane.showMessageDialog(null, "Update cancelled.");
+        }
+    }
+    
+    private void showPOForm(){
+        String selectedItem = POList.getSelectedValue();
+            for (PurchaseOrder PO : PurchaseOrderList) {
+                if (PO.getPoID().equals(selectedItem)) {
+                    PO.showPO();
+                }
+            }
+    }
 }
+
+

@@ -4,69 +4,45 @@
  */
 package FinanceManager.model;
 
-
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.util.Date;
 /**
  *
  * @author sumingfei
  */
-public class PurchaseRequisition {
-    
-    private String prId;
-    private LocalDate date;
-    private String description;
+public class PurchaseRequisition implements Serializable{
+    private static final long serialVersionUID = 1L;
+
+    private int id;
+    private String itemCode;
     private int quantity;
-    private String status;  // e.g. "PENDING", "APPROVED"
+    private Date dateRequested;
+    private int supplierId;
+    private String status;        // ← new!
 
-    public PurchaseRequisition(String prId, LocalDate date, String desc, int qty, String status) {
-        this.prId = prId;
-        this.date = date;
-        this.description = desc;
-        this.quantity = qty;
-        this.status = status;
+
+    // Constructor must accept 5 arguments:
+    public PurchaseRequisition(int id,
+                               String itemCode,
+                               int quantity,
+                               Date dateRequested,
+                               int supplierId)
+    {
+        this.id             = id;
+        this.itemCode       = itemCode;
+        this.quantity       = quantity;
+        this.dateRequested  = dateRequested;
+        this.supplierId     = supplierId;
+        this.status       = "REQUIRED";   // ← default
     }
 
-    // getters & setters
-    public String getPrId() {
-        return prId;
-    }
+    public int    getId()             { return id; }
+    public String getItemCode()       { return itemCode; }
+    public int    getQuantity()       { return quantity; }
+    public Date   getDateRequested()  { return dateRequested; }
+    public int    getSupplierId()     { return supplierId; }   // ← new getter
+    public String getStatus()       { return status; }    // ← new!
 
-    public void setPrId(String prId) {
-        this.prId = prId;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    
-    
+    // (add setters here if you need to be able to change any of these fields later)
     
 }
