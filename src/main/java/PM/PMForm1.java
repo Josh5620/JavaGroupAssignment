@@ -1580,8 +1580,6 @@ public class PMForm1 extends javax.swing.JFrame {
 
         PurchaseOrderManager manager = new PurchaseOrderManager();
         manager.addPOFromPR(prID, date.trim(), pmID);
-
-        JOptionPane.showMessageDialog(this, "Purchase Order generated successfully based on selected PR.", "Success", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnGeneratePOActionPerformed
 
     private void comboPOIDEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPOIDEditActionPerformed

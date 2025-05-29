@@ -14,7 +14,7 @@ import java.util.*;
 
 
 public class PurchaseRequisitionManager {
-    private final String filePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions.txt";
+    private final String filePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
 
     public List<PurchaseRequisition> getAllPRs() {
         List<PurchaseRequisition> prList = new ArrayList<>();

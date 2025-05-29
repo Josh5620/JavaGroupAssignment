@@ -14,11 +14,11 @@ import java.util.*;
 public class PurchaseOrderManager {
     private final String itemsFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt" ;
     private final String poFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseOrders.txt";
-    private final String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions.txt";
+    private final String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
 
     public void addPOFromPR(String prID, String date, String pmID) {
         try {
-            String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions.txt";
+            String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
             String itemIDs = "", quantities = "", supplierID = "", smID = "", status = "";
             boolean found = false;
 
