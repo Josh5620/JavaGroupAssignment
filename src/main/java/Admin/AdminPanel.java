@@ -1,6 +1,6 @@
 package Admin;
 import UserLogin.LoginPage;
-import InventoryManager.IMForm;
+import InventoryManager.*;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -25,7 +25,8 @@ import java.time.format.DateTimeFormatter;
 
 public class AdminPanel extends javax.swing.JFrame {
     CardLayout AdminLayout;
-    Admin admin = new Admin();    
+    Admin admin = new Admin();
+    InvenUser IM = new InvenUser();
         
         // Initialize a hashmap for user roles
         private Map<String, String> roleMap = new HashMap<>() {{
@@ -81,6 +82,9 @@ public class AdminPanel extends javax.swing.JFrame {
     admin.checkAlert(username, role);
     WelcomUserLabel.setText("Welcome User: " + username);
     RoleLabel.setText("Role: " + role);
+    UserNLabel.setText(Integer.toString(admin.getUserList().size()));
+    LastUserLabel.setText(admin.getLastUserActionLog());
+    matchBars(IM.botSix());
     startDateTime();
     }
         
@@ -90,6 +94,35 @@ public class AdminPanel extends javax.swing.JFrame {
         buildUserTable();
     }
     
+        private void matchBars(List<List<String>> bot6){
+        List<String> nameList = new ArrayList<>();
+        List<Integer> amountList = new ArrayList<>();
+        
+        List<JProgressBar> barsList = Arrays.asList(
+            jProgressBar1,jProgressBar2,jProgressBar3,
+            jProgressBar4,jProgressBar5,jProgressBar6);
+        
+        List<JLabel> labelList = Arrays.asList(
+            LSA1,LSA2,LSA3,LSA4,LSA5,LSA6); 
+        
+        for(List<String> item : bot6){
+            nameList.add(item.get(1));
+            amountList.add(Integer.valueOf(item.get(2)));
+        }
+            
+        for(int i = 0; i < barsList.size(); i++){
+            JProgressBar bar = barsList.get(i);
+            bar.setMinimum(0);
+            bar.setMaximum(50);
+            bar.setValue(amountList.get(i));
+            bar.setStringPainted(true);        
+        }
+        for(int i = 0; i < labelList.size(); i++){
+            JLabel label = labelList.get(i);
+            label.setText(nameList.get(i));
+        }
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,7 +143,22 @@ public class AdminPanel extends javax.swing.JFrame {
         WelcomUserLabel = new javax.swing.JLabel();
         RoleLabel = new javax.swing.JLabel();
         RoleLabel1 = new javax.swing.JLabel();
+        UserNLabel = new javax.swing.JLabel();
+        RoleLabel3 = new javax.swing.JLabel();
+        LastUserLabel = new javax.swing.JLabel();
         RoleLabel2 = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jProgressBar2 = new javax.swing.JProgressBar();
+        jProgressBar3 = new javax.swing.JProgressBar();
+        jProgressBar4 = new javax.swing.JProgressBar();
+        jProgressBar5 = new javax.swing.JProgressBar();
+        jProgressBar6 = new javax.swing.JProgressBar();
+        LSA1 = new javax.swing.JLabel();
+        LSA2 = new javax.swing.JLabel();
+        LSA5 = new javax.swing.JLabel();
+        LSA3 = new javax.swing.JLabel();
+        LSA6 = new javax.swing.JLabel();
+        LSA4 = new javax.swing.JLabel();
         DateTimeLabel = new javax.swing.JLabel();
         ManageUserP = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -161,11 +209,11 @@ public class AdminPanel extends javax.swing.JFrame {
         SMPanel.setLayout(SMPanelLayout);
         SMPanelLayout.setHorizontalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 753, Short.MAX_VALUE)
+            .addGap(0, 846, Short.MAX_VALUE)
         );
         SMPanelLayout.setVerticalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 459, Short.MAX_VALUE)
         );
 
         AdminMainPanel.add(SMPanel, "SMCard");
@@ -176,11 +224,11 @@ public class AdminPanel extends javax.swing.JFrame {
         PMPanel.setLayout(PMPanelLayout);
         PMPanelLayout.setHorizontalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 753, Short.MAX_VALUE)
+            .addGap(0, 846, Short.MAX_VALUE)
         );
         PMPanelLayout.setVerticalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 459, Short.MAX_VALUE)
         );
 
         AdminMainPanel.add(PMPanel, "PMCard");
@@ -192,11 +240,11 @@ public class AdminPanel extends javax.swing.JFrame {
         IMPanel.setLayout(IMPanelLayout);
         IMPanelLayout.setHorizontalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 753, Short.MAX_VALUE)
+            .addGap(0, 846, Short.MAX_VALUE)
         );
         IMPanelLayout.setVerticalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 459, Short.MAX_VALUE)
         );
 
         AdminMainPanel.add(IMPanel, "IMCard");
@@ -207,11 +255,11 @@ public class AdminPanel extends javax.swing.JFrame {
         FMPanel.setLayout(FMPanelLayout);
         FMPanelLayout.setHorizontalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 753, Short.MAX_VALUE)
+            .addGap(0, 846, Short.MAX_VALUE)
         );
         FMPanelLayout.setVerticalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 459, Short.MAX_VALUE)
         );
 
         AdminMainPanel.add(FMPanel, "FMCard");
@@ -220,25 +268,56 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 51));
 
-        WelcomUserLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        WelcomUserLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         WelcomUserLabel.setForeground(new java.awt.Color(0, 0, 0));
         WelcomUserLabel.setText("Welcome, username");
         WelcomUserLabel.setToolTipText("");
 
-        RoleLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        RoleLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         RoleLabel.setForeground(new java.awt.Color(0, 0, 0));
         RoleLabel.setText("Role: role");
         RoleLabel.setToolTipText("");
 
-        RoleLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        RoleLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         RoleLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        RoleLabel1.setText("Last User Added:");
+        RoleLabel1.setText("Low Stock Alerts:");
         RoleLabel1.setToolTipText("");
 
-        RoleLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        UserNLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        UserNLabel.setForeground(new java.awt.Color(0, 0, 0));
+        UserNLabel.setToolTipText("");
+
+        RoleLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        RoleLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        RoleLabel3.setText("Number of users registered in system:");
+        RoleLabel3.setToolTipText("");
+
+        LastUserLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        LastUserLabel.setForeground(new java.awt.Color(0, 0, 0));
+        LastUserLabel.setToolTipText("");
+
+        RoleLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         RoleLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        RoleLabel2.setText("Number of users registered in system:");
+        RoleLabel2.setText("Last Admin Action:");
         RoleLabel2.setToolTipText("");
+
+        LSA1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LSA1.setText("jLabel1");
+
+        LSA2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LSA2.setText("jLabel1");
+
+        LSA5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LSA5.setText("jLabel1");
+
+        LSA3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LSA3.setText("jLabel1");
+
+        LSA6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LSA6.setText("jLabel1");
+
+        LSA4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LSA4.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -247,33 +326,99 @@ public class AdminPanel extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(RoleLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(UserNLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(570, 570, 570))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(RoleLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(WelcomUserLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
-                        .addGap(14, 14, 14)
-                        .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(RoleLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(RoleLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(LastUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(WelcomUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(RoleLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(LSA3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jProgressBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(LSA1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(LSA2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(27, 27, 27)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(LSA5)
+                                    .addComponent(LSA6)
+                                    .addComponent(LSA4))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jProgressBar4, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jProgressBar6, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jProgressBar5, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(WelcomUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(RoleLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(RoleLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(243, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(WelcomUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(RoleLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(UserNLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(RoleLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(RoleLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(11, 11, 11)
+                                        .addComponent(LastUserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(LSA1)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(LSA4))))
+                            .addComponent(jProgressBar4, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jProgressBar5, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LSA5)))
+                    .addComponent(LSA2))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jProgressBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jProgressBar6, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LSA3)
+                    .addComponent(LSA6))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        DateTimeLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        DateTimeLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         DateTimeLabel.setForeground(new java.awt.Color(0, 0, 0));
         DateTimeLabel.setText("Timedate");
         DateTimeLabel.setToolTipText("");
@@ -284,19 +429,18 @@ public class AdminPanel extends javax.swing.JFrame {
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(DateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(AdminHPPanelLayout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 54, Short.MAX_VALUE))
+                .addGroup(AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(DateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(159, Short.MAX_VALUE))
         );
         AdminHPPanelLayout.setVerticalGroup(
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
                 .addComponent(DateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         AdminMainPanel.add(AdminHPPanel, "HomeCard");
@@ -510,7 +654,7 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addGroup(ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(FilterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(UserMPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(186, Short.MAX_VALUE))
+                .addContainerGap(279, Short.MAX_VALUE))
         );
         ManageUserPLayout.setVerticalGroup(
             ManageUserPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -654,7 +798,7 @@ public class AdminPanel extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(AdminMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(AdminMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(AdminSidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -686,6 +830,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
     private void HomeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeBtnActionPerformed
         AdminLayout.show(AdminMainPanel, "HomeCard");
+        refreshDashboard();
     }//GEN-LAST:event_HomeBtnActionPerformed
 
     private void UpdateUBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateUBtnActionPerformed
@@ -725,7 +870,9 @@ public class AdminPanel extends javax.swing.JFrame {
         userTable.getTableHeader().setReorderingAllowed(false);
         userTable.getTableHeader().setResizingAllowed(false);
         userTable.enableInputMethods(false);
-        userTable.setRowSelectionAllowed(true);
+        userTable.setCellSelectionEnabled(false);
+        userTable.setColumnSelectionAllowed(false);
+        userTable.setRowSelectionAllowed(false);
         
         // Refresh the user list from file 
         admin.reloadUsers();
@@ -797,6 +944,11 @@ public class AdminPanel extends javax.swing.JFrame {
         }
     }
     
+    private void refreshDashboard() {
+        UserNLabel.setText(Integer.toString(admin.getUserList().size()));
+        LastUserLabel.setText(admin.getLastUserActionLog());
+    }
+    
     
     /**
      * @param args the command line arguments
@@ -848,6 +1000,13 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JButton HomeBtn;
     private javax.swing.JButton IMBtn;
     private javax.swing.JPanel IMPanel;
+    private javax.swing.JLabel LSA1;
+    private javax.swing.JLabel LSA2;
+    private javax.swing.JLabel LSA3;
+    private javax.swing.JLabel LSA4;
+    private javax.swing.JLabel LSA5;
+    private javax.swing.JLabel LSA6;
+    private javax.swing.JLabel LastUserLabel;
     private javax.swing.JButton LogoutBtn;
     private javax.swing.JPanel ManageUserP;
     private javax.swing.JButton ManageUsersBtn;
@@ -859,11 +1018,13 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel RoleLabel;
     private javax.swing.JLabel RoleLabel1;
     private javax.swing.JLabel RoleLabel2;
+    private javax.swing.JLabel RoleLabel3;
     private javax.swing.JButton SMBtn;
     private javax.swing.JPanel SMPanel;
     private javax.swing.JButton UpdateUBtn;
     private javax.swing.JPanel UserMPanel;
     private javax.swing.JTextField UserNBox;
+    private javax.swing.JLabel UserNLabel;
     private javax.swing.JLabel WelcomUserLabel;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -879,6 +1040,12 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JProgressBar jProgressBar2;
+    private javax.swing.JProgressBar jProgressBar3;
+    private javax.swing.JProgressBar jProgressBar4;
+    private javax.swing.JProgressBar jProgressBar5;
+    private javax.swing.JProgressBar jProgressBar6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
