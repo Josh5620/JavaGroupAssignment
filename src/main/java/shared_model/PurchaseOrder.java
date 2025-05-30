@@ -1,15 +1,15 @@
 package shared_model;
 
 import java.awt.*;
+import java.awt.print.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
+public class PurchaseOrder extends JPanel {
 
-public class PurchaseOrder extends JPanel{
-    
     private String poID;
     private String date;
     private List<String> itemIDs;
@@ -24,17 +24,17 @@ public class PurchaseOrder extends JPanel{
     public PurchaseOrder(List<String> lineParts) {
         this.poID = lineParts.get(0);
         this.date = lineParts.get(1);
-        
         this.itemIDs = Arrays.asList(lineParts.get(2).split("/"));
 
         this.quantities = new ArrayList<>();
         for (String qty : lineParts.get(3).split("/")) {
             this.quantities.add(Integer.parseInt(qty));
         }
+
         this.status = lineParts.get(4);
         this.approvedBy = lineParts.get(5);
         this.resolution = lineParts.get(6);
-        
+
         if (itemList.isEmpty()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 String line;
@@ -45,10 +45,7 @@ public class PurchaseOrder extends JPanel{
             } catch (Exception e) {
                 System.err.println("Error loading item file: " + e.getMessage());
             }
-}
-
-        
-        
+        }
     }
 
     public String getPoID() { return poID; }
@@ -58,7 +55,7 @@ public class PurchaseOrder extends JPanel{
     public String getApprovedBy() { return approvedBy; }
     public String getResolution() { return resolution; }
     public double getTotal() { return total; }
-    
+
     public void showPO() {
         JDialog dialog = new JDialog();
         dialog.setTitle("Purchase Order: " + poID);
@@ -67,39 +64,33 @@ public class PurchaseOrder extends JPanel{
         dialog.setLocationRelativeTo(null);
         dialog.setLayout(new BorderLayout());
 
-        // ===== Top Panel (Header) =====
         JPanel headerPanel = new JPanel(new GridLayout(3, 2));
         headerPanel.setBorder(BorderFactory.createTitledBorder("Purchase Order Details"));
         headerPanel.add(new JLabel("POID:"));
-        headerPanel.add(new JLabel(poID)); // ← placeholder
+        headerPanel.add(new JLabel(poID));
         headerPanel.add(new JLabel("Date:"));
-        headerPanel.add(new JLabel(date)); // ← placeholder
+        headerPanel.add(new JLabel(date));
         headerPanel.add(new JLabel("Status:"));
-        headerPanel.add(new JLabel(status)); // ← placeholder
+        headerPanel.add(new JLabel(status));
 
-        String[] columns = { "Item ID", "Quantity", "Unit Price","SupplierID", "Total" };
+        String[] columns = { "Item ID", "Quantity", "Unit Price", "SupplierID", "Total" };
         Object[][] data = new Object[itemIDs.size()][5];
 
         for (int i = 0; i < itemIDs.size(); i++) {
             String id = itemIDs.get(i);
             int qty = quantities.get(i);
-
-            // Defaults
             String price = "0.00";
             String supplier = "Unknown";
 
-            // Search itemList for matching ID
             for (List<String> item : itemList) {
                 if (item.get(0).equals(id)) {
-                    price = item.get(2);         // Unit Price
-                    supplier = item.get(3);      // Supplier ID
+                    price = item.get(2);
+                    supplier = item.get(3);
                     break;
                 }
             }
 
             double total = qty * Double.parseDouble(price);
-
-            // Assign row data
             data[i][0] = id;
             data[i][1] = qty;
             data[i][2] = "RM" + String.format("%.2f", Double.parseDouble(price));
@@ -110,14 +101,9 @@ public class PurchaseOrder extends JPanel{
         JTable table = new JTable(data, columns);
         JScrollPane tableScroll = new JScrollPane(table);
 
-
-
-        // Approval Panel (Footer)
-        JPanel approvalPanel = new JPanel();
-        approvalPanel.setLayout(new GridLayout(3, 1, 5, 5));
+        JPanel approvalPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         approvalPanel.setBorder(BorderFactory.createTitledBorder("Approval Summary"));
 
-        // Calculate totals
         int totalQty = 0;
         double totalPrice = 0.0;
         for (int i = 0; i < itemIDs.size(); i++) {
@@ -145,27 +131,42 @@ public class PurchaseOrder extends JPanel{
 
         approvalPanel.add(totalQtyLabel);
         approvalPanel.add(totalPriceLabel);
-        
+
+        // === Buttons ===
         JButton closeButton = new JButton("Close");
         closeButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        JPanel buttonPanel = new JPanel();
         closeButton.addActionListener(e -> dialog.dispose());
-        buttonPanel.add(closeButton);
+
+        JButton printButton = new JButton("Print");
+        printButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        printButton.addActionListener(e -> {
+            PrinterJob job = PrinterJob.getPrinterJob();
+            job.setJobName("Preview Purchase Order");
+
+            job.setPrintable((graphics, pageFormat, pageIndex) -> {
+                // Dummy page to enable preview popup
+                if (pageIndex > 0) return Printable.NO_SUCH_PAGE;
+                return Printable.PAGE_EXISTS;
+            });
+
+            job.printDialog(); // ← Just show the print preview dialog
+        });
+
         
-        // ===== Add to Dialog =====
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(printButton);
+        buttonPanel.add(closeButton);
+
+        // === Add to Dialog ===
         dialog.add(headerPanel, BorderLayout.NORTH);
         dialog.add(tableScroll, BorderLayout.CENTER);
-        JPanel southPanel = new JPanel();
-        southPanel.setLayout(new BorderLayout());
 
+        JPanel southPanel = new JPanel(new BorderLayout());
         southPanel.add(approvalPanel, BorderLayout.CENTER);
         southPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         dialog.add(southPanel, BorderLayout.SOUTH);
-            
-
-
-
         dialog.setVisible(true);
     }
 }

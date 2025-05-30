@@ -10,8 +10,6 @@ import java.awt.Color;
 import java.util.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
-
-
 public class IMForm extends javax.swing.JFrame {
 
     public IMForm(String username, String role) {
@@ -21,12 +19,11 @@ public class IMForm extends javax.swing.JFrame {
         customizeTable(SmallTable);
         homePageLoad(username,role);
     }
-    
-    // Constructor for admin access to role dashboard
-    private JFrame adminFrame; // For returning to Admin Panel
+
+    private JFrame adminFrame; 
     
     public IMForm(String username, String role, JFrame adminFrame) {
-    this(username, role); // call existing constructor
+    this(username, role); 
     this.adminFrame = adminFrame;
 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
@@ -965,9 +962,6 @@ public class IMForm extends javax.swing.JFrame {
         });
     }
     
-    
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton APOBtn;
     private javax.swing.JTextField AfterBox;
@@ -1043,7 +1037,7 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JTextField specificUserField;
     // End of variables declaration//GEN-END:variables
     
-private void customizeTable(JTable table) {
+    private void customizeTable(JTable table) {
     table.getTableHeader().setReorderingAllowed(false);
     table.getTableHeader().setResizingAllowed(false);
     table.setRowSelectionAllowed(true);
@@ -1088,16 +1082,33 @@ private void customizeTable(JTable table) {
     table.repaint();
 }
 
-        private void homePageLoad(String username, String role){
+    private void homePageLoad(String username, String role){
             this.cl = (CardLayout)(MainPanel.getLayout());
             cl.show(MainPanel, "card7");  
             user.checkAlert(username, role);
             jLabel11.setText("Welcome User: " + username);
-            jLabel10.setText("Role: " + role);
+            jLabel10.setText("Role: Inventory Manager");
             matchBars(user.botSix());
+            int totalQuantity = 0;
+            int approvedAndResolvedCount = 0;
+            user.makeBigList(POFilePath, PurchaseOrderTextList);
+            for (List<String> po : PurchaseOrderTextList) {
+                String status = po.get(4);     
+                String resolution = po.get(6); 
+
+                if (status.equalsIgnoreCase("Approved") && resolution.equalsIgnoreCase("Resolved")) {
+                    approvedAndResolvedCount++;
+                }
+            }
+            
+            for (List<String> item : user.getInvenList()) {
+                totalQuantity += Integer.parseInt(item.get(2).trim());
+            }
+            UAP.setText(String.valueOf(approvedAndResolvedCount));
+            TAI.setText(String.valueOf(totalQuantity));
         }
 
-        private void matchBars(List<List<String>> bot6){
+    private void matchBars(List<List<String>> bot6){
             List<String> nameList = new ArrayList<>();
             List<Integer> amountList = new ArrayList<>();
 
@@ -1287,5 +1298,3 @@ private void customizeTable(JTable table) {
         
     }
 }
-
-
