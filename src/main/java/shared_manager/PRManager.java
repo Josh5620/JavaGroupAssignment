@@ -1,12 +1,11 @@
-// shared_manager/PRManager.java
 package shared_manager;
 import UserLogin.User;
 
 import java.util.*;
 
 public class PRManager extends User{
-    static String filePath = "src/PurchaseRequisitions.txt";
-    static List<List<String>> prList = new ArrayList<>();
+    private static String filePath = "src/PurchaseRequisitions.txt";
+    private static List<List<String>> prList = new ArrayList<>();
 
     public PRManager() {
         makeBigList(filePath, prList);

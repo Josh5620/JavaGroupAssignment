@@ -2,8 +2,9 @@
 package shared_manager;
 
 import java.util.*;
+import UserLogin.User;
 
-public class POManager {
+public class POManager extends User {
     static String filePath = "src/PurchaseOrders.txt";
     static List<List<String>> poList = new ArrayList<>();
 
@@ -37,11 +38,10 @@ public class POManager {
     /**
      * Edit status and/or resolution for a given PO
      */
-    public static boolean editPO(String poID, String newStatus, String newResolution) {
+    public static boolean editPO(String poID, String newStatus) {
         for (List<String> row : poList) {
             if (row.get(0).equalsIgnoreCase(poID)) {
                 row.set(4, newStatus);
-                row.set(6, newResolution);
                 updateTextFile(poList, filePath);
                 return true;
             }
@@ -63,11 +63,4 @@ public class POManager {
         return false;
     }
 
-    // hook in your User.makeBigList & User.updateTextFile
-    private void makeBigList(String filepath, List<List<String>> mainList) {
-        // copy–paste User.makeBigList here
-    }
-    private static void updateTextFile(List<List<String>> arrayList, String FilePathString) {
-        // copy–paste User.updateTextFile here
-    }
 }
