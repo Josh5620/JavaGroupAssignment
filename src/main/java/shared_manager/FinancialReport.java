@@ -1,4 +1,5 @@
 package shared_manager;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -7,7 +8,7 @@ import java.util.List;
 
 public class FinancialReport extends JPanel {
 
-    public FinancialReport(List<List<String>> stockData, List<List<String>> itemsList, String filterDate, Runnable onClose) {
+    public FinancialReport(List<List<String>> stockData, List<List<String>> itemsList, String filterDate) {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         setBackground(Color.WHITE);
@@ -17,10 +18,8 @@ public class FinancialReport extends JPanel {
         titleLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.DARK_GRAY));
         add(titleLabel, BorderLayout.NORTH);
 
-        // Table Setup
         String[] columnNames = {"Item ID", "Item Name", "Date", "Quantity Sold", "Unit Price", "Total Revenue"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-
         double grandTotal = 0.0;
 
         for (List<String> sale : stockData) {
@@ -61,7 +60,6 @@ public class FinancialReport extends JPanel {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Transaction Breakdown"));
         add(scrollPane, BorderLayout.CENTER);
 
-        // Bottom Panel for Total + Close
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setBackground(Color.WHITE);
 
@@ -73,7 +71,8 @@ public class FinancialReport extends JPanel {
         JButton closeButton = new JButton("Close");
         closeButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
         closeButton.addActionListener(e -> {
-            if (onClose != null) onClose.run();
+            Window window = SwingUtilities.getWindowAncestor(FinancialReport.this);
+            if (window != null) window.dispose();
         });
 
         JPanel closePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -86,68 +85,45 @@ public class FinancialReport extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
-
-    
-    public static void main(String[] args) {
+    public static void showReport(List<List<String>> stockData, List<List<String>> itemsList, String filterDate) {
         JDialog dialog = new JDialog();
-List<List<String>> stockData = Arrays.asList(
-    Arrays.asList("ITM001", "20", "2025-05-10"),
-    Arrays.asList("ITM002", "15", "2025-05-09"),
-    Arrays.asList("ITM003", "10", "2025-05-08"),
-    Arrays.asList("ITM004", "25", "2025-05-11"),
-    Arrays.asList("ITM005", "30", "2025-05-07"),
-    Arrays.asList("ITM006", "12", "2025-05-10"),
-    Arrays.asList("ITM007", "18", "2025-05-11"),
-    Arrays.asList("ITM008", "22", "2025-05-09"),
-    Arrays.asList("ITM009", "16", "2025-05-10"),
-    Arrays.asList("ITM010", "19", "2025-05-08"),
-    Arrays.asList("ITM011", "14", "2025-05-09"),
-    Arrays.asList("ITM012", "11", "2025-05-11"),
-    Arrays.asList("ITM013", "20", "2025-05-10"),
-    Arrays.asList("ITM014", "17", "2025-05-07"),
-    Arrays.asList("ITM015", "13", "2025-05-07"),
-    Arrays.asList("ITM016", "15", "2025-05-10"),
-    Arrays.asList("ITM017", "10", "2025-05-11"),
-    Arrays.asList("ITM018", "28", "2025-05-08"),
-    Arrays.asList("ITM019", "18", "2025-05-10"),
-    Arrays.asList("ITM020", "21", "2025-05-11"),
-    Arrays.asList("ITM001", "12", "2025-05-09"),
-    Arrays.asList("ITM004", "22", "2025-05-10"),
-    Arrays.asList("ITM009", "19", "2025-05-08"),
-    Arrays.asList("ITM007", "15", "2025-05-10"),
-    Arrays.asList("ITM003", "24", "2025-05-11")
-);
+        dialog.setTitle("Financial Report Viewer");
+        dialog.setSize(850, 500);
+        dialog.setLocationRelativeTo(null);
+        dialog.setModal(true);
 
+        FinancialReport reportPanel = new FinancialReport(stockData, itemsList, filterDate);
+        dialog.add(reportPanel);
+        dialog.setVisible(true);
+    }
 
-List<List<String>> itemsList = Arrays.asList(
-    Arrays.asList("ITM001", "Rice", "3.20", "SUP001"),
-    Arrays.asList("ITM002", "Onions", "2.50", "SUP002"),
-    Arrays.asList("ITM003", "Tomatoes", "3.80", "SUP002"),
-    Arrays.asList("ITM004", "Sugar", "4.60", "SUP001"),
-    Arrays.asList("ITM005", "Salt", "2.70", "SUP003"),
-    Arrays.asList("ITM006", "Milk", "7.20", "SUP002"),
-    Arrays.asList("ITM007", "Carrots", "2.30", "SUP003"),
-    Arrays.asList("ITM008", "Cabbage", "2.90", "SUP004"),
-    Arrays.asList("ITM009", "CookingOil", "5.50", "SUP004"),
-    Arrays.asList("ITM010", "Flour", "3.10", "SUP001"),
-    Arrays.asList("ITM011", "Potatoes", "4.20", "SUP002"),
-    Arrays.asList("ITM012", "Apples", "5.00", "SUP003"),
-    Arrays.asList("ITM013", "Bananas", "4.40", "SUP003"),
-    Arrays.asList("ITM014", "Chicken", "9.90", "SUP001"),
-    Arrays.asList("ITM015", "Spinach", "3.60", "SUP004"),
-    Arrays.asList("ITM016", "Bread", "3.80", "SUP002"),
-    Arrays.asList("ITM017", "Fish", "11.90", "SUP004"),
-    Arrays.asList("ITM018", "Eggs", "0.50", "SUP001"),
-    Arrays.asList("ITM019", "Garlic", "6.80", "SUP003"),
-    Arrays.asList("ITM020", "Lettuce", "3.00", "SUP002")
-);
-dialog.setTitle("Financial Report Viewer");
-dialog.setSize(800, 500);
-dialog.setLocationRelativeTo(null);
+    public static void main(String[] args) {
+        List<List<String>> stockData = Arrays.asList(
+            Arrays.asList("ITM001", "20", "2025-05-10"),
+            Arrays.asList("ITM002", "15", "2025-05-09"),
+            Arrays.asList("ITM003", "10", "2025-05-08"),
+            Arrays.asList("ITM004", "25", "2025-05-11"),
+            Arrays.asList("ITM005", "30", "2025-05-07"),
+            Arrays.asList("ITM006", "12", "2025-05-10"),
+            Arrays.asList("ITM007", "18", "2025-05-11"),
+            Arrays.asList("ITM008", "22", "2025-05-09"),
+            Arrays.asList("ITM009", "16", "2025-05-10"),
+            Arrays.asList("ITM010", "19", "2025-05-08")
+        );
 
-FinancialReport panel = new FinancialReport(stockData, itemsList, "2025-05-10", dialog::dispose);
-dialog.add(panel);
-dialog.setModal(true);
-dialog.setVisible(true);
+        List<List<String>> itemsList = Arrays.asList(
+            Arrays.asList("ITM001", "Rice", "3.20", "SUP001"),
+            Arrays.asList("ITM002", "Onions", "2.50", "SUP002"),
+            Arrays.asList("ITM003", "Tomatoes", "3.80", "SUP002"),
+            Arrays.asList("ITM004", "Sugar", "4.60", "SUP001"),
+            Arrays.asList("ITM005", "Salt", "2.70", "SUP003"),
+            Arrays.asList("ITM006", "Milk", "7.20", "SUP002"),
+            Arrays.asList("ITM007", "Carrots", "2.30", "SUP003"),
+            Arrays.asList("ITM008", "Cabbage", "2.90", "SUP004"),
+            Arrays.asList("ITM009", "CookingOil", "5.50", "SUP004"),
+            Arrays.asList("ITM010", "Flour", "3.10", "SUP001")
+        );
+
+        showReport(stockData, itemsList, "2025-05-10");
     }
 }
