@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.Component;
 import javax.swing.table.DefaultTableModel;
 import InventoryManager.InvenUser;
+import FinanceManager.FMForm;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -824,7 +825,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_IMBtnActionPerformed
 
     private void FMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FMBtnActionPerformed
-        AdminLayout.show(AdminMainPanel, "FMCard");
+        launchRoleDashboard("Leo", "p20", "FM", this);
     }//GEN-LAST:event_FMBtnActionPerformed
 
     private void HomeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeBtnActionPerformed
@@ -923,25 +924,20 @@ public class AdminPanel extends javax.swing.JFrame {
         buildUserTable();
     }
     
-    public void launchRoleDashboard(String username, String password, String role, JFrame adminFrame) {
-        switch (role) {
-            case "IM" -> new IMForm(username, password, adminFrame).setVisible(true);
-            default -> JOptionPane.showMessageDialog(null, "Invalid role!");
-        }
-    //        case "SM":
-    //            new SMForm(username, password, adminFrame).setVisible(true);
-    //            break;
-    //        case "PM":
-    //            new PMForm(username, password, adminFrame).setVisible(true);
-    //            break;
-    //        case "FM":
-    //            new FMForm(username, password, adminFrame).setVisible(true);
-    //            break;
-
-        if (adminFrame != null) {
-            adminFrame.setVisible(false);
-        }
+public void launchRoleDashboard(String username, String password, String role, JFrame adminFrame) {
+    switch (role) {
+//        case "SM" -> new SMForm(username, password, adminFrame).setVisible(true);
+//        case "PM" -> new PMForm(username, password, adminFrame).setVisible(true);
+        case "IM" -> new IMForm(username, password, adminFrame).setVisible(true);
+        case "FM" -> new FMForm(username, password, adminFrame).setVisible(true);
+        default   -> JOptionPane.showMessageDialog(null, "Invalid role!");
     }
+
+    // now hide the login/admin frame
+    if (adminFrame != null) {
+        adminFrame.setVisible(false);
+    }
+}
     
     private void refreshDashboard() {
         UserNLabel.setText(Integer.toString(admin.getUserList().size()));
