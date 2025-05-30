@@ -1,98 +1,171 @@
 package shared_model;
 
-import java.util.*;
+import java.awt.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.swing.*;
 
-public class PurchaseOrder {
+
+public class PurchaseOrder extends JPanel{
+    
     private String poID;
     private String date;
     private List<String> itemIDs;
     private List<Integer> quantities;
     private String status;
-    private String pmID;
+    private String approvedBy;
     private String resolution;
+    private double total;
+    private static final List<List<String>> itemList = new ArrayList<>();
+    private static final String filePath = "src/Items.txt";
 
-    public PurchaseOrder(String poID, String date,
-                         List<String> itemIDs,
-                         List<Integer> quantities,
-                         String status,
-                         String pmID,
-                         String resolution) {
-        this.poID       = poID;
-        this.date       = date;
-        this.itemIDs    = new ArrayList<>(itemIDs);
-        this.quantities = new ArrayList<>(quantities);
-        this.status     = status;
-        this.pmID       = pmID;
-        this.resolution = resolution;
+    public PurchaseOrder(List<String> lineParts) {
+        this.poID = lineParts.get(0);
+        this.date = lineParts.get(1);
+        
+        this.itemIDs = Arrays.asList(lineParts.get(2).split("/"));
+
+        this.quantities = new ArrayList<>();
+        for (String qty : lineParts.get(3).split("/")) {
+            this.quantities.add(Integer.parseInt(qty));
+        }
+        this.status = lineParts.get(4);
+        this.approvedBy = lineParts.get(5);
+        this.resolution = lineParts.get(6);
+        
+        if (itemList.isEmpty()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split("\\|");
+                    itemList.add(Arrays.asList(parts));
+                }
+            } catch (Exception e) {
+                System.err.println("Error loading item file: " + e.getMessage());
+            }
+}
+
+        
+        
     }
 
-    /** line: PO001|2025-05-17|ITM001/ITM005|20/15|Approved|PM001|Resolved */
-    public static PurchaseOrder parse(String line) {
-        String[] parts = line.split("\\|");
-        if (parts.length != 7) return null;
+    public String getPoID() { return poID; }
+    public List<String> getItemIDs() { return itemIDs; }
+    public List<Integer> getQuantities() { return quantities; }
+    public String getStatus() { return status; }
+    public String getApprovedBy() { return approvedBy; }
+    public String getResolution() { return resolution; }
+    public double getTotal() { return total; }
+    
+    public void showPO() {
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Purchase Order: " + poID);
+        dialog.setModal(true);
+        dialog.setSize(700, 500);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
 
-        String id      = parts[0];
-        String dt      = parts[1];
-        String stat    = parts[4];
-        String pm      = parts[5];
-        String resol   = parts[6];
+        // ===== Top Panel (Header) =====
+        JPanel headerPanel = new JPanel(new GridLayout(3, 2));
+        headerPanel.setBorder(BorderFactory.createTitledBorder("Purchase Order Details"));
+        headerPanel.add(new JLabel("POID:"));
+        headerPanel.add(new JLabel(poID)); // ← placeholder
+        headerPanel.add(new JLabel("Date:"));
+        headerPanel.add(new JLabel(date)); // ← placeholder
+        headerPanel.add(new JLabel("Status:"));
+        headerPanel.add(new JLabel(status)); // ← placeholder
 
-        // split itemIDs
-        String[] items = parts[2].split("/");
-        List<String> itemList = new ArrayList<>();
-        for (String s : items) {
-            if (!s.isEmpty()) {
-                itemList.add(s);
+        String[] columns = { "Item ID", "Quantity", "Unit Price","SupplierID", "Total" };
+        Object[][] data = new Object[itemIDs.size()][5];
+
+        for (int i = 0; i < itemIDs.size(); i++) {
+            String id = itemIDs.get(i);
+            int qty = quantities.get(i);
+
+            // Defaults
+            String price = "0.00";
+            String supplier = "Unknown";
+
+            // Search itemList for matching ID
+            for (List<String> item : itemList) {
+                if (item.get(0).equals(id)) {
+                    price = item.get(2);         // Unit Price
+                    supplier = item.get(3);      // Supplier ID
+                    break;
+                }
             }
+
+            double total = qty * Double.parseDouble(price);
+
+            // Assign row data
+            data[i][0] = id;
+            data[i][1] = qty;
+            data[i][2] = "RM" + String.format("%.2f", Double.parseDouble(price));
+            data[i][3] = supplier;
+            data[i][4] = "RM" + String.format("%.2f", total);
         }
 
-        // split quantities
-        String[] qtys = parts[3].split("/");
-        List<Integer> qtyList = new ArrayList<>();
-        for (String q : qtys) {
-            try {
-                qtyList.add(Integer.parseInt(q));
-            } catch (NumberFormatException e) {
-                qtyList.add(0);
+        JTable table = new JTable(data, columns);
+        JScrollPane tableScroll = new JScrollPane(table);
+
+
+
+        // Approval Panel (Footer)
+        JPanel approvalPanel = new JPanel();
+        approvalPanel.setLayout(new GridLayout(3, 1, 5, 5));
+        approvalPanel.setBorder(BorderFactory.createTitledBorder("Approval Summary"));
+
+        // Calculate totals
+        int totalQty = 0;
+        double totalPrice = 0.0;
+        for (int i = 0; i < itemIDs.size(); i++) {
+            int qty = quantities.get(i);
+            String id = itemIDs.get(i);
+            double price = 0.0;
+
+            for (List<String> item : itemList) {
+                if (item.get(0).equals(id)) {
+                    price = Double.parseDouble(item.get(2));
+                    break;
+                }
             }
+
+            totalQty += qty;
+            totalPrice += qty * price;
         }
 
-        return new PurchaseOrder(id, dt, itemList, qtyList, stat, pm, resol);
+        JLabel totalQtyLabel = new JLabel("Total Quantity: " + totalQty);
+        totalQtyLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+
+        JLabel totalPriceLabel = new JLabel("Total Price: RM" + String.format("%.2f", totalPrice));
+        total = totalPrice;
+        totalPriceLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+
+        approvalPanel.add(totalQtyLabel);
+        approvalPanel.add(totalPriceLabel);
+        
+        JButton closeButton = new JButton("Close");
+        closeButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        JPanel buttonPanel = new JPanel();
+        closeButton.addActionListener(e -> dialog.dispose());
+        buttonPanel.add(closeButton);
+        
+        // ===== Add to Dialog =====
+        dialog.add(headerPanel, BorderLayout.NORTH);
+        dialog.add(tableScroll, BorderLayout.CENTER);
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new BorderLayout());
+
+        southPanel.add(approvalPanel, BorderLayout.CENTER);
+        southPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        dialog.add(southPanel, BorderLayout.SOUTH);
+            
+
+
+
+        dialog.setVisible(true);
     }
-
-    public String toDataLine() {
-        // join itemIDs with "/"
-        String items = "";
-        if (itemIDs.size() > 0) {
-            items = itemIDs.get(0);
-            for (int i = 1; i < itemIDs.size(); i++) {
-                items += "/" + itemIDs.get(i);
-            }
-        }
-        // join quantities with "/"
-        String qtys = "";
-        if (quantities.size() > 0) {
-            qtys = quantities.get(0).toString();
-            for (int i = 1; i < quantities.size(); i++) {
-                qtys += "/" + quantities.get(i);
-            }
-        }
-
-        return poID       + "|" +
-               date       + "|" +
-               items      + "|" +
-               qtys       + "|" +
-               status     + "|" +
-               pmID       + "|" +
-               resolution;
-    }
-
-
-    public String        getPoID()       { return poID;       }
-    public String        getDate()       { return date;       }
-    public List<String>  getItemIDs()    { return Collections.unmodifiableList(itemIDs); }
-    public List<Integer> getQuantities() { return Collections.unmodifiableList(quantities); }
-    public String        getStatus()     { return status;     }
-    public String        getPmID()       { return pmID;       }
-    public String        getResolution() { return resolution; }
 }

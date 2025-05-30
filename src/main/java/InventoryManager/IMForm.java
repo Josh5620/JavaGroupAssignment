@@ -1,10 +1,7 @@
 package InventoryManager;
 import javax.swing.*;
 import shared_model.PurchaseOrder;
-import shared_ui.PurchaseOrderViewer;
-import shared_manager.ItemManager;
 import UserLogin.LoginPage;
-import java.awt.event.*;
 import java.awt.Component;
 import javax.swing.table.DefaultTableModel;
 import InventoryManager.InvenUser;
@@ -51,8 +48,6 @@ public class IMForm extends javax.swing.JFrame {
     String POFilePath = "src/PurchaseOrders.txt";
     String[] itemIDs;
     String[] incomingQty;
-    int total; 
-    String targetItemID;
     List<String> focusAPO = new ArrayList<>();
     List<PurchaseOrder> PurchaseOrderList = new ArrayList<>();
     
@@ -1048,90 +1043,89 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JTextField specificUserField;
     // End of variables declaration//GEN-END:variables
     
-    private void customizeTable(JTable table){
-        table.getTableHeader().setReorderingAllowed(false);
-        table.getTableHeader().setResizingAllowed(false);
-        table.setRowSelectionAllowed(true);
+private void customizeTable(JTable table) {
+    table.getTableHeader().setReorderingAllowed(false);
+    table.getTableHeader().setResizingAllowed(false);
+    table.setRowSelectionAllowed(true);
 
-        // Adjust column widths for 3 columns
-        table.getColumnModel().getColumn(0).setPreferredWidth(75);   // ID
-        table.getColumnModel().getColumn(1).setPreferredWidth(150);  // Name
-        table.getColumnModel().getColumn(2).setPreferredWidth(100);  // Quantity
+    // Adjust column widths
+    table.getColumnModel().getColumn(0).setPreferredWidth(75);   // ID
+    table.getColumnModel().getColumn(1).setPreferredWidth(150);  // Name
+    table.getColumnModel().getColumn(2).setPreferredWidth(100);  // Quantity
 
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0); 
+    // Clear and populate table
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    model.setRowCount(0);
+    for (List<String> item : user.getInvenList()) {
+        model.addRow(new Object[]{item.get(0), item.get(1), item.get(2)});
+    }
 
-        // Add only 3 columns worth of data
-        for(List<String> item : user.getInvenList()){
-            model.addRow(new Object[]{item.get(0), item.get(1), item.get(2)});
-        }
+    // Red highlight for Quantity < 20
+    table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
 
-        // Custom renderer to highlight low stock (quantity < 10)
-        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column){
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-                if (isSelected) {
-                    c.setBackground(Color.LIGHT_GRAY);
-                } else if (column == 2) { // Quantity column
-                    try {
-                        int qty = Integer.parseInt(table.getValueAt(row, column).toString());
-                        c.setBackground(qty < 20 ? Color.RED : Color.WHITE);
-                    } catch (NumberFormatException e) {
-                        c.setBackground(Color.WHITE);
-                    }
-                } else {
+            if (isSelected) {
+                c.setBackground(Color.LIGHT_GRAY);
+            } else if (column == 2) { // Quantity column
+                try {
+                    int qty = Integer.parseInt(table.getValueAt(row, column).toString());
+                    c.setBackground(qty < 20 ? Color.RED : Color.WHITE);
+                } catch (NumberFormatException e) {
                     c.setBackground(Color.WHITE);
                 }
-
-                return c;
+            } else {
+                c.setBackground(Color.WHITE);
             }
-        });
 
-        table.repaint();
-    }
+            return c;
+        }
+    });
 
-    private void homePageLoad(String username, String role){
-        this.cl = (CardLayout)(MainPanel.getLayout());
-        cl.show(MainPanel, "card7");  
-        user.checkAlert(username, role);
-        jLabel11.setText("Welcome User: " + username);
-        jLabel10.setText("Role: " + role);
-        matchBars(user.botSix());
-    }
-    
-    private void matchBars(List<List<String>> bot6){
-        List<String> nameList = new ArrayList<>();
-        List<Integer> amountList = new ArrayList<>();
-        
-        List<JProgressBar> barsList = Arrays.asList(
-            jProgressBar1,jProgressBar2,jProgressBar3,
-            jProgressBar4,jProgressBar5,jProgressBar6);
-        
-        List<JLabel> labelList = Arrays.asList(
-            LSA1,LSA2,LSA3,LSA4,LSA5,LSA6); 
-        
-        for(List<String> item : bot6){
-            nameList.add(item.get(1));
-            amountList.add(Integer.valueOf(item.get(2)));
+    table.repaint();
+}
+
+        private void homePageLoad(String username, String role){
+            this.cl = (CardLayout)(MainPanel.getLayout());
+            cl.show(MainPanel, "card7");  
+            user.checkAlert(username, role);
+            jLabel11.setText("Welcome User: " + username);
+            jLabel10.setText("Role: " + role);
+            matchBars(user.botSix());
         }
-            
-        for(int i = 0; i < barsList.size(); i++){
-            JProgressBar bar = barsList.get(i);
-            bar.setMinimum(0);
-            bar.setMaximum(50);
-            bar.setValue(amountList.get(i));
-            bar.setStringPainted(true);        
+
+        private void matchBars(List<List<String>> bot6){
+            List<String> nameList = new ArrayList<>();
+            List<Integer> amountList = new ArrayList<>();
+
+            List<JProgressBar> barsList = Arrays.asList(
+                jProgressBar1,jProgressBar2,jProgressBar3,
+                jProgressBar4,jProgressBar5,jProgressBar6);
+
+            List<JLabel> labelList = Arrays.asList(
+                LSA1,LSA2,LSA3,LSA4,LSA5,LSA6); 
+
+            for(List<String> item : bot6){
+                nameList.add(item.get(1));
+                amountList.add(Integer.valueOf(item.get(2)));
+            }
+
+            for(int i = 0; i < barsList.size(); i++){
+                JProgressBar bar = barsList.get(i);
+                bar.setMinimum(0);
+                bar.setMaximum(50);
+                bar.setValue(amountList.get(i));
+                bar.setStringPainted(true);        
+            }
+            for(int i = 0; i < labelList.size(); i++){
+                JLabel label = labelList.get(i);
+                label.setText(nameList.get(i));
+            }
+
         }
-        for(int i = 0; i < labelList.size(); i++){
-            JLabel label = labelList.get(i);
-            label.setText(nameList.get(i));
-        }
-        
-    }
     
     private void lowItemText(){
     StringBuilder builder = new StringBuilder();

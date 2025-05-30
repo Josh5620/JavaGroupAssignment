@@ -19,3 +19,5 @@
 19|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
 20|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
 21|SM|yhujk|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+22|SM|45tg6hwgrtgweertgwee|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+23|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done

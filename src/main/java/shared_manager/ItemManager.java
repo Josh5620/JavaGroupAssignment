@@ -1,8 +1,8 @@
 package shared_manager;
-
+import UserLogin.User;
 import java.util.*;
 
-public class ItemManager {
+public class ItemManager extends User{
     static String filePath = "src/Items.txt";
     static List<List<String>> itemList = new ArrayList<>();
 

@@ -1,4 +1,3 @@
-
 package UserLogin;
 
 import java.io.*;
@@ -19,7 +18,6 @@ public class User {
     private static final String LoginFilePath = "src/LoginTest.txt";
 
     private final List<List<String>> FullUserList = new ArrayList<>();
-    static String TestFilePath = "src/Testing.txt";
     List<List<String>> SpecifiedUserList = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
 
