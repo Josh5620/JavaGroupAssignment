@@ -11,38 +11,41 @@ import java.util.Date;
  * @author sumingfei
  */
 public class PurchaseRequisition implements Serializable{
-    private static final long serialVersionUID = 1L;
-
-    private int id;
-    private String itemCode;
+      private String prId;
+    private String itemIds;
     private int quantity;
     private Date dateRequested;
-    private int supplierId;
-    private String status;        // ← new!
+    private String supplierId;
+    private String salesMgrId;
+    private String status;
 
-
-    // Constructor must accept 5 arguments:
-    public PurchaseRequisition(int id,
-                               String itemCode,
-                               int quantity,
-                               Date dateRequested,
-                               int supplierId)
-    {
-        this.id             = id;
-        this.itemCode       = itemCode;
-        this.quantity       = quantity;
-        this.dateRequested  = dateRequested;
-        this.supplierId     = supplierId;
-        this.status       = "REQUIRED";   // ← default
+    public PurchaseRequisition(
+        String prId,
+        String itemIds,
+        int quantity,
+        Date dateRequested,
+        String supplierId,
+        String salesMgrId,
+        String status
+    ) {
+        this.prId = prId;
+        this.itemIds = itemIds;
+        this.quantity = quantity;
+        this.dateRequested = dateRequested;
+        this.supplierId = supplierId;
+        this.salesMgrId = salesMgrId;
+        this.status = status;
     }
 
-    public int    getId()             { return id; }
-    public String getItemCode()       { return itemCode; }
-    public int    getQuantity()       { return quantity; }
-    public Date   getDateRequested()  { return dateRequested; }
-    public int    getSupplierId()     { return supplierId; }   // ← new getter
-    public String getStatus()       { return status; }    // ← new!
+    public String getPrId()          { return prId; }
+    public String getItemIds()       { return itemIds; }
+    public int    getQuantity()      { return quantity; }
+    public Date   getDateRequested() { return dateRequested; }
+    public String getSupplierId()    { return supplierId; }
+    public String getSalesMgrId()    { return salesMgrId; }
+    public String getStatus()        { return status; }
 
-    // (add setters here if you need to be able to change any of these fields later)
-    
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

@@ -14,6 +14,8 @@ import java.util.List;
 public class Supplier implements Serializable{
      private static final long serialVersionUID = 1L;
 
+     private String code;   // e.g. "SUP001"
+public String getIdString() { return code; }
     private int           id;
     private String        name;
     private String        email;
