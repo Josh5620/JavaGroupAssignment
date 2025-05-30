@@ -209,7 +209,7 @@ public class AdminPanel extends javax.swing.JFrame {
         SMPanel.setLayout(SMPanelLayout);
         SMPanelLayout.setHorizontalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 846, Short.MAX_VALUE)
+            .addGap(0, 847, Short.MAX_VALUE)
         );
         SMPanelLayout.setVerticalGroup(
             SMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,7 +224,7 @@ public class AdminPanel extends javax.swing.JFrame {
         PMPanel.setLayout(PMPanelLayout);
         PMPanelLayout.setHorizontalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 846, Short.MAX_VALUE)
+            .addGap(0, 847, Short.MAX_VALUE)
         );
         PMPanelLayout.setVerticalGroup(
             PMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,7 +240,7 @@ public class AdminPanel extends javax.swing.JFrame {
         IMPanel.setLayout(IMPanelLayout);
         IMPanelLayout.setHorizontalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 846, Short.MAX_VALUE)
+            .addGap(0, 847, Short.MAX_VALUE)
         );
         IMPanelLayout.setVerticalGroup(
             IMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,7 +255,7 @@ public class AdminPanel extends javax.swing.JFrame {
         FMPanel.setLayout(FMPanelLayout);
         FMPanelLayout.setHorizontalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 846, Short.MAX_VALUE)
+            .addGap(0, 847, Short.MAX_VALUE)
         );
         FMPanelLayout.setVerticalGroup(
             FMPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -429,10 +429,11 @@ public class AdminPanel extends javax.swing.JFrame {
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminHPPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(DateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(288, Short.MAX_VALUE))
+            .addGroup(AdminHPPanelLayout.createSequentialGroup()
+                .addComponent(DateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         AdminHPPanelLayout.setVerticalGroup(
             AdminHPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -788,19 +789,17 @@ public class AdminPanel extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(AdminSidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(AdminMainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(6, 6, 6)
+                .addComponent(AdminMainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(AdminMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
-                .addContainerGap())
             .addComponent(AdminSidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(AdminMainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
