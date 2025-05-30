@@ -1,6 +1,6 @@
  package UserLogin;
 import Admin.AdminPanel;
-import FinanceManager.ui.FMForm;
+import FinanceManager.FMForm;
 import InventoryManager.IMForm;
 import PM.PMForm1;
 import SM.SalesManagerDashboard;
@@ -224,7 +224,7 @@ public class LoginPage extends javax.swing.JFrame {
                         this.dispose();
                         break;
                     case 1:
-                        FinanceManager.ui.FMForm FMFormGeneral = new FinanceManager.ui.FMForm();
+                        FinanceManager.FMForm FMFormGeneral = new FinanceManager.FMForm();
                         FMFormGeneral.setVisible(true);
                         this.dispose();
                         break;

@@ -1,6 +1,8 @@
 package InventoryManager;
 import javax.swing.*;
-import InventoryManager.PurchaseOrder;
+import shared_model.PurchaseOrder;
+import shared_ui.PurchaseOrderViewer;
+import shared_manager.ItemManager;
 import UserLogin.LoginPage;
 import java.awt.event.*;
 import java.awt.Component;

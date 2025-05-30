@@ -4,6 +4,7 @@
  */
 package InventoryManager;
 
+import shared_model.PurchaseOrder;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package FinanceManager.ui;
+package FinanceManager;
 
 
 import java.io.IOException;
@@ -115,18 +115,18 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
 tblRequisitions = new javax.swing.JTable();
 jScrollPane1.setViewportView(tblRequisitions);
 
-    btnLoadPRs       .addActionListener(e -> loadPendingRequisitions());
-    btnApprovePO     .addActionListener(e -> approveSelected());
-    btnLoadPOs       .addActionListener(e -> loadPendingOrders());
-    btnProcessPay    .addActionListener(e -> processPaymentForSelected());
-    btnReport        .addActionListener(e -> showReportDialog());
+    btnLoadPRs.addActionListener(e -> loadPendingRequisitions());
+    btnApprovePO.addActionListener(e -> approveSelected());
+    btnLoadPOs.addActionListener(e -> loadPendingOrders());
+    btnProcessPay.addActionListener(e -> processPaymentForSelected());
+    btnReport.addActionListener(e -> showReportDialog());
     btnApprovePO.addActionListener(e -> approveSelected());
     btnProcessPay.addActionListener(e -> processPaymentForSelected());
     btnReceiveShipment.addActionListener(e -> receiveShipment());
 
 
     // ← add your “Add Requisition” hook right here:
-    btnAddPR         .addActionListener(e -> addRequisition());
+    btnAddPR.addActionListener(e -> addRequisition());
 
     btnReceiveShipment.addActionListener(e -> receiveShipment());
         
@@ -1020,11 +1020,7 @@ try {
     }//GEN-LAST:event_btnProcessPayActionPerformed
 
     private void btnAddPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPRActionPerformed
-       
-addRequisition();
-
-        
-        
+        addRequisition();   
     }//GEN-LAST:event_btnAddPRActionPerformed
 
     private void btnApprovePOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApprovePOActionPerformed
