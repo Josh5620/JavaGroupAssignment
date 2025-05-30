@@ -224,7 +224,7 @@ public class LoginPage extends javax.swing.JFrame {
                         this.dispose();
                         break;
                     case 1:
-                        FinanceManager.FMForm FMFormGeneral = new FinanceManager.FMForm();
+                        FMForm FMFormGeneral = new FMForm(userLog, focusUser.get(3));
                         FMFormGeneral.setVisible(true);
                         this.dispose();
                         break;

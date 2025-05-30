@@ -4,734 +4,35 @@
  */
 package FinanceManager;
 
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import java.awt.Font;
-import javax.swing.JMenuItem;
-import javax.swing.JToolBar;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.GridLayout; 
-import javax.swing.JButton;
-import javax.swing.JTable;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
 import java.awt.event.*;
-import javax.swing.*; 
-import java.util.*;  
-import java.text.ParseException;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import shared_manager.PRManager;
+import shared_manager.POManager;
+import UserLogin.LoginPage;
+import java.awt.CardLayout;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-
-import FinanceManager.manager.PurchaseOrderManager;
-import FinanceManager.manager.PurchaseRequisitionManager;
-import FinanceManager.manager.SupplierManager;
-import FinanceManager.model.PurchaseOrder;
-import FinanceManager.model.PurchaseRequisition;
-import FinanceManager.model.Supplier;
-import FinanceManager.MailUtil;
-import FinanceManager.manager.InventoryManager;
-import FinanceManager.model.InventoryEntry;
-import FinanceManager.model.SalesEntry;
-import FinanceManager.manager.SalesManager;
-import java.io.File;
-
-
-
-
-/**
- *
- * @author sumingfei
- */
 public class FMForm extends javax.swing.JFrame {
-    
-    
-    private SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
-    private PurchaseRequisitionManager prMgr = new PurchaseRequisitionManager();
-    private PurchaseOrderManager       poMgr = new PurchaseOrderManager();
-    private SupplierManager            sMgr  = new SupplierManager();        // <— make sure this is here
-    private InventoryManager invMgr = new InventoryManager();
-    private SalesManager               salesMgr = new SalesManager();
-private static final String DATA_DIR = "src/test/";
-
-
-
-    
-    
-    private DefaultTableModel tableModelRequisitions;
-    private DefaultTableModel tableModelOrders;
-
-
-    
-    
-
-
-
-
-
+    CardLayout FMLayout;
+    PRManager PR = new PRManager();
+    POManager PO = new POManager();
 
     /**
-     * Creates new form FMForm
+     * Creates new form FMFormNew
      */
-    public FMForm() {
+    public FMForm(String username, String password) {
         initComponents();
-        
-         // ─── CUSTOM MENU BAR ────────────────────────────────────────
-// right after initComponents():
-
-// ─── CUSTOM “Manage Suppliers” MENU ─────────────────────────
-JMenuBar menuBar    = new JMenuBar();
-JMenu   manageMenu  = new JMenu("Manage");
-JMenuItem supItem   = new JMenuItem("Manage Suppliers…");
-
-supItem.addActionListener(e -> {
-    // SupplierForm is a JFrame with only a no-arg constructor
-    SupplierForm dlg = new SupplierForm();
-    dlg.setLocationRelativeTo(this);
-    dlg.setVisible(true);
-});
-
-manageMenu.add(supItem);
-menuBar.add(manageMenu);
-setJMenuBar(menuBar);
-// ────────────────────────────────────────────────────────────
-        
-        
-        
-        tableModelRequisitions = (DefaultTableModel) tblRequisitions.getModel();
-tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
-tblRequisitions = new javax.swing.JTable();
-jScrollPane1.setViewportView(tblRequisitions);
-
-    btnLoadPRs.addActionListener(e -> loadPendingRequisitions());
-    btnApprovePO.addActionListener(e -> approveSelected());
-    btnLoadPOs.addActionListener(e -> loadPendingOrders());
-    btnProcessPay.addActionListener(e -> processPaymentForSelected());
-    btnReport.addActionListener(e -> showReportDialog());
-    btnApprovePO.addActionListener(e -> approveSelected());
-    btnProcessPay.addActionListener(e -> processPaymentForSelected());
-    btnReceiveShipment.addActionListener(e -> receiveShipment());
-
-
-    // ← add your “Add Requisition” hook right here:
-    btnAddPR.addActionListener(e -> addRequisition());
-
-    btnReceiveShipment.addActionListener(e -> receiveShipment());
-        
-         // 1) Attach models
-tableModelRequisitions = new DefaultTableModel(
-  new String[] {
-    "PRID",       // requisition id
-    "ItemIDs",    // item code(s)
-    "Quantities", // quantity(ies)
-    "Date",       // date requested
-    "SupplierID", // supplier reference
-    "SMID",       // sales-manager (or staff) id
-    "Status"
-  },
-  0
-);
-tblRequisitions.setModel(tableModelRequisitions);
-
-  tableModelOrders = new DefaultTableModel(
-      new String[]{"ID","Item","Qty","Amount","Supplier","Status","Date"}, 0
-  );
-  tblOrders.setModel(tableModelOrders);
-
-  // 2) Load from files
-  try {
-    prMgr.loadFromFile(DATA_DIR + "PurchaseRequisitions.txt");
-
-
- poMgr.loadFromFile(DATA_DIR + "PurchaseOrders.txt");
-    sMgr  .loadFromFile(DATA_DIR + "Suppliers.txt");
-    invMgr.loadFromFile(DATA_DIR + "Inventory.txt");
-    salesMgr.loadFromFile(DATA_DIR + "SalesEntry");
-  } catch(IOException e) {
-    JOptionPane.showMessageDialog(this,
-      "Failed to load data: " + e.getMessage(),
-      "Load Error",
-      JOptionPane.ERROR_MESSAGE
-    );
-  }
-
-  // 3) Initial display
-  loadPendingRequisitions();
-  loadPendingOrders();
-
-  // 4) Save on close
-  addWindowListener(new WindowAdapter() {
-    public void windowClosing(WindowEvent e) {
-      try {
-        prMgr .saveToFile(DATA_DIR + "PurchaseRequisitions.txt");
-        poMgr .saveToFile(DATA_DIR + "PurchaseOrders.txt");
-        sMgr  .saveToFile(DATA_DIR + "Suppliers.txt");
-        invMgr.saveToFile(DATA_DIR + "Inventory.txt");
-        salesMgr.saveToFile(DATA_DIR + "SalesEntry");
-      } catch(IOException ex) {
-        ex.printStackTrace();
-      }
+        buildPRTable();
+        buildPOTable();
+        populateDateComboBox(cmbPODateFilter, PO.getPOList(), 1);
+        populateDateComboBox(cmbPRDateFilter, PR.getPRList(), 1);
+        homePageLoad(username, password);
     }
-  });
-        
-
-        
-
-        
-        
- 
-    }
-    
-    private void loadPendingRequisitions() {
-    tableModelRequisitions.setRowCount(0);
-    for (PurchaseRequisition pr : prMgr.getAll()) {
-        tableModelRequisitions.addRow(new Object[]{
-            pr.getPrId(),
-            pr.getItemIds(),
-            pr.getQuantity(),
-            DF.format(pr.getDateRequested()),
-            pr.getSupplierId(),
-            pr.getSalesMgrId(),
-            pr.getStatus()
-        });
-    }
-}
-
-    private void approveSelected() {
-        
-          // 0) Make sure a requisition is selected
-    int row = tblRequisitions.getSelectedRow();
-    if (row < 0) {
-        // nothing selected
-        return;
-    }
-
-    // 1) Look up the PR (first column is the PR ID)
-    String prId = (String)tableModelRequisitions.getValueAt(row, 0);
-    PurchaseRequisition pr = prMgr.findById(prId);
-    if (pr == null) {
-        JOptionPane.showMessageDialog(this,
-            "Couldn't find that requisition!",
-            "Error",
-            JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    // 2) Compute a new PO ID
-    int newPoId = poMgr.getAll().size() + 1;
-
-    // 3) Ask user for dollar amount (total)
-    String amtStr = JOptionPane.showInputDialog(
-        this,
-        "Enter dollar amount for PO #" + newPoId + ":",
-        "Approve Requisition",
-        JOptionPane.PLAIN_MESSAGE
-    );
-    if (amtStr == null) {
-        // user cancelled
-        return;
-    }
-    double amount;
-    try {
-        amount = Double.parseDouble(amtStr.trim());
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this,
-            "That's not a valid number.",
-            "Error",
-            JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    // 4) Ask user for unit cost (optional—you can skip if you only need total)
-    String priceStr = JOptionPane.showInputDialog(
-        this,
-            "Enter price per unit for item “" + pr.getItemIds() + "”:",
-        "Unit Price",
-        JOptionPane.PLAIN_MESSAGE
-    );
-    double unitPrice = -1;
-    if (priceStr != null) {
-        try {
-            unitPrice = Double.parseDouble(priceStr.trim());
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this,
-                "Invalid unit price—using total only.",
-                "Warning",
-                JOptionPane.WARNING_MESSAGE
-            );
-            unitPrice = -1;
-        }
-    }
-
-    // 5) Build & save the new PurchaseOrder
-    PurchaseOrder po = new PurchaseOrder(
-        newPoId,
-        pr,
-        amount,
-        pr.getSupplierId()
-    );
-    poMgr.add(po);
-    try {
-        poMgr.saveToFile(DATA_DIR + "PurchaseOrders.txt");
-    } catch (IOException ioe) {
-        JOptionPane.showMessageDialog(this,
-            "Failed to save orders: " + ioe.getMessage(),
-            "Save Error",
-            JOptionPane.ERROR_MESSAGE
-        );
-    }
-
-    // 6) (Optional) Email notification to supplier
-    try {
-        Supplier sup = sMgr.findById(pr.getSupplierId());
-        if (sup == null) {
-            JOptionPane.showMessageDialog(this,
-                "No supplier found with ID " + pr.getSupplierId(),
-                "Email Error",
-                JOptionPane.ERROR_MESSAGE
-            );
-        } else {
-            String to    = sup.getEmail();
-            String subj  = "New Purchase Order #" + po.getId();
-            StringBuilder body = new StringBuilder()
-                .append("Dear ").append(sup.getName()).append(",\n\n")
-                .append("Your PO details:\n")
-                .append("PO #: ").append(po.getId()).append("\n")
-                    .append("Item: ").append(pr.getItemIds()).append("\n")
-                .append("Qty: ").append(pr.getQuantity()).append("\n")
-                .append("Total: ").append(amount).append("\n\n")
-                .append("Thanks,\nFinance Manager Team");
-            MailUtil.send(to, subj, body.toString());
-            JOptionPane.showMessageDialog(this,
-                "Created PO #" + po.getId() + " and emailed to " + to
-            );
-        }
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this,
-            "PO created, but failed to email: " + ex.getMessage(),
-            "Email Error",
-            JOptionPane.ERROR_MESSAGE
-        );
-    }
-
-    // 7) Refresh both tables
-    loadPendingRequisitions();
-    loadPendingOrders();
-
-
-
-  
-   }
-    
-    private void addRequisition() {
-      // 1) PR-ID
-  String prId = JOptionPane.showInputDialog(this, "PRID:");
-  if (prId == null || prId.trim().isEmpty()) return;
-
-  // 2) Item-IDs
-  String itemIds = JOptionPane.showInputDialog(
-    this,
-    "Item IDs (slash-separated, e.g. ITM001/ITM002):"
-  );
-  if (itemIds == null || itemIds.trim().isEmpty()) return;
-
-  // 3) Quantity
-  String qtyStr = JOptionPane.showInputDialog(this, "Quantity:");
-  if (qtyStr == null) return;
-  int quantity;
-  try {
-    quantity = Integer.parseInt(qtyStr.trim());
-  } catch (NumberFormatException ex) {
-    JOptionPane.showMessageDialog(this, "Invalid quantity");
-    return;
-  }
-
-  // 4) Date
-  String dateStr = JOptionPane.showInputDialog(this, "Date (yyyy-MM-dd):");
-  if (dateStr == null || dateStr.trim().isEmpty()) return;
-  Date dateRequested;
-  try {
-    dateRequested = new SimpleDateFormat("yyyy-MM-dd")
-                        .parse(dateStr.trim());
-  } catch (ParseException ex) {
-    JOptionPane.showMessageDialog(this, "Invalid date format");
-    return;
-  }
-
-  // 5) Supplier-ID
-  String supplierId = JOptionPane.showInputDialog(
-    this,
-    "Supplier ID (e.g. SUP001):"
-  );
-  if (supplierId == null || supplierId.trim().isEmpty()) return;
-
-  // 6) Sales-Manager ID
-  String salesMgrId = JOptionPane.showInputDialog(
-    this,
-    "Sales-Manager ID (e.g. SM001):"
-  );
-  if (salesMgrId == null || salesMgrId.trim().isEmpty()) return;
-
-  // 7) Status
-  String status = JOptionPane.showInputDialog(this, "Status:");
-  if (status == null || status.trim().isEmpty()) return;
-
-  // ─── Build & save ───────────────────────────────────────
-  PurchaseRequisition pr = new PurchaseRequisition(
-    prId,
-    itemIds,
-    quantity,
-    dateRequested,
-    supplierId,
-    salesMgrId,
-    status
-  );
-  prMgr.add(pr);
-try {
-  prMgr.appendToFile(DATA_DIR + "PurchaseRequisitions.txt", pr);
-} catch (IOException ex) {
-  ex.printStackTrace();
-  JOptionPane.showMessageDialog(
-    this,
-    "Failed to save requisition:\n" + ex.getMessage(),
-    "I/O Error",
-    JOptionPane.ERROR_MESSAGE
-  );
-}
-
-  
-
-  loadPendingRequisitions();
-  
- 
-
-
-   
-
-  }
-
-    
-
-    private void loadPendingOrders() {
-    tableModelOrders.setRowCount(0);
-    for (PurchaseOrder po : poMgr.getAll()) {
-        tableModelOrders.addRow(new Object[]{
-            po.getId(),
-            po.getItemIds(),
-            po.getQuantity(),
-            po.getAmount(),
-            po.getSupplierId(),
-            po.getStatus(),
-            DF.format(po.getDateIssued())
-        });
-    }
-}
-
-    private void processPaymentForSelected() {
-    int row = tblOrders.getSelectedRow();
-    if (row < 0) return;
-
-    int poId = (int) tableModelOrders.getValueAt(row, 0);
-    PurchaseOrder po = poMgr.findById(poId);
-    if (po == null) {
-        JOptionPane.showMessageDialog(this, "Couldn't find that purchase order!",
-            "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // verify stock received
-    String[] parts = po.getItemIds().split("/");
-    String itemId  = parts[0];                     // or handle multiple
-    InventoryEntry inv = invMgr.findByItem(itemId);
-    int needed = po.getQuantity();
-    if (inv == null || inv.getQuantity() < needed) {
-        JOptionPane.showMessageDialog(this,
-            "Cannot pay: you still need to receive " + needed +
-            " of '" + itemId + "'", "Stock Error", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    // deduct from inventory
-    inv.setQuantity(inv.getQuantity() - needed);
-
-    try {
-    invMgr.saveToFile(DATA_DIR + "Inventory.txt");
-    } catch (IOException ex) {
-        JOptionPane.showMessageDialog(this,
-            "Failed to update stock: " + ex.getMessage(),
-            "Error",
-            JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    // 4) Ask user to confirm / enter the payment amount
-    String amtStr = JOptionPane.showInputDialog(
-        this,
-        "Enter payment amount for PO #" + po.getId() + ":",
-        "Process Payment",
-        JOptionPane.PLAIN_MESSAGE
-    );
-    if (amtStr == null) return;
-
-    double amt;
-    try {
-        amt = Double.parseDouble(amtStr.trim());
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this,
-            "Invalid amount",
-            "Error",
-            JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    // 5) Mark the PO as paid
-    po.setStatus("PAID");
-    po.setAmount(amt);
-    try {
-        poMgr.saveToFile(DATA_DIR + "PurchaseOrders.txt");
-    } catch (IOException ex) {
-        JOptionPane.showMessageDialog(this,
-            "Failed to save payment: " + ex.getMessage(),
-            "Error",
-            JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    // 6) Send confirmation email
-    try {
-        Supplier sup = sMgr.findById(po.getSupplierId());
-        if (sup == null) {
-            JOptionPane.showMessageDialog(this,
-                "No supplier found with ID " + po.getSupplierId(),
-                "Email Error",
-                JOptionPane.ERROR_MESSAGE
-            );
-        } else {
-            String to   = sup.getEmail();
-            String subj = "Payment received for PO #" + po.getId();
-            StringBuilder body = new StringBuilder()
-                .append("Dear ").append(sup.getName()).append(",\n\n")
-                .append("We have processed your payment for Purchase Order #")
-                .append(po.getId()).append(".\n\n")
-                .append("Thank you,\nFinance Manager Team");
-            MailUtil.send(to, subj, body.toString());
-            JOptionPane.showMessageDialog(this,
-                "PO #" + po.getId()
-                + " marked PAID and emailed to " + to
-            );
-        }
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this,
-            "PO paid, but failed to email: " + ex.getMessage(),
-            "Email Error",
-            JOptionPane.ERROR_MESSAGE
-        );
-    }
-
-    // 7) Refresh both tables
-    loadPendingRequisitions();
-    loadPendingOrders();
-        
-
-
-
-
-
-}
-
-    private void showReportDialog() {
-    // 1) Create two date spinners
-    SpinnerDateModel fromModel = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
-    JSpinner spinnerFrom = new JSpinner(fromModel);
-    spinnerFrom.setEditor(new JSpinner.DateEditor(spinnerFrom, "yyyy-MM-dd"));
-
-    SpinnerDateModel toModel = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
-    JSpinner spinnerTo = new JSpinner(toModel);
-    spinnerTo.setEditor(new JSpinner.DateEditor(spinnerTo, "yyyy-MM-dd"));
-
-    // 2) Lay them out in a panel
-    JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
-    panel.add(new JLabel("From:"));
-    panel.add(spinnerFrom);
-    panel.add(new JLabel("To:"));
-    panel.add(spinnerTo);
-
-    // 3) Show OK/CANCEL dialog
-    int result = JOptionPane.showConfirmDialog(
-      this,
-      panel,
-      "Select Report Date Range",
-      JOptionPane.OK_CANCEL_OPTION,
-      JOptionPane.PLAIN_MESSAGE
-    );
-    if (result != JOptionPane.OK_OPTION) return;
-
-    // 4) Pull the dates
-    Date from = (Date) spinnerFrom.getValue();
-    Date to   = (Date) spinnerTo.getValue();
-
-    // 5) Filter POs in range
-    List<PurchaseOrder> filtered = poMgr.getAll().stream()
-      .filter(po -> !po.getDateIssued().before(from) && !po.getDateIssued().after(to))
-      .collect(Collectors.toList());
-
-    // 6) Compute summary
-    long total   = filtered.size();
-    long paid    = filtered.stream().filter(po -> "PAID".equals(po.getStatus())).count();
-    long pending = total - paid;
-
-    // 7) Build a simple report string
-    StringBuilder rpt = new StringBuilder();
-    rpt.append("Orders from ")
-       .append(DF.format(from))
-       .append(" to ")
-       .append(DF.format(to))
-       .append(":\n\n")
-       .append(" Total orders: ").append(total).append("\n")
-       .append(" Paid:         ").append(paid).append("\n")
-       .append(" Pending:      ").append(pending).append("\n\n")
-       .append("Details:\n");
-    for (PurchaseOrder po : filtered) {
-    rpt.append("  PO#").append(po.getId())
-       .append(" [").append(po.getStatus()).append("] ")
-       .append(po.getItemIds())
-       .append(" x").append(po.getQuantity())
-       .append("\n");
-    }
-
-    // 8) Show the report
-    JTextArea text = new JTextArea(rpt.toString());
-    text.setEditable(false);
-    text.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-    JOptionPane.showMessageDialog(this, new JScrollPane(text), "PO Report", JOptionPane.INFORMATION_MESSAGE);
-}
-
-    
-    private void loadPendingPRs() {
-        // e.g. jTable1.setModel( new MyTableModel(prMgr.getAll()) );
-    }
-    
-    private void receiveShipment() {
-        
-           // 1) Which order?
-    int row = tblOrders.getSelectedRow();
-    if (row < 0) return;  // nothing selected
-
-    // 2) Look up the PO by its ID (in column 0)
-    int poId = (int) tableModelOrders.getValueAt(row, 0);
-    PurchaseOrder po = poMgr.findById(poId);
-    if (po == null) {
-        JOptionPane.showMessageDialog(this,
-            "Couldn't find that order!",
-            "Error", JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    // 3) Mark the order as received (so it will no longer show as “pending”)
-    po.setStatus("RECEIVED");
-
-    // 4) Ask for quantity received
-    String qtyStr = JOptionPane.showInputDialog(
-        this,
-        "Enter quantity received for PO #" + poId + ":",
-        "Receive Shipment",
-        JOptionPane.PLAIN_MESSAGE
-    );
-    if (qtyStr == null) return;  // user cancelled
-
-    int recQty;
-    try {
-        recQty = Integer.parseInt(qtyStr.trim());
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this,
-            "Invalid number",
-            "Error", JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    // 5) Create & store a new InventoryEntry
-    int newInvId = invMgr.getAll().size() + 1;
-    InventoryEntry entry = new InventoryEntry(
-        newInvId,
-        po.getItemCode(),    // proxies through the PR
-        recQty,
-        new Date(),
-        po.getSupplierId()
-    );
-    invMgr.add(entry);
-
-    // 6) Persist both inventory and orders
-    try {
-        invMgr.saveToFile(DATA_DIR + "Inventory.txt");
-        poMgr.saveToFile(DATA_DIR + "PurchaseOrders.txt");
-    } catch (IOException ioe) {
-        JOptionPane.showMessageDialog(this,
-            "Failed to save data: " + ioe.getMessage(),
-            "Save Error", JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    // 7) Refresh your tables (so the PO drops out of “pending” and your inventory view updates)
-    loadPendingRequisitions();
-    loadPendingOrders();
-     
-
-   
-}
-    
-//private void generateReport() {
-//   1) total revenue = sum of every SalesEntry.getAmount()
-//  double revenue = salesMgr.getAll().stream()
-//    .mapToDouble(se -> se.getAmount())
-//    .sum();
-//
-//   2) direct cost = sum of every PurchaseOrder.getAmount()
-//  double cost = poMgr.getAll().stream()
-//    .mapToDouble(po -> po.getAmount())
-//    .sum();
-//
-//   3) profit
-//  double profit = revenue - cost;
-//
-//   4) build a little JTable
-//  DefaultTableModel model = new DefaultTableModel(
-//    new String[]{"Category", "Amount"}, 0
-//  );
-//  model.addRow(new Object[]{"Revenue", String.format("$%.2f", revenue)});
-//  model.addRow(new Object[]{"Cost",    String.format("$%.2f", cost)});
-//  model.addRow(new Object[]{"Profit",  String.format("$%.2f", profit)});
-//
-//  JTable tbl = new JTable(model);
-//  JOptionPane.showMessageDialog(
-//    this,
-//    new JScrollPane(tbl),
-//    "Financial Report",
-//    JOptionPane.INFORMATION_MESSAGE
-//  );
-//}
-
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -742,307 +43,676 @@ try {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jMenuBar2 = new javax.swing.JMenuBar();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuBar4 = new javax.swing.JMenuBar();
-        jMenu7 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jToolBar1 = new javax.swing.JToolBar();
-        jPanel6 = new javax.swing.JPanel();
-        btnLoadPRs = new javax.swing.JButton();
-        btnLoadPOs = new javax.swing.JButton();
-        btnReport = new javax.swing.JButton();
-        btnApprovePO = new javax.swing.JButton();
-        btnAddPR = new javax.swing.JButton();
-        btnProcessPay = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblRequisitions = new javax.swing.JTable();
-        btnReceiveShipment = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tblOrders = new javax.swing.JTable();
-        jPanel4 = new javax.swing.JPanel();
+        SidePanel = new javax.swing.JPanel();
+        RequistionButton = new javax.swing.JButton();
+        HomeButton = new javax.swing.JButton();
+        POBtn = new javax.swing.JButton();
+        ReportBtn = new javax.swing.JButton();
+        LogoLabel = new javax.swing.JLabel();
+        ExitButton = new javax.swing.JButton();
+        LogoutBtn = new javax.swing.JButton();
+        MainPanel = new javax.swing.JPanel();
+        HomePanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jMenu3.setText("File");
-        jMenuBar2.add(jMenu3);
-
-        jMenu4.setText("Edit");
-        jMenuBar2.add(jMenu4);
-
-        jMenu7.setText("File");
-        jMenuBar4.add(jMenu7);
-
-        jMenu8.setText("Edit");
-        jMenuBar4.add(jMenu8);
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable1);
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane3.setViewportView(jTable2);
+        RoleLabel = new javax.swing.JLabel();
+        UsernameLabel = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        DateTimeL = new javax.swing.JLabel();
+        RequisitionsPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        requisitionTable = new javax.swing.JTable();
+        cmbPRDateFilter = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        PurchaseOrderPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        purchaseOrderTable = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        QuantityLabel = new javax.swing.JTextField();
+        cmbSupplier = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        ModifyPO = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        cmbStatus = new javax.swing.JComboBox<>();
+        ConfirmPOBtn = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        cmbPODateFilter = new javax.swing.JComboBox<>();
+        ReportsPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        setSize(new java.awt.Dimension(850, 490));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jToolBar1.setRollover(true);
+        SidePanel.setBackground(new java.awt.Color(249, 143, 37));
+        SidePanel.setPreferredSize(new java.awt.Dimension(300, 540));
 
-        btnLoadPRs.setText("Load Requisitions");
-        btnLoadPRs.addActionListener(new java.awt.event.ActionListener() {
+        RequistionButton.setBackground(new java.awt.Color(173, 216, 230));
+        RequistionButton.setText("Manage Requisitions");
+        RequistionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoadPRsActionPerformed(evt);
+                RequistionButtonActionPerformed(evt);
             }
         });
 
-        btnLoadPOs.setText("Load Orders");
-        btnLoadPOs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnLoadPOs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnLoadPOs.addActionListener(new java.awt.event.ActionListener() {
+        HomeButton.setBackground(new java.awt.Color(173, 216, 230));
+        HomeButton.setText("Home Dashboard");
+        HomeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoadPOsActionPerformed(evt);
+                HomeButtonActionPerformed(evt);
             }
         });
 
-        btnReport.setText("Generate Report");
-        btnReport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnReport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnReport.addActionListener(new java.awt.event.ActionListener() {
+        POBtn.setBackground(new java.awt.Color(173, 216, 230));
+        POBtn.setText("Manage Purchase Orders");
+        POBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReportActionPerformed(evt);
+                POBtnActionPerformed(evt);
             }
         });
 
-        btnApprovePO.setText("Approve PO");
-        btnApprovePO.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnApprovePO.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnApprovePO.addActionListener(new java.awt.event.ActionListener() {
+        ReportBtn.setBackground(new java.awt.Color(173, 216, 230));
+        ReportBtn.setText("Generate Reports");
+        ReportBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnApprovePOActionPerformed(evt);
+                ReportBtnActionPerformed(evt);
             }
         });
 
-        btnAddPR.setText("Add Requisition");
-        btnAddPR.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAddPR.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAddPR.addActionListener(new java.awt.event.ActionListener() {
+        LogoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mega (3).png"))); // NOI18N
+
+        ExitButton.setBackground(new java.awt.Color(255, 51, 51));
+        ExitButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ExitButton.setText("Exit");
+        ExitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddPRActionPerformed(evt);
+                ExitButtonActionPerformed(evt);
             }
         });
 
-        btnProcessPay.setText("Process Payment");
-        btnProcessPay.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnProcessPay.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnProcessPay.addActionListener(new java.awt.event.ActionListener() {
+        LogoutBtn.setBackground(new java.awt.Color(102, 153, 255));
+        LogoutBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        LogoutBtn.setText("Logout");
+        LogoutBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProcessPayActionPerformed(evt);
+                LogoutBtnActionPerformed(evt);
             }
         });
 
-        tblRequisitions.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "PRID", "ItemIDs", "Quantities", "Date", "SupplierID", "SMID", "Status"
-            }
-        ));
-        jScrollPane1.setViewportView(tblRequisitions);
-
-        btnReceiveShipment.setText("Receive Shipment");
-        btnReceiveShipment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReceiveShipmentActionPerformed(evt);
-            }
-        });
-
-        tblOrders.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Item", "Qty", "Amount ", "Supplier", "Status", "Date"
-            }
-        ));
-        jScrollPane4.setViewportView(tblOrders);
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnApprovePO)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnReport)
-                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(btnProcessPay)
-                                        .addComponent(btnAddPR))))
-                            .addComponent(btnLoadPRs, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(69, 69, 69)
-                                .addComponent(btnLoadPOs))
-                            .addComponent(btnReceiveShipment))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(240, Short.MAX_VALUE))
+        javax.swing.GroupLayout SidePanelLayout = new javax.swing.GroupLayout(SidePanel);
+        SidePanel.setLayout(SidePanelLayout);
+        SidePanelLayout.setHorizontalGroup(
+            SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SidePanelLayout.createSequentialGroup()
+                .addComponent(LogoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 34, Short.MAX_VALUE))
+            .addGroup(SidePanelLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SidePanelLayout.createSequentialGroup()
+                        .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ReportBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                            .addComponent(POBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                            .addComponent(RequistionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(HomeButton, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(SidePanelLayout.createSequentialGroup()
+                        .addComponent(ExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(LogoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))))
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(btnLoadPRs)
-                        .addGap(24, 24, 24)
-                        .addComponent(btnLoadPOs)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnReport)
-                        .addGap(27, 27, 27)
-                        .addComponent(btnApprovePO)
-                        .addGap(34, 34, 34)
-                        .addComponent(btnAddPR)
-                        .addGap(52, 52, 52)
-                        .addComponent(btnProcessPay)
-                        .addGap(58, 58, 58)
-                        .addComponent(btnReceiveShipment)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(508, Short.MAX_VALUE))
+        SidePanelLayout.setVerticalGroup(
+            SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SidePanelLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(LogoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(HomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(RequistionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(POBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(ReportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ExitButton)
+                    .addComponent(LogoutBtn))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
-        jToolBar1.add(jPanel6);
+        getContentPane().add(SidePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 539));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1315, Short.MAX_VALUE)
-        );
+        MainPanel.setBackground(new java.awt.Color(153, 153, 153));
+        MainPanel.setPreferredSize(new java.awt.Dimension(660, 540));
+        MainPanel.setLayout(new java.awt.CardLayout());
 
-        jToolBar1.add(jPanel4);
+        HomePanel.setBackground(new java.awt.Color(153, 153, 153));
+        HomePanel.setPreferredSize(new java.awt.Dimension(660, 540));
+
+        jPanel3.setBackground(new java.awt.Color(255, 204, 102));
+
+        RoleLabel.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        RoleLabel.setForeground(new java.awt.Color(0, 0, 0));
+        RoleLabel.setText("Role");
+
+        UsernameLabel.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        UsernameLabel.setForeground(new java.awt.Color(0, 0, 0));
+        UsernameLabel.setText("Username");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(UsernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(478, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1315, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(UsernameLabel)
+                .addGap(18, 18, 18)
+                .addComponent(RoleLabel)
+                .addContainerGap(395, Short.MAX_VALUE))
         );
 
-        jToolBar1.add(jPanel3);
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Home");
 
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.CENTER);
+        DateTimeL.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        DateTimeL.setForeground(new java.awt.Color(255, 255, 255));
+        DateTimeL.setText("DateTime");
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        javax.swing.GroupLayout HomePanelLayout = new javax.swing.GroupLayout(HomePanel);
+        HomePanel.setLayout(HomePanelLayout);
+        HomePanelLayout.setHorizontalGroup(
+            HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HomePanelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(HomePanelLayout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(7, Short.MAX_VALUE))
+                    .addGroup(HomePanelLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(DateTimeL, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(200, 200, 200))))
+        );
+        HomePanelLayout.setVerticalGroup(
+            HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HomePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(DateTimeL))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        MainPanel.add(HomePanel, "card2");
 
-        setJMenuBar(jMenuBar1);
+        RequisitionsPanel.setBackground(new java.awt.Color(153, 153, 153));
+        RequisitionsPanel.setPreferredSize(new java.awt.Dimension(660, 540));
+
+        requisitionTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "PR_ID", "Item_ID", "Quantity", "Required_Date", "Supplier_ID", "SM_ID", "Status"
+            }
+        ));
+        jScrollPane1.setViewportView(requisitionTable);
+
+        cmbPRDateFilter.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cmbPRDateFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPRDateFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbPRDateFilterActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel8.setText("Date Filter:");
+
+        javax.swing.GroupLayout RequisitionsPanelLayout = new javax.swing.GroupLayout(RequisitionsPanel);
+        RequisitionsPanel.setLayout(RequisitionsPanelLayout);
+        RequisitionsPanelLayout.setHorizontalGroup(
+            RequisitionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RequisitionsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(RequisitionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(RequisitionsPanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbPRDateFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        RequisitionsPanelLayout.setVerticalGroup(
+            RequisitionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RequisitionsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cmbPRDateFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(193, Short.MAX_VALUE))
+        );
+
+        MainPanel.add(RequisitionsPanel, "card2");
+
+        PurchaseOrderPanel.setBackground(new java.awt.Color(153, 153, 153));
+        PurchaseOrderPanel.setPreferredSize(new java.awt.Dimension(660, 540));
+
+        purchaseOrderTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "PR_ID", "Date", "ItemIDs", "Quantity", "Status", "PM_ID", "Resolution"
+            }
+        ));
+        jScrollPane2.setViewportView(purchaseOrderTable);
+
+        jPanel1.setBackground(new java.awt.Color(255, 204, 102));
+        jPanel1.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Modify Purchase Order Details:");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Quantity:");
+
+        QuantityLabel.setForeground(new java.awt.Color(0, 0, 0));
+
+        cmbSupplier.setForeground(new java.awt.Color(255, 255, 255));
+        cmbSupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Supplier:");
+
+        ModifyPO.setBackground(new java.awt.Color(102, 153, 255));
+        ModifyPO.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ModifyPO.setText("Modify");
+        ModifyPO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModifyPOActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(ModifyPO, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel3)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cmbSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(QuantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(QuantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addComponent(ModifyPO)
+                .addContainerGap(64, Short.MAX_VALUE))
+        );
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Approve Purchase Order:");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("Status:");
+
+        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a Status", "Approved", "Denied", "Processing" }));
+
+        ConfirmPOBtn.setBackground(new java.awt.Color(102, 153, 255));
+        ConfirmPOBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ConfirmPOBtn.setText("Confirm");
+        ConfirmPOBtn.setToolTipText("");
+        ConfirmPOBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ConfirmPOBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("Date:");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel7.setText("Date Filter:");
+
+        cmbPODateFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPODateFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbPODateFilterActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(ConfirmPOBtn)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addGap(52, 52, 52))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                            .addGap(6, 6, 6)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel7)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cmbPODateFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(120, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(ConfirmPOBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(cmbPODateFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
+        );
+
+        javax.swing.GroupLayout PurchaseOrderPanelLayout = new javax.swing.GroupLayout(PurchaseOrderPanel);
+        PurchaseOrderPanel.setLayout(PurchaseOrderPanelLayout);
+        PurchaseOrderPanelLayout.setHorizontalGroup(
+            PurchaseOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PurchaseOrderPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PurchaseOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(PurchaseOrderPanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+        PurchaseOrderPanelLayout.setVerticalGroup(
+            PurchaseOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PurchaseOrderPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PurchaseOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        MainPanel.add(PurchaseOrderPanel, "card2");
+
+        ReportsPanel.setBackground(new java.awt.Color(153, 153, 153));
+        ReportsPanel.setPreferredSize(new java.awt.Dimension(660, 540));
+
+        javax.swing.GroupLayout ReportsPanelLayout = new javax.swing.GroupLayout(ReportsPanel);
+        ReportsPanel.setLayout(ReportsPanelLayout);
+        ReportsPanelLayout.setHorizontalGroup(
+            ReportsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 640, Short.MAX_VALUE)
+        );
+        ReportsPanelLayout.setVerticalGroup(
+            ReportsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 540, Short.MAX_VALUE)
+        );
+
+        MainPanel.add(ReportsPanel, "card2");
+
+        getContentPane().add(MainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 0, 640, 540));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnProcessPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessPayActionPerformed
-        processPaymentForSelected();
-    }//GEN-LAST:event_btnProcessPayActionPerformed
+    private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_ExitButtonActionPerformed
 
-    private void btnAddPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPRActionPerformed
-        addRequisition();   
-    }//GEN-LAST:event_btnAddPRActionPerformed
+    private void LogoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutBtnActionPerformed
+        LoginPage loginpage = new LoginPage();
+        loginpage.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_LogoutBtnActionPerformed
 
-    private void btnApprovePOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApprovePOActionPerformed
-          approveSelected();
-    }//GEN-LAST:event_btnApprovePOActionPerformed
+    private void HomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeButtonActionPerformed
+        FMLayout.show(MainPanel, "HomePanel");
+    }//GEN-LAST:event_HomeButtonActionPerformed
 
-    private void btnLoadPRsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPRsActionPerformed
-        loadPendingRequisitions();
-    }//GEN-LAST:event_btnLoadPRsActionPerformed
+    private void RequistionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RequistionButtonActionPerformed
+        FMLayout.show(MainPanel, "RequisitionsPanel");
+    }//GEN-LAST:event_RequistionButtonActionPerformed
 
-    private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
+    private void POBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POBtnActionPerformed
+        FMLayout.show(MainPanel, "PurchaseOrderPanel");
+    }//GEN-LAST:event_POBtnActionPerformed
 
-    }//GEN-LAST:event_btnReportActionPerformed
+    private void ReportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportBtnActionPerformed
+        FMLayout.show(MainPanel, "ReportsPanel");
+    }//GEN-LAST:event_ReportBtnActionPerformed
 
-    private void btnLoadPOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPOsActionPerformed
-        loadPendingOrders();
-    }//GEN-LAST:event_btnLoadPOsActionPerformed
+    private void cmbPODateFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPODateFilterActionPerformed
+        applyDateFilter(cmbPODateFilter, purchaseOrderTable, PO.getPOList(), 1, 7);
+    }//GEN-LAST:event_cmbPODateFilterActionPerformed
 
-    private void btnReceiveShipmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceiveShipmentActionPerformed
-        receiveShipment();
-    }//GEN-LAST:event_btnReceiveShipmentActionPerformed
+    private void ModifyPOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModifyPOActionPerformed
+        ModifyPO();
+    }//GEN-LAST:event_ModifyPOActionPerformed
 
+    private void ConfirmPOBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmPOBtnActionPerformed
+        ConfirmPO();
+    }//GEN-LAST:event_ConfirmPOBtnActionPerformed
+
+    private void cmbPRDateFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPRDateFilterActionPerformed
+        applyDateFilter(cmbPRDateFilter, requisitionTable, PR.getPRList(), 1, 7);
+    }//GEN-LAST:event_cmbPRDateFilterActionPerformed
+
+    
+        private void buildTable(JTable table, List<List<String>> data, int columnCount) {
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setResizingAllowed(false);
+        table.enableInputMethods(false);
+        table.setCellSelectionEnabled(false);
+        table.setColumnSelectionAllowed(false);
+        table.setRowSelectionAllowed(false);
+
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        for (List<String> record : data) {
+            Object[] row = new Object[columnCount];
+            for (int i = 0; i < columnCount; i++) {
+                row[i] = record.size() > i 
+                         ? record.get(i) 
+                         : ""; 
+            }
+            model.addRow(row);
+        }
+    }
+
+    private void buildPRTable() {
+        buildTable(
+            requisitionTable,       // your PR JTable variable
+            PR.getPRList(),  // List<List<String>>
+            6                        // number of PR columns
+        );
+    }
+
+    private void buildPOTable() {
+        buildTable(
+            purchaseOrderTable,      // your PO JTable variable
+            PO.getPOList(),   // List<List<String>>
+            6                         // number of PO columns
+        );
+    }
+    
+    private void applyDateFilter(JComboBox<String> comboBox, JTable table, List<List<String>> fullData, int dateIndex, int columnCount) {
+    String selectedDate = (String) comboBox.getSelectedItem();
+    List<List<String>> filteredData = new ArrayList<>();
+
+    for (List<String> row : fullData) {
+        if (selectedDate.equals("All") || row.get(dateIndex).equals(selectedDate)) {
+            filteredData.add(row);
+        }
+    }
+
+    buildTable(table, filteredData, columnCount);
+}
+
+    private void populateDateComboBox(JComboBox<String> comboBox, List<List<String>> data, int dateIndex) {
+    comboBox.removeAllItems();
+    comboBox.addItem("All");
+
+    for (List<String> row : data) {
+        String date = row.get(dateIndex);
+        if (((DefaultComboBoxModel<String>) comboBox.getModel()).getIndexOf(date) == -1) {
+            comboBox.addItem(date);
+        }
+    }
+}
+    
+    private void ModifyPO (){
+         int selectedRow = purchaseOrderTable.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a PO row to modify.");
+        return;
+    }
+
+    String poID = purchaseOrderTable.getValueAt(selectedRow, 0).toString();
+
+    // Get new quantity and supplier selections from your form (e.g. text fields or combo boxes)
+    String newQtyString = QuantityLabel.getText();           // e.g. "15/10"
+    String newSupplierID = cmbSupplier.getSelectedItem().toString(); // Optional if you're changing suppliers per item
+
+    // Update PO in memory
+    List<List<String>> poList = POManager.getPOList();
+    for (List<String> row : poList) {
+        if (row.get(0).equalsIgnoreCase(poID)) {
+            row.set(3, newQtyString); // update quantities
+            // Optionally modify row.set(2) if supplier affects itemIDs (depends on design)
+            break;
+        }
+    }
+    
+    // Save to file
+    POManager.updateTextFile(poList, "src/PurchaseOrders.txt");
+    JOptionPane.showMessageDialog(this, "PO quantities updated.");
+    buildPOTable(); // refresh
+    }
+
+    private void ConfirmPO (){
+        int selectedRow = purchaseOrderTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a PO to confirm.");
+            return;
+        }
+
+        String poID = purchaseOrderTable.getValueAt(selectedRow, 0).toString();
+        String newStatus = cmbStatus.getSelectedItem().toString();        // "Approved", "Denied"
+
+        // Update only status and resolution (index 4 & 6)
+        POManager.editPO(poID, newStatus);
+
+        JOptionPane.showMessageDialog(this, "PO confirmation saved.");
+        buildPOTable();
+    }
+    
+    private javax.swing.Timer clockTimer;
+    
+    private void startDateTime() {
+        clockTimer = new javax.swing.Timer(1000, e -> {
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            
+            DateTimeL.setText("Current Time: " + now.format(formatter));
+        });
+        clockTimer.start();
+    }
+    
+    
+    private void homePageLoad(String username, String role){
+    this.FMLayout = (CardLayout)(MainPanel.getLayout());
+    FMLayout.show(MainPanel, "HomePanel");  
+    UsernameLabel.setText("Welcome User: " + username);
+    RoleLabel.setText("Role: " + role);
+    startDateTime();
+    }
     /**
      * @param args the command line arguments
      */
@@ -1069,45 +739,55 @@ try {
             java.util.logging.Logger.getLogger(FMForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FMForm().setVisible(true);
+                new FMForm("Leo", "p20").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddPR;
-    private javax.swing.JButton btnApprovePO;
-    private javax.swing.JButton btnLoadPOs;
-    private javax.swing.JButton btnLoadPRs;
-    private javax.swing.JButton btnProcessPay;
-    private javax.swing.JButton btnReceiveShipment;
-    private javax.swing.JButton btnReport;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JMenuBar jMenuBar4;
+    private javax.swing.JButton ConfirmPOBtn;
+    private javax.swing.JLabel DateTimeL;
+    private javax.swing.JButton ExitButton;
+    private javax.swing.JButton HomeButton;
+    private javax.swing.JPanel HomePanel;
+    private javax.swing.JLabel LogoLabel;
+    private javax.swing.JButton LogoutBtn;
+    private javax.swing.JPanel MainPanel;
+    private javax.swing.JButton ModifyPO;
+    private javax.swing.JButton POBtn;
+    private javax.swing.JPanel PurchaseOrderPanel;
+    private javax.swing.JTextField QuantityLabel;
+    private javax.swing.JButton ReportBtn;
+    private javax.swing.JPanel ReportsPanel;
+    private javax.swing.JPanel RequisitionsPanel;
+    private javax.swing.JButton RequistionButton;
+    private javax.swing.JLabel RoleLabel;
+    private javax.swing.JPanel SidePanel;
+    private javax.swing.JLabel UsernameLabel;
+    private javax.swing.JComboBox<String> cmbPODateFilter;
+    private javax.swing.JComboBox<String> cmbPRDateFilter;
+    private javax.swing.JComboBox<String> cmbStatus;
+    private javax.swing.JComboBox<String> cmbSupplier;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JTable tblOrders;
-    private javax.swing.JTable tblRequisitions;
+    private javax.swing.JTable purchaseOrderTable;
+    private javax.swing.JTable requisitionTable;
     // End of variables declaration//GEN-END:variables
 }
