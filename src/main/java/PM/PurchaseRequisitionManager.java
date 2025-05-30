@@ -14,12 +14,11 @@ import java.util.*;
 
 
 public class PurchaseRequisitionManager {
-    private final String filePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
-
+    private PurchaseRequisition pr;
     public List<PurchaseRequisition> getAllPRs() {
         List<PurchaseRequisition> prList = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PurchaseRequisition.File_Path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -32,7 +31,7 @@ public class PurchaseRequisitionManager {
                     String smID = parts[5].trim();
                     String status = parts[6].trim();
 
-                    PurchaseRequisition pr = new PurchaseRequisition(prID, itemIDs, quantities, date, supplierID, smID, status);
+                    pr = new PurchaseRequisition(prID, itemIDs, quantities, date, supplierID, smID, status);
                     prList.add(pr);
                 }
             }

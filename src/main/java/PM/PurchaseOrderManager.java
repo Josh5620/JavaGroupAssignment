@@ -12,19 +12,19 @@ import java.io.*;
 import java.util.*;
 
 public class PurchaseOrderManager {
-    private final String itemsFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt" ;
-    private final String poFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseOrders.txt";
-    private final String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
+    private Item item;
+    private PurchaseRequisition pr;
+    private PurchaseOrder po;
 
     public void addPOFromPR(String prID, String date, String pmID) {
         try {
-            String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
+            //String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
             String itemIDs = "", quantities = "", supplierID = "", smID = "", status = "";
             boolean found = false;
 
         
             List<String> updatedPRLines = new ArrayList<>();
-            try (BufferedReader reader = new BufferedReader(new FileReader(prFilePath))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(PurchaseRequisition.File_Path))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("\\|");
@@ -59,7 +59,7 @@ public class PurchaseOrderManager {
 
         
             String lastPOID = "PO000";
-            try (BufferedReader reader = new BufferedReader(new FileReader(poFilePath))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(PurchaseOrder.File_Path))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("\\|");
@@ -78,13 +78,13 @@ public class PurchaseOrderManager {
             String resolution = "Unresolved";
 
         
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(poFilePath, true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(PurchaseOrder.File_Path, true))) {
                 writer.write(newPOID + "|" + date + "|" + itemIDs + "|" + quantities + "|" + poStatus + "|" + pmID + "|" + resolution);
                 writer.newLine();
             }
 
         
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(prFilePath))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(PurchaseRequisition.File_Path))) {
                 for (String l : updatedPRLines) {
                     writer.write(l);
                     writer.newLine();
@@ -109,7 +109,7 @@ public class PurchaseOrderManager {
 
     public List<PurchaseOrder> getAllPOs() {
         List<PurchaseOrder> poList = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(poFilePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PurchaseOrder.File_Path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -122,7 +122,7 @@ public class PurchaseOrderManager {
                     String pmID = parts[5];
                     String resolution = parts[6];
 
-                    PurchaseOrder po = new PurchaseOrder(poID, date, itemIDs, quantities, status, pmID, resolution);
+                    po = new PurchaseOrder(poID, date, itemIDs, quantities, status, pmID, resolution);
                     poList.add(po);
                 }
             }
@@ -135,7 +135,7 @@ public class PurchaseOrderManager {
     public void editPO(PurchaseOrder updatedPO) {
         List<String> updatedLines = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(poFilePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PurchaseOrder.File_Path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -156,7 +156,7 @@ public class PurchaseOrderManager {
             System.out.println("Error reading PO file: " + e.getMessage());
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(poFilePath))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(PurchaseOrder.File_Path))) {
             for (String l : updatedLines) {
                 writer.write(l);
                 writer.newLine(); 
@@ -171,7 +171,7 @@ public class PurchaseOrderManager {
         boolean deleted = false;
         List<String> updatedLines = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(poFilePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PurchaseOrder.File_Path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (!line.trim().startsWith(poID + "|")) {
@@ -186,7 +186,7 @@ public class PurchaseOrderManager {
         }
 
         if (deleted) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(poFilePath))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(PurchaseOrder.File_Path))) {
                 for (String l : updatedLines) {
                     writer.write(l);
                     writer.newLine();  
@@ -202,9 +202,9 @@ public class PurchaseOrderManager {
     
     public PurchaseOrder getPOByID(String poID) {
         List<PurchaseOrder> allPOs = getAllPOs();
-        for (PurchaseOrder po : allPOs) {
-            if (po.getPoID().equals(poID)) {
-                return po;
+        for (PurchaseOrder Po : allPOs) {
+            if (Po.getPoID().equals(poID)) {
+                return Po;
             }
         }
         return null;

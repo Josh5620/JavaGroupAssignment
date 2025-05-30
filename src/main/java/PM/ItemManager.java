@@ -4,11 +4,10 @@ import java.io.*;
 import java.util.*;
 
 public class ItemManager {
-    private final String filePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt";
-
+    private Item item;
     public List<Item> getAllItems() {
         List<Item> itemList = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(item.File_Path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -18,7 +17,7 @@ public class ItemManager {
                     double price = Double.parseDouble(parts[2]);
                     String supplierID = parts[3];
 
-                    Item item = new Item(itemID, itemName, price, supplierID);
+                    item = new Item(itemID, itemName, price, supplierID);
                     itemList.add(item);
                 }
             }

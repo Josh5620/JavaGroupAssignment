@@ -13,6 +13,8 @@ public class Item {
     private String itemName;
     private double price;
     private String supplierId;
+    public static final String File_Path = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt";
+
 
     public Item(String itemId, String itemName, double price, String supplierId) {
         this.itemId = itemId;
@@ -54,6 +56,11 @@ public class Item {
     public String getSupplierId() {
         return supplierId;
     }
+
+    public String getFilePath() {
+        return File_Path;
+    }
+    
 
     
     

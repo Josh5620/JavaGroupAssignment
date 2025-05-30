@@ -12,12 +12,12 @@ import java.io.*;
 import java.util.*;
 
 public class SupplierManager {
-    private final String filePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Suppliers.txt";
+    private Supplier supplier;
 
     public List<Supplier> getAllSuppliers() {
         List<Supplier> supplierList = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(supplier.File_Path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -33,7 +33,7 @@ public class SupplierManager {
                         itemIds = Arrays.asList(parts[4].trim().split(","));
                     }
 
-                    Supplier supplier = new Supplier(id, name, email, phone, itemIds);
+                    supplier = new Supplier(id, name, email, phone, itemIds);
                     supplierList.add(supplier);
                 }
             }
