@@ -14,19 +14,6 @@ public class InvenUser extends User {
     public static void main(String[] args) {
     }
     
-    /*
-    public static void Test(){
-        List<Object> tst = InvenList.get(0);
-        Object value = tst.get(0);
-        String type = value instanceof String ? "String" :
-               value instanceof Integer ? "Integer" :
-               value instanceof Double ? "Double" : 
-               "Unknown";
-        System.out.println("Type: " + type + " | Value: " + value);
-        
-    }
-    */
-    
     public InvenUser(){
         makeBigList(InvenFilePath, InvenList);
     }
@@ -85,24 +72,6 @@ public class InvenUser extends User {
 
         StockAlert.clear();
     }
-    
-/*
-    public static void lowItemAlert(List<List<String>> lowItems){     
-        String AlertText = "";
-        
-        for( List<String> item : lowItems){
-            String smallText = String.format("(%s / %s) Amount Left: %s \n", item.get(0), item.get(1), item.get(2));
-            AlertText = (AlertText + smallText);
-            smallText = "";
-            } 
-        JOptionPane.showMessageDialog(
-                null,
-                AlertText,
-                "Inventory Alert",
-                JOptionPane.WARNING_MESSAGE);
-        lowItems.clear();
-    } 
-*/
     
     public static List botSix(){
         List<List<String>> sortedList = new ArrayList<>(InvenList);

@@ -292,15 +292,17 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="tblRecords">
+                <Component class="javax.swing.JTable" name="tblRequisitions">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="5" rowCount="4">
-                        <Column editable="true" title="ID" type="java.lang.Object"/>
-                        <Column editable="true" title="Item" type="java.lang.Object"/>
-                        <Column editable="true" title="Qty" type="java.lang.Object"/>
-                        <Column editable="true" title="Status" type="java.lang.Object"/>
+                      <Table columnCount="7" rowCount="4">
+                        <Column editable="true" title="PRID" type="java.lang.Object"/>
+                        <Column editable="true" title="ItemIDs" type="java.lang.Object"/>
+                        <Column editable="true" title="Quantities" type="java.lang.Object"/>
                         <Column editable="true" title="Date" type="java.lang.Object"/>
+                        <Column editable="true" title="SupplierID" type="java.lang.Object"/>
+                        <Column editable="true" title="SMID" type="java.lang.Object"/>
+                        <Column editable="true" title="Status" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>

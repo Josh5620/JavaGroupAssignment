@@ -194,7 +194,7 @@ public class Admin extends User {
     }
     
        protected void logUserAction(String action, String targetUsername, String targetRole) {
-    String logFilePath = "user_action_log.txt"; // You can change this to a full path if needed
+    String logFilePath = "src/user_action_log.txt"; // You can change this to a full path if needed
     
     try {
         // Create the file if it doesn't exist
@@ -237,29 +237,11 @@ public class Admin extends User {
         );
     }
 }
-
-        public String getLastAddedUser(){
-        List<List<String>> users = getUserList();
-        
-        if (users == null || users.isEmpty()) {
-            return "No users found.";
-        }
-        
-        List<String> lastUser = users.get(users.size() - 1);
-        
-        if (lastUser.size() >= 4) {
-            String username = lastUser.get(1);
-            String role = lastUser.get(3);
-            return role + " " + username;
-        }else {
-            return "Invalid User Format.";
-        }
-    }
         
         public String getLastUserActionLog() {
         String lastLine = "";
 
-        try (BufferedReader br = new BufferedReader(new FileReader("user_action_log.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/user_action_log.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (!line.trim().isEmpty()) {

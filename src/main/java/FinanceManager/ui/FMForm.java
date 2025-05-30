@@ -29,6 +29,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import java.awt.event.*;
+import javax.swing.*; 
+import java.util.*;  
+import java.text.ParseException;
+
 
 import FinanceManager.manager.PurchaseOrderManager;
 import FinanceManager.manager.PurchaseRequisitionManager;
@@ -41,6 +46,7 @@ import FinanceManager.manager.InventoryManager;
 import FinanceManager.model.InventoryEntry;
 import FinanceManager.model.SalesEntry;
 import FinanceManager.manager.SalesManager;
+import java.io.File;
 
 
 
@@ -50,12 +56,18 @@ import FinanceManager.manager.SalesManager;
  * @author sumingfei
  */
 public class FMForm extends javax.swing.JFrame {
+    
+    
     private SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
     private PurchaseRequisitionManager prMgr = new PurchaseRequisitionManager();
     private PurchaseOrderManager       poMgr = new PurchaseOrderManager();
     private SupplierManager            sMgr  = new SupplierManager();        // <— make sure this is here
     private InventoryManager invMgr = new InventoryManager();
     private SalesManager               salesMgr = new SalesManager();
+private static final String DATA_DIR = "src/test/";
+
+
+
     
     
     private DefaultTableModel tableModelRequisitions;
@@ -98,8 +110,10 @@ setJMenuBar(menuBar);
         
         
         
-        tableModelRequisitions = (DefaultTableModel) tblRecords.getModel();
+        tableModelRequisitions = (DefaultTableModel) tblRequisitions.getModel();
 tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
+tblRequisitions = new javax.swing.JTable();
+jScrollPane1.setViewportView(tblRequisitions);
 
     btnLoadPRs       .addActionListener(e -> loadPendingRequisitions());
     btnApprovePO     .addActionListener(e -> approveSelected());
@@ -117,10 +131,19 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
     btnReceiveShipment.addActionListener(e -> receiveShipment());
         
          // 1) Attach models
-  tableModelRequisitions = new DefaultTableModel(
-      new String[]{"ID","Item","Qty","Status","Date"}, 0
-  );
-  tblRecords.setModel(tableModelRequisitions);
+tableModelRequisitions = new DefaultTableModel(
+  new String[] {
+    "PRID",       // requisition id
+    "ItemIDs",    // item code(s)
+    "Quantities", // quantity(ies)
+    "Date",       // date requested
+    "SupplierID", // supplier reference
+    "SMID",       // sales-manager (or staff) id
+    "Status"
+  },
+  0
+);
+tblRequisitions.setModel(tableModelRequisitions);
 
   tableModelOrders = new DefaultTableModel(
       new String[]{"ID","Item","Qty","Amount","Supplier","Status","Date"}, 0
@@ -129,11 +152,13 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
 
   // 2) Load from files
   try {
-    prMgr .loadFromFile("prs.dat");
-    poMgr .loadFromFile("pos.dat");
-    sMgr  .loadFromFile("suppliers.dat");
-    invMgr.loadFromFile("inventory.dat");
-    salesMgr.loadFromFile("sales.dat");
+    prMgr.loadFromFile(DATA_DIR + "PurchaseRequisitions.txt");
+
+
+ poMgr.loadFromFile(DATA_DIR + "PurchaseOrders.txt");
+    sMgr  .loadFromFile(DATA_DIR + "Suppliers.txt");
+    invMgr.loadFromFile(DATA_DIR + "Inventory.txt");
+    salesMgr.loadFromFile(DATA_DIR + "SalesEntry");
   } catch(IOException e) {
     JOptionPane.showMessageDialog(this,
       "Failed to load data: " + e.getMessage(),
@@ -150,11 +175,11 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
   addWindowListener(new WindowAdapter() {
     public void windowClosing(WindowEvent e) {
       try {
-        prMgr .saveToFile("prs.dat");
-        poMgr .saveToFile("pos.dat");
-        sMgr  .saveToFile("suppliers.dat");
-        invMgr.saveToFile("inventory.dat");
-        salesMgr.saveToFile("sales.dat");
+        prMgr .saveToFile(DATA_DIR + "PurchaseRequisitions.txt");
+        poMgr .saveToFile(DATA_DIR + "PurchaseOrders.txt");
+        sMgr  .saveToFile(DATA_DIR + "Suppliers.txt");
+        invMgr.saveToFile(DATA_DIR + "Inventory.txt");
+        salesMgr.saveToFile(DATA_DIR + "SalesEntry");
       } catch(IOException ex) {
         ex.printStackTrace();
       }
@@ -173,11 +198,13 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
     tableModelRequisitions.setRowCount(0);
     for (PurchaseRequisition pr : prMgr.getAll()) {
         tableModelRequisitions.addRow(new Object[]{
-            pr.getId(),
-            pr.getItemCode(),
+            pr.getPrId(),
+            pr.getItemIds(),
             pr.getQuantity(),
-            pr.getStatus(),                          // ← now exists
-            DF.format(pr.getDateRequested())
+            DF.format(pr.getDateRequested()),
+            pr.getSupplierId(),
+            pr.getSalesMgrId(),
+            pr.getStatus()
         });
     }
 }
@@ -185,14 +212,14 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
     private void approveSelected() {
         
           // 0) Make sure a requisition is selected
-    int row = tblRecords.getSelectedRow();
+    int row = tblRequisitions.getSelectedRow();
     if (row < 0) {
         // nothing selected
         return;
     }
 
     // 1) Look up the PR (first column is the PR ID)
-    int prId = (int) tableModelRequisitions.getValueAt(row, 0);
+    String prId = (String)tableModelRequisitions.getValueAt(row, 0);
     PurchaseRequisition pr = prMgr.findById(prId);
     if (pr == null) {
         JOptionPane.showMessageDialog(this,
@@ -232,7 +259,7 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
     // 4) Ask user for unit cost (optional—you can skip if you only need total)
     String priceStr = JOptionPane.showInputDialog(
         this,
-        "Enter price per unit for item “" + pr.getItemCode() + "”:",
+            "Enter price per unit for item “" + pr.getItemIds() + "”:",
         "Unit Price",
         JOptionPane.PLAIN_MESSAGE
     );
@@ -259,7 +286,7 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
     );
     poMgr.add(po);
     try {
-        poMgr.saveToFile("pos.dat");
+        poMgr.saveToFile(DATA_DIR + "PurchaseOrders.txt");
     } catch (IOException ioe) {
         JOptionPane.showMessageDialog(this,
             "Failed to save orders: " + ioe.getMessage(),
@@ -284,7 +311,7 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
                 .append("Dear ").append(sup.getName()).append(",\n\n")
                 .append("Your PO details:\n")
                 .append("PO #: ").append(po.getId()).append("\n")
-                .append("Item: ").append(pr.getItemCode()).append("\n")
+                    .append("Item: ").append(pr.getItemIds()).append("\n")
                 .append("Qty: ").append(pr.getQuantity()).append("\n")
                 .append("Total: ").append(amount).append("\n\n")
                 .append("Thanks,\nFinance Manager Team");
@@ -311,104 +338,138 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
    }
     
     private void addRequisition() {
-     // 1) Gather the usual fields
-    // 1) Gather the usual fields
-    String itemCode = JOptionPane.showInputDialog(this, "Item code:");
-    if (itemCode == null || itemCode.trim().isEmpty()) return;
+      // 1) PR-ID
+  String prId = JOptionPane.showInputDialog(this, "PRID:");
+  if (prId == null || prId.trim().isEmpty()) return;
 
-    int quantity;
-    try {
-        quantity = Integer.parseInt(
-            JOptionPane.showInputDialog(this, "Quantity:")
-        );
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid number"); 
-        return;
-    }
+  // 2) Item-IDs
+  String itemIds = JOptionPane.showInputDialog(
+    this,
+    "Item IDs (slash-separated, e.g. ITM001/ITM002):"
+  );
+  if (itemIds == null || itemIds.trim().isEmpty()) return;
 
-    Date dateRequested = new Date();
+  // 3) Quantity
+  String qtyStr = JOptionPane.showInputDialog(this, "Quantity:");
+  if (qtyStr == null) return;
+  int quantity;
+  try {
+    quantity = Integer.parseInt(qtyStr.trim());
+  } catch (NumberFormatException ex) {
+    JOptionPane.showMessageDialog(this, "Invalid quantity");
+    return;
+  }
 
-    // 2) Prompt the user for which supplier this comes from
-    String supInput = JOptionPane.showInputDialog(
-        this, "Supplier ID (e.g. 1,2,3):"
-    );
-    if (supInput == null) return;
+  // 4) Date
+  String dateStr = JOptionPane.showInputDialog(this, "Date (yyyy-MM-dd):");
+  if (dateStr == null || dateStr.trim().isEmpty()) return;
+  Date dateRequested;
+  try {
+    dateRequested = new SimpleDateFormat("yyyy-MM-dd")
+                        .parse(dateStr.trim());
+  } catch (ParseException ex) {
+    JOptionPane.showMessageDialog(this, "Invalid date format");
+    return;
+  }
 
-    int supplierId;
-    try {
-        supplierId = Integer.parseInt(supInput.trim());
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Invalid supplier ID");
-        return;
-    }
+  // 5) Supplier-ID
+  String supplierId = JOptionPane.showInputDialog(
+    this,
+    "Supplier ID (e.g. SUP001):"
+  );
+  if (supplierId == null || supplierId.trim().isEmpty()) return;
 
-    // 3) Create the PR with all five args
-    int newId = prMgr.getAll().size() + 1;
-    PurchaseRequisition pr = new PurchaseRequisition(
-        newId,
-        itemCode,
-        quantity,
-        dateRequested,
-        supplierId
-    );
+  // 6) Sales-Manager ID
+  String salesMgrId = JOptionPane.showInputDialog(
+    this,
+    "Sales-Manager ID (e.g. SM001):"
+  );
+  if (salesMgrId == null || salesMgrId.trim().isEmpty()) return;
 
-    // 4) Add it to the manager and refresh the table
-    prMgr.add(pr);
-    loadPendingRequisitions();
+  // 7) Status
+  String status = JOptionPane.showInputDialog(this, "Status:");
+  if (status == null || status.trim().isEmpty()) return;
+
+  // ─── Build & save ───────────────────────────────────────
+  PurchaseRequisition pr = new PurchaseRequisition(
+    prId,
+    itemIds,
+    quantity,
+    dateRequested,
+    supplierId,
+    salesMgrId,
+    status
+  );
+  prMgr.add(pr);
+try {
+  prMgr.appendToFile(DATA_DIR + "PurchaseRequisitions.txt", pr);
+} catch (IOException ex) {
+  ex.printStackTrace();
+  JOptionPane.showMessageDialog(
+    this,
+    "Failed to save requisition:\n" + ex.getMessage(),
+    "I/O Error",
+    JOptionPane.ERROR_MESSAGE
+  );
 }
+
+  
+
+  loadPendingRequisitions();
+  
+ 
+
+
+   
+
+  }
+
     
 
     private void loadPendingOrders() {
-  tableModelOrders.setRowCount(0);
-  for (PurchaseOrder po : poMgr.getAll()) {
-    tableModelOrders.addRow(new Object[]{
-      po.getId(),
-      po.getRequisition().getItemCode(),
-      po.getRequisition().getQuantity(),
-      po.getAmount(),
-      po.getSupplierId(),
-      po.getStatus(),
-      DF.format(po.getDateIssued())
-    });
-  }
+    tableModelOrders.setRowCount(0);
+    for (PurchaseOrder po : poMgr.getAll()) {
+        tableModelOrders.addRow(new Object[]{
+            po.getId(),
+            po.getItemIds(),
+            po.getQuantity(),
+            po.getAmount(),
+            po.getSupplierId(),
+            po.getStatus(),
+            DF.format(po.getDateIssued())
+        });
+    }
 }
 
     private void processPaymentForSelected() {
-        
-            // 0) Make sure a PO is selected
     int row = tblOrders.getSelectedRow();
     if (row < 0) return;
 
-    // 1) Look up the PO
     int poId = (int) tableModelOrders.getValueAt(row, 0);
     PurchaseOrder po = poMgr.findById(poId);
     if (po == null) {
-        JOptionPane.showMessageDialog(this,
-            "Couldn't find that purchase order!",
-            "Error",
-            JOptionPane.ERROR_MESSAGE
-        );
+        JOptionPane.showMessageDialog(this, "Couldn't find that purchase order!",
+            "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    // 2) Verify stock has been received
-    String itemCode = po.getRequisition().getItemCode();
-    InventoryEntry inv = invMgr.findByItem(itemCode);
-    int needed = po.getRequisition().getQuantity();
+    // verify stock received
+    String[] parts = po.getItemIds().split("/");
+    String itemId  = parts[0];                     // or handle multiple
+    InventoryEntry inv = invMgr.findByItem(itemId);
+    int needed = po.getQuantity();
     if (inv == null || inv.getQuantity() < needed) {
         JOptionPane.showMessageDialog(this,
-            "Cannot pay: you still need to receive "
-            + needed + " of \"" + itemCode + "\"",
-            "Stock Error",
-            JOptionPane.WARNING_MESSAGE
-        );
+            "Cannot pay: you still need to receive " + needed +
+            " of '" + itemId + "'", "Stock Error", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    // 3) Deduct from inventory
+    // deduct from inventory
     inv.setQuantity(inv.getQuantity() - needed);
+
     try {
-        invMgr.saveToFile("inventory.dat");
+    invMgr.saveToFile(DATA_DIR + "Inventory.txt");
     } catch (IOException ex) {
         JOptionPane.showMessageDialog(this,
             "Failed to update stock: " + ex.getMessage(),
@@ -443,7 +504,7 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
     po.setStatus("PAID");
     po.setAmount(amt);
     try {
-        poMgr.saveToFile("pos.dat");
+        poMgr.saveToFile(DATA_DIR + "PurchaseOrders.txt");
     } catch (IOException ex) {
         JOptionPane.showMessageDialog(this,
             "Failed to save payment: " + ex.getMessage(),
@@ -548,11 +609,11 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
        .append(" Pending:      ").append(pending).append("\n\n")
        .append("Details:\n");
     for (PurchaseOrder po : filtered) {
-      rpt.append("  PO#").append(po.getId())
-         .append(" [").append(po.getStatus()).append("] ")
-         .append(po.getRequisition().getItemCode())
-         .append(" x").append(po.getRequisition().getQuantity())
-         .append("\n");
+    rpt.append("  PO#").append(po.getId())
+       .append(" [").append(po.getStatus()).append("] ")
+       .append(po.getItemIds())
+       .append(" x").append(po.getQuantity())
+       .append("\n");
     }
 
     // 8) Show the report
@@ -620,8 +681,8 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
 
     // 6) Persist both inventory and orders
     try {
-        invMgr.saveToFile("inventory.dat");
-        poMgr.saveToFile("pos.dat");
+        invMgr.saveToFile(DATA_DIR + "Inventory.txt");
+        poMgr.saveToFile(DATA_DIR + "PurchaseOrders.txt");
     } catch (IOException ioe) {
         JOptionPane.showMessageDialog(this,
             "Failed to save data: " + ioe.getMessage(),
@@ -702,7 +763,7 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
         btnAddPR = new javax.swing.JButton();
         btnProcessPay = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblRecords = new javax.swing.JTable();
+        tblRequisitions = new javax.swing.JTable();
         btnReceiveShipment = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblOrders = new javax.swing.JTable();
@@ -828,18 +889,18 @@ tableModelOrders       = (DefaultTableModel) tblOrders .getModel();
             }
         });
 
-        tblRecords.setModel(new javax.swing.table.DefaultTableModel(
+        tblRequisitions.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Item", "Qty", "Status", "Date"
+                "PRID", "ItemIDs", "Quantities", "Date", "SupplierID", "SMID", "Status"
             }
         ));
-        jScrollPane1.setViewportView(tblRecords);
+        jScrollPane1.setViewportView(tblRequisitions);
 
         btnReceiveShipment.setText("Receive Shipment");
         btnReceiveShipment.addActionListener(new java.awt.event.ActionListener() {
@@ -1051,6 +1112,6 @@ addRequisition();
     private javax.swing.JTable jTable2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblOrders;
-    private javax.swing.JTable tblRecords;
+    private javax.swing.JTable tblRequisitions;
     // End of variables declaration//GEN-END:variables
 }

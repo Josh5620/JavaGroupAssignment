@@ -28,9 +28,9 @@ public class SupplierManager implements Serializable{
         all.add(s);
     }
 
-    public Supplier findById(int id) {
+    public Supplier findById(String id) {
         for (Supplier s : all) {
-            if (s.getId() == id) return s;
+            if (s.getIdString().equals(id)) return s;
         }
         return null;
     }
