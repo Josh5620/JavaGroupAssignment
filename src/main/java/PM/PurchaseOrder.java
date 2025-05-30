@@ -29,6 +29,35 @@ public class PurchaseOrder {
         this.resolution = resolution;
     }
 
+    public void setPoID(String poID) {
+        this.poID = poID;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setItemIDs(String itemIDs) {
+        this.itemIDs = itemIDs;
+    }
+
+    public void setQuantities(String quantities) {
+        this.quantities = quantities;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setPmID(String pmID) {
+        this.pmID = pmID;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
+    }
+
+    
     public String getPoID() { return poID; }
     public String getDate() { return date; }
     public String getItemIDs() { return itemIDs; }
@@ -37,6 +66,10 @@ public class PurchaseOrder {
     public String getPmID() { return pmID; }
     public String getResolution() { return resolution; }
 
+    
+
+    
+    
     @Override
     public String toString() {
         return poID + "|" + date + "|" + itemIDs + "|" + quantities + "|" + status + "|" + pmID + "|" + resolution;

@@ -25,6 +25,28 @@ public class Supplier {
         this.itemIDs = itemIDs;
     }
 
+    public void setSupplierID(String supplierID) {
+        this.supplierID = supplierID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setItemIDs(List<String> itemIDs) {
+        this.itemIDs = itemIDs;
+    }
+
+    
+    
     public String getSupplierID() {
         return supplierID;
     }
@@ -44,4 +66,9 @@ public class Supplier {
     public List<String> getItemIDs() {
         return itemIDs;
     }
+
+    
+    
+    
+    
 }

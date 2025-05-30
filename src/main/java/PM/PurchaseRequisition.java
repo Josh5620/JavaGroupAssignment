@@ -29,6 +29,36 @@ public class PurchaseRequisition {
         this.status = status;
     }
 
+    public void setPrID(String prID) {
+        this.prID = prID;
+    }
+
+    public void setItemIDs(String itemIDs) {
+        this.itemIDs = itemIDs;
+    }
+
+    public void setQuantities(String quantities) {
+        this.quantities = quantities;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setSupplierID(String supplierID) {
+        this.supplierID = supplierID;
+    }
+
+    public void setSalesManagerID(String salesManagerID) {
+        this.salesManagerID = salesManagerID;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    
+    
     public String getPrID() { return prID; }
     public String getItemID() { return itemIDs; }
     public String getQuantity() { return quantities; }
@@ -36,4 +66,5 @@ public class PurchaseRequisition {
     public String getSupplierID() { return supplierID; }
     public String getSalesManagerID() { return salesManagerID; }
     public String getStatus() { return status; }
+
 }

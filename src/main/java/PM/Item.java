@@ -21,6 +21,24 @@ public class Item {
         this.supplierId = supplierId;
     }
 
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    
+    
     public String getItemId() {
         return itemId;
     }
@@ -36,6 +54,10 @@ public class Item {
     public String getSupplierId() {
         return supplierId;
     }
+
+    
+    
+    
 
     @Override
     public String toString() {
