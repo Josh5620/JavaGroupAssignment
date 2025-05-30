@@ -177,7 +177,15 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
             new String [] {
                 "Supplier ID", "Name", "Email", "Phone", "ItemID"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblSuppliers);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N

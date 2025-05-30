@@ -162,7 +162,15 @@ public class ItemEntryPanel extends javax.swing.JPanel {
             new String [] {
                 "Item ID", "Item Name", "Price", "Supplier ID"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblItems);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

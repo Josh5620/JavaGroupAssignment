@@ -197,7 +197,15 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
             new String [] {
                 "saleID", "ItemID", "Date", "Quantity", "Unit Price", "Total"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblSales);
 
         btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

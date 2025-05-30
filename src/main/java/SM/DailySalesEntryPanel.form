@@ -209,12 +209,12 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="6" rowCount="4">
-                <Column editable="true" title="saleID" type="java.lang.Object"/>
-                <Column editable="true" title="ItemID" type="java.lang.Object"/>
-                <Column editable="true" title="Date" type="java.lang.Object"/>
-                <Column editable="true" title="Quantity" type="java.lang.Object"/>
-                <Column editable="true" title="Unit Price" type="java.lang.Object"/>
-                <Column editable="true" title="Total" type="java.lang.Object"/>
+                <Column editable="false" title="saleID" type="java.lang.Object"/>
+                <Column editable="false" title="ItemID" type="java.lang.Object"/>
+                <Column editable="false" title="Date" type="java.lang.Object"/>
+                <Column editable="false" title="Quantity" type="java.lang.Object"/>
+                <Column editable="false" title="Unit Price" type="java.lang.Object"/>
+                <Column editable="false" title="Total" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
