@@ -83,13 +83,11 @@ public class PMForm1 extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         panelViewItems = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btnRefreshItems = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblItems = new javax.swing.JTable();
         panelViewSuppliers = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        btnRefreshSup = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblViewSup = new javax.swing.JTable();
@@ -323,23 +321,23 @@ public class PMForm1 extends javax.swing.JFrame {
         panelHomeLayout.setHorizontalGroup(
             panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHomeLayout.createSequentialGroup()
+                .addContainerGap(261, Short.MAX_VALUE)
                 .addGroup(panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelHomeLayout.createSequentialGroup()
-                        .addGap(182, 182, 182)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelHomeLayout.createSequentialGroup()
-                        .addGap(148, 148, 148)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(365, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHomeLayout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(288, 288, 288))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHomeLayout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(252, 252, 252))))
         );
         panelHomeLayout.setVerticalGroup(
             panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHomeLayout.createSequentialGroup()
-                .addGap(98, 98, 98)
+                .addGap(100, 100, 100)
                 .addComponent(jLabel6)
-                .addGap(34, 34, 34)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel7)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addContainerGap(225, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelHome, "card7");
@@ -349,13 +347,6 @@ public class PMForm1 extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(20, 90, 50));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Items Table");
-
-        btnRefreshItems.setText("Refresh");
-        btnRefreshItems.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefreshItemsActionPerformed(evt);
-            }
-        });
 
         tblItems.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -389,14 +380,9 @@ public class PMForm1 extends javax.swing.JFrame {
                         .addContainerGap(22, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelViewItemsLayout.createSequentialGroup()
-                        .addGroup(panelViewItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelViewItemsLayout.createSequentialGroup()
-                                .addGap(268, 268, 268)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelViewItemsLayout.createSequentialGroup()
-                                .addGap(197, 197, 197)
-                                .addComponent(btnRefreshItems, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(268, 268, 268)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 308, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelViewItemsLayout.setVerticalGroup(
@@ -406,9 +392,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnRefreshItems)
-                .addGap(13, 13, 13))
+                .addGap(48, 48, 48))
         );
 
         contentPanel.add(panelViewItems, "card2");
@@ -417,13 +401,6 @@ public class PMForm1 extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Suppliers Table");
-
-        btnRefreshSup.setText("Refresh");
-        btnRefreshSup.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefreshSupActionPerformed(evt);
-            }
-        });
 
         tblViewSup.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -459,10 +436,6 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(261, 261, 261))
-            .addGroup(panelViewSuppliersLayout.createSequentialGroup()
-                .addGap(199, 199, 199)
-                .addComponent(btnRefreshSup, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelViewSuppliersLayout.setVerticalGroup(
             panelViewSuppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -471,9 +444,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnRefreshSup)
-                .addGap(17, 17, 17))
+                .addGap(58, 58, 58))
         );
 
         contentPanel.add(panelViewSuppliers, "card3");
@@ -578,11 +549,11 @@ public class PMForm1 extends javax.swing.JFrame {
             panelGeneratePOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelGeneratePOLayout.createSequentialGroup()
                 .addGroup(panelGeneratePOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelGeneratePOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(panelGeneratePOLayout.createSequentialGroup()
-                            .addGap(186, 186, 186)
+                    .addGroup(panelGeneratePOLayout.createSequentialGroup()
+                        .addGap(186, 186, 186)
+                        .addGroup(panelGeneratePOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelGeneratePOLayout.createSequentialGroup()
                         .addGap(216, 216, 216)
@@ -1305,11 +1276,46 @@ public class PMForm1 extends javax.swing.JFrame {
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelViewItems");
         
+        ItemManager manager = new ItemManager();
+        List<Item> itemList = manager.getAllItems();
+
+        DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
+        model.setRowCount(0);
+
+        for (Item item : itemList) {
+            model.addRow(new Object[] {
+                item.getItemId(),
+                item.getItemName(),
+                item.getPrice(),
+                item.getSupplierId()
+            });
+        }
+
+        tblItems.setModel(model);
+        
     }//GEN-LAST:event_btnViewItemsActionPerformed
 
     private void btnViewSuppliersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewSuppliersActionPerformed
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelViewSuppliers");
+        
+        SupplierManager manager = new SupplierManager();
+        List<Supplier> supplierList = manager.getAllSuppliers();
+
+        DefaultTableModel model = (DefaultTableModel) tblViewSup.getModel();
+        model.setRowCount(0);
+
+        for (Supplier supplier : supplierList) {
+            model.addRow(new Object[] {
+                supplier.getSupplierID(),
+                supplier.getName(),
+                supplier.getEmail(),
+                supplier.getPhone(),
+                String.join(",", supplier.getItemIDs()) 
+            });
+        }
+
+        tblViewSup.setModel(model);
     }//GEN-LAST:event_btnViewSuppliersActionPerformed
 
     private void btnViewPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPRActionPerformed
@@ -1362,27 +1368,6 @@ public class PMForm1 extends javax.swing.JFrame {
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelHome");
     }//GEN-LAST:event_btnHomeActionPerformed
-
-    private void btnRefreshItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshItemsActionPerformed
-        ItemManager manager = new ItemManager();
-        List<Item> itemList = manager.getAllItems();
-
-        DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
-        model.setRowCount(0);
-
-        for (Item item : itemList) {
-            model.addRow(new Object[] {
-                item.getItemId(),
-                item.getItemName(),
-                item.getPrice(),
-                item.getSupplierId()
-            });
-        }
-
-        tblItems.setModel(model);
-        
-
-    }//GEN-LAST:event_btnRefreshItemsActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
@@ -1491,26 +1476,6 @@ public class PMForm1 extends javax.swing.JFrame {
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelGeneratePO");
     }//GEN-LAST:event_btnBack8ActionPerformed
-
-    private void btnRefreshSupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshSupActionPerformed
-        SupplierManager manager = new SupplierManager();
-        List<Supplier> supplierList = manager.getAllSuppliers();
-
-        DefaultTableModel model = (DefaultTableModel) tblViewSup.getModel();
-        model.setRowCount(0);
-
-        for (Supplier supplier : supplierList) {
-            model.addRow(new Object[] {
-                supplier.getSupplierID(),
-                supplier.getName(),
-                supplier.getEmail(),
-                supplier.getPhone(),
-                String.join(",", supplier.getItemIDs()) 
-            });
-        }
-
-        tblViewSup.setModel(model);
-    }//GEN-LAST:event_btnRefreshSupActionPerformed
 
     private void btnDelete2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete2ActionPerformed
         int selectedRow = tblPOsDelete.getSelectedRow(); 
@@ -1811,8 +1776,6 @@ public class PMForm1 extends javax.swing.JFrame {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnGeneratePO;
     private javax.swing.JButton btnHome;
-    private javax.swing.JButton btnRefreshItems;
-    private javax.swing.JButton btnRefreshSup;
     private javax.swing.JButton btnVGeneratePO;
     private javax.swing.JButton btnViewItems;
     private javax.swing.JButton btnViewPO;

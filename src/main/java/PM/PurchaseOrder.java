@@ -18,6 +18,8 @@ public class PurchaseOrder {
     private String status;
     private String pmID;
     private String resolution;
+    public static final String File_Path = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseOrders.txt";
+
 
     public PurchaseOrder(String poID, String date, String itemIDs, String quantities, String status, String pmID, String resolution) {
         this.poID = poID;
@@ -66,6 +68,10 @@ public class PurchaseOrder {
     public String getPmID() { return pmID; }
     public String getResolution() { return resolution; }
 
+    public String getFilePath() {
+        return File_Path;
+    }
+    
     
 
     
