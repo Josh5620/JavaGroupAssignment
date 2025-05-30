@@ -70,6 +70,8 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
         }
     }
     
+    
+    
     private void updateUnitPrice() {
         String selectedItem = (String) comboItemID.getSelectedItem();
         if (selectedItem != null) {
@@ -125,6 +127,25 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
                 txtTotal.setText(tblSales.getValueAt(selectedRow, 5).toString());
             }
         });
+    }
+    
+    private void updateQuantity() {
+        String selectedItem = (String) comboItemID.getSelectedItem();
+        if (selectedItem != null) {
+            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\OneDrive - Asia Pacific University of Technology And Innovation (APU)\\سطح المكتب\\JAVA\\JavaGroupAssignment\\src\\Inventory.txt"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split("\\|");
+                    if (parts[0].equals(selectedItem)) {
+                        txtQuantity.setText(parts[2]);  
+                        updateTotal();  
+                        return;
+                    }
+                }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error loading quantity: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -341,27 +362,22 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
             return;
         }
 
-
-    for (int i = 0; i < tblSales.getRowCount(); i++) {
-        if (tblSales.getValueAt(i, 0).equals(saleID)) {
-            JOptionPane.showMessageDialog(this, "Sale ID already exists.");
-            return;
+        for (int i = 0; i < tblSales.getRowCount(); i++) {
+            if (tblSales.getValueAt(i, 0).equals(saleID)) {
+                JOptionPane.showMessageDialog(this, "Sale ID already exists.");
+                return;
+            }
         }
-        if (tblSales.getValueAt(i, 1).equals(itemID)) {
-            JOptionPane.showMessageDialog(this, "Item ID already exists.");
-            return;
-        }
-    }
 
-    try {
-        Sale newSale = new Sale(saleID, itemID, date, quantity, unitPrice, total);  
-        salesManager.addSale(newSale); 
-            loadSales(); 
-        clearFields();  
-        JOptionPane.showMessageDialog(this, "Sale added successfully.");
-    } catch (IOException ex) {
-        JOptionPane.showMessageDialog(this, "Error adding sale: " + ex.getMessage());
-    }
+        try {
+            Sale newSale = new Sale(saleID, itemID, date, quantity, unitPrice, total);
+            salesManager.addSale(newSale);
+            loadSales();
+            clearFields();
+            JOptionPane.showMessageDialog(this, "Sale added successfully.");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error adding sale: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -372,20 +388,20 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
         String unitPrice = txtUnitPrice.getText().trim();
         String total = txtTotal.getText().trim();
 
-    if (saleID.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please select a sale to edit.");
-        return;
-    }
+        if (saleID.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a sale to edit.");
+            return;
+        }
 
-    try {
-        Sale updatedSale = new Sale(saleID, itemID, date, quantity, unitPrice, total);  
-        salesManager.editSale(updatedSale);  
-        loadSales();  
-        clearFields();  
-        JOptionPane.showMessageDialog(this, "Sale updated successfully.");
-    } catch (IOException ex) {
-        JOptionPane.showMessageDialog(this, "Error editing sale: " + ex.getMessage());
-    }
+        try {
+            Sale updatedSale = new Sale(saleID, itemID, date, quantity, unitPrice, total);
+            salesManager.editSale(updatedSale);
+            loadSales();
+            clearFields();
+            JOptionPane.showMessageDialog(this, "Sale updated successfully.");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error editing sale: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -414,6 +430,7 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
 
     private void comboItemIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboItemIDActionPerformed
         updateUnitPrice();
+        updateQuantity();
     }//GEN-LAST:event_comboItemIDActionPerformed
 
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
