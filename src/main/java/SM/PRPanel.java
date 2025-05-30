@@ -81,9 +81,17 @@ public class PRPanel extends javax.swing.JPanel {
     private void loadPRs() {
         DefaultTableModel model = new DefaultTableModel(new String[]{"PRID", "ItemIDs", "Quantities", "Date", "SupplierID", "SMID", "Status"}, 0);
         try {
-            List<String[]> prs = prManager.loadPRs();
-            for (String[] p : prs) {
-                model.addRow(p);
+            List<PR> prs = prManager.loadPRs();
+            for (PR p : prs) {
+                model.addRow(new Object[]{
+                    p.getPrid(),
+                    p.getItemIDs(),
+                    p.getQuantities(),
+                    p.getDate(),
+                    p.getSupplierID(),
+                    p.getSmID(),
+                    p.getStatus()
+                });
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error loading PRs: " + e.getMessage());
@@ -325,8 +333,6 @@ public class PRPanel extends javax.swing.JPanel {
         String supplierID = (String) comboSupplierID.getSelectedItem();
         String smID = txtSalesManagerID.getText().trim();
         String date = txtDate.getText().trim();
-
-   
         String itemID = (String) comboItemID.getSelectedItem();
         String quantity = txtQuantity.getText().trim();
 
@@ -335,7 +341,7 @@ public class PRPanel extends javax.swing.JPanel {
             return;
         }
 
- 
+// Check for duplicate PRID in table
         for (int i = 0; i < tblPRs.getRowCount(); i++) {
             if (tblPRs.getValueAt(i, 0).equals(prid)) {
                 JOptionPane.showMessageDialog(this, "PR ID already exists.");
@@ -345,8 +351,11 @@ public class PRPanel extends javax.swing.JPanel {
 
         try {
             String status = "Pending";  
-            prManager.addPR(prid, itemID, quantity, date, supplierID, smID, status);
-            loadPRs(); clearFields();
+            PR newPR = new PR(prid, itemID, quantity, date, supplierID, smID, status);
+            prManager.addPR(newPR);  // OOP method call
+            loadPRs();  // Refresh table
+            clearFields();  // Clear fields
+            JOptionPane.showMessageDialog(this, "PR added successfully.");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error adding PR: " + ex.getMessage());
         }
@@ -367,8 +376,11 @@ public class PRPanel extends javax.swing.JPanel {
 
         try {
             String status = "Pending";  
-            prManager.editPR(prid, itemID, quantity, date, supplierID, smID, status);
-            loadPRs(); clearFields();
+            PR updatedPR = new PR(prid, itemID, quantity, date, supplierID, smID, status);
+            prManager.editPR(updatedPR);  // OOP method call
+            loadPRs();  // Refresh table
+            clearFields();  // Clear fields
+            JOptionPane.showMessageDialog(this, "PR updated successfully.");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error editing PR: " + ex.getMessage());
         }

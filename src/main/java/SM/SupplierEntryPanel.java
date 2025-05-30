@@ -38,21 +38,28 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
     
     private void loadSuppliers() {
         DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Name", "Email", "Phone", "ItemIDs"}, 0);
-            try {
-                List<String[]> suppliers = supplierManager.loadSuppliers();
-                for (String[] s : suppliers) {
-                    model.addRow(new Object[]{s[0], s[1], s[2], s[3], s[4]});
-                }
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(this, "Error loading suppliers: " + e.getMessage());
+        try {
+            List<Supplier> suppliers = supplierManager.loadSuppliers();  // OOP
+            for (Supplier s : suppliers) {
+                model.addRow(new Object[]{
+                    s.getId(),
+                    s.getName(),
+                    s.getEmail(),
+                    s.getPhone(),
+                    s.getItemIDs()
+                });
             }
-            tblSuppliers.setModel(model);
-            try {
-                txtSupplierID.setText(supplierManager.generateNextSupplierID());
-            } catch (IOException e) {
-                txtSupplierID.setText("Error");
-            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error loading suppliers: " + e.getMessage());
     }
+
+    tblSuppliers.setModel(model);
+    try {
+        txtSupplierID.setText(supplierManager.generateNextSupplierID());
+    } catch (IOException e) {
+        txtSupplierID.setText("Error");
+    }
+}
     
     private void loadItemsToComboBox() {
         try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Items.txt"))) {
@@ -276,11 +283,14 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
         }
 
         try {
-            supplierManager.addSupplier(id, name, email, phone);
-            loadSuppliers(); clearFields();
+            Supplier newSupplier = new Supplier(id, name, email, phone, "NoItems");  // NoItems كبداية
+            supplierManager.addSupplier(newSupplier);  // OOP method call
+            loadSuppliers();  
+            clearFields();  
+            JOptionPane.showMessageDialog(this, "Supplier added successfully.");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error adding supplier: " + ex.getMessage());
-        }
+}
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -296,8 +306,11 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
         }
 
         try {
-            supplierManager.editSupplier(id, name, email, phone, selectedItem);
-            loadSuppliers(); clearFields();
+            Supplier updatedSupplier = new Supplier(id, name, email, phone, "");  
+            supplierManager.editSupplier(updatedSupplier, selectedItem);  
+            loadSuppliers();  
+            clearFields();  
+            JOptionPane.showMessageDialog(this, "Supplier updated successfully.");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error editing supplier: " + ex.getMessage());
         }

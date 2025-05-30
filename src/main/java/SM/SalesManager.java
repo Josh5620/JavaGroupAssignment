@@ -12,29 +12,29 @@ import java.io.*;
 import java.util.*;
 
 public class SalesManager {
-    private final String FILE_PATH = "C:\\Users\\dhoom\\Downloads\\SalesEntry.txt"; 
+    private final String FILE_PATH = "C:\\Users\\dhoom\\Downloads\\SalesEntry.txt";
 
-   
-    public List<String[]> loadSales() throws IOException {
-        List<String[]> sales = new ArrayList<>();
+    // Load all sales
+    public List<Sale> loadSales() throws IOException {
+        List<Sale> sales = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split("\\|");
-            if (parts.length >= 6) {  
-                sales.add(parts);
+            if (parts.length >= 6) {
+                sales.add(new Sale(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]));
             }
         }
         br.close();
         return sales;
     }
 
-   
+    // Generate next Sale ID
     public String generateNextSaleID() throws IOException {
-        List<String[]> sales = loadSales();
+        List<Sale> sales = loadSales();
         int maxNum = 0;
-        for (String[] s : sales) {
-            String id = s[0]; 
+        for (Sale s : sales) {
+            String id = s.getSaleID();
             if (id.startsWith("S")) {
                 try {
                     int num = Integer.parseInt(id.substring(1));
@@ -42,27 +42,26 @@ public class SalesManager {
                 } catch (NumberFormatException ignored) {}
             }
         }
-        int nextNum = maxNum + 1;
-        return String.format("S%03d", nextNum);
+        return String.format("S%03d", maxNum + 1);
     }
 
-    
-    public void addSale(String saleID, String itemID, String date, String quantity, String unitPrice, String total) throws IOException {
+    // Add Sale
+    public void addSale(Sale sale) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true));
-        bw.write(saleID + "|" + itemID + "|" + date + "|" + quantity + "|" + unitPrice + "|" + total);
+        bw.write(sale.toString());
         bw.newLine();
         bw.close();
     }
 
-   
-    public void editSale(String saleID, String newItemID, String newDate, String newQuantity, String newUnitPrice, String newTotal) throws IOException {
+    // Edit Sale
+    public void editSale(Sale updatedSale) throws IOException {
         List<String> lines = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split("\\|");
-            if (parts[0].equals(saleID)) {
-                lines.add(saleID + "|" + newItemID + "|" + newDate + "|" + newQuantity + "|" + newUnitPrice + "|" + newTotal);
+            if (parts[0].equals(updatedSale.getSaleID())) {
+                lines.add(updatedSale.toString());
             } else {
                 lines.add(line);
             }
@@ -76,7 +75,7 @@ public class SalesManager {
         bw.close();
     }
 
-   
+    // Delete Sale
     public void deleteSale(String saleID) throws IOException {
         List<String> lines = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));

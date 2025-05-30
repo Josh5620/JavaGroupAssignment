@@ -32,14 +32,23 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
     private void loadSales() {
         DefaultTableModel model = new DefaultTableModel(new String[]{"SaleID", "ItemID", "Date", "Quantity", "UnitPrice", "Total"}, 0);
         try {
-            List<String[]> sales = salesManager.loadSales();
-            for (String[] s : sales) {
-                model.addRow(s);
+            List<Sale> sales = salesManager.loadSales();  // OOP
+            for (Sale s : sales) {
+                model.addRow(new Object[]{
+                    s.getSaleID(),
+                    s.getItemID(),
+                    s.getDate(),
+                    s.getQuantity(),
+                    s.getUnitPrice(),
+                    s.getTotal()
+                });
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error loading sales: " + e.getMessage());
         }
+
         tblSales.setModel(model);
+
         try {
             txtSaleID.setText(salesManager.generateNextSaleID());
         } catch (IOException e) {
@@ -330,27 +339,29 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
         if (itemID == null || date.isEmpty() || quantity.isEmpty() || unitPrice.isEmpty() || total.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all fields.");
             return;
+        }
+
+
+    for (int i = 0; i < tblSales.getRowCount(); i++) {
+        if (tblSales.getValueAt(i, 0).equals(saleID)) {
+            JOptionPane.showMessageDialog(this, "Sale ID already exists.");
+            return;
+        }
+        if (tblSales.getValueAt(i, 1).equals(itemID)) {
+            JOptionPane.showMessageDialog(this, "Item ID already exists.");
+            return;
+        }
     }
 
-    
-        
-        for (int i = 0; i < tblSales.getRowCount(); i++) {
-            if (tblSales.getValueAt(i, 0).equals(saleID)) {
-                JOptionPane.showMessageDialog(this, "Sale ID already exists.");
-                return;
-            }
-            if (tblSales.getValueAt(i, 1).equals(itemID)) {
-                JOptionPane.showMessageDialog(this, "Item ID already exists.");
-                return;
-            }
-        }
-
-        try {
-                salesManager.addSale(saleID, itemID, date, quantity, unitPrice, total);
-            loadSales(); clearFields();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error adding sale: " + ex.getMessage());
-        }
+    try {
+        Sale newSale = new Sale(saleID, itemID, date, quantity, unitPrice, total);  
+        salesManager.addSale(newSale); 
+            loadSales(); 
+        clearFields();  
+        JOptionPane.showMessageDialog(this, "Sale added successfully.");
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "Error adding sale: " + ex.getMessage());
+    }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -361,17 +372,20 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
         String unitPrice = txtUnitPrice.getText().trim();
         String total = txtTotal.getText().trim();
 
-        if (saleID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please select a sale to edit.");
-            return;
-        }
+    if (saleID.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please select a sale to edit.");
+        return;
+    }
 
-        try {
-            salesManager.editSale(saleID, itemID, date, quantity, unitPrice, total);
-            loadSales(); clearFields();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error editing sale: " + ex.getMessage());
-        }
+    try {
+        Sale updatedSale = new Sale(saleID, itemID, date, quantity, unitPrice, total);  
+        salesManager.editSale(updatedSale);  
+        loadSales();  
+        clearFields();  
+        JOptionPane.showMessageDialog(this, "Sale updated successfully.");
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "Error editing sale: " + ex.getMessage());
+    }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed

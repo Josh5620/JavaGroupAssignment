@@ -252,7 +252,7 @@ public class ItemEntryPanel extends javax.swing.JPanel {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         String name = txtItemName.getText().trim();
         String price = txtPrice.getText().trim();
-        String supplierID = comboSupplierID.getSelectedItem().toString();
+        String supplierID = comboSupplierID.getSelectedItem() != null ? comboSupplierID.getSelectedItem().toString() : "";
 
         if (name.isEmpty() || price.isEmpty() || supplierID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all fields.");
@@ -261,12 +261,14 @@ public class ItemEntryPanel extends javax.swing.JPanel {
 
         try {
             String itemID = itemManager.generateNextItemID(); 
-            itemManager.addItem(itemID, name, price, supplierID);
+            Item newItem = new Item(itemID, name, price, supplierID);
+            itemManager.addItem(newItem);
             loadItems();  
-            clearFields();  
+            clearFields(); 
+            JOptionPane.showMessageDialog(this, "Item added successfully.");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error adding item: " + ex.getMessage());
-        }
+    }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -302,7 +304,7 @@ public class ItemEntryPanel extends javax.swing.JPanel {
         String itemID = txtItemID.getText().trim();
         String name = txtItemName.getText().trim();
         String price = txtPrice.getText().trim();
-        String supplierID = comboSupplierID.getSelectedItem().toString();
+        String supplierID = comboSupplierID.getSelectedItem() != null ? comboSupplierID.getSelectedItem().toString() : "";
 
         if (itemID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please select an item to edit.");
@@ -310,12 +312,14 @@ public class ItemEntryPanel extends javax.swing.JPanel {
         }
 
         try {
-            itemManager.editItem(itemID, name, price, supplierID);  
+            Item updatedItem = new Item(itemID, name, price, supplierID);
+            itemManager.editItem(updatedItem);  
             loadItems();  
             clearFields();  
+            JOptionPane.showMessageDialog(this, "Item updated successfully.");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error editing item: " + ex.getMessage());
-        }      
+        }           
     }//GEN-LAST:event_btnEditActionPerformed
 
 

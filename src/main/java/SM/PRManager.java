@@ -8,31 +8,33 @@ package SM;
  *
  * @author dhoom
  */
-
-
 import java.io.*;
 import java.util.*;
 
 public class PRManager {
-    private final String FILE_PATH = "C:\\Users\\dhoom\\Downloads\\PurchaseRequisitions.txt";  
-   
-    public List<String[]> loadPRs() throws IOException {
-        List<String[]> prs = new ArrayList<>();
+    private final String FILE_PATH = "C:\\Users\\dhoom\\Downloads\\PurchaseRequisitions.txt";
+
+    // Load All PRs
+    public List<PR> loadPRs() throws IOException {
+        List<PR> prs = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split("\\|");
-            prs.add(parts);
+            if (parts.length >= 7) {
+                prs.add(new PR(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6]));
+            }
         }
         br.close();
         return prs;
     }
 
+    // Generate Next PRID
     public String generateNextPRID() throws IOException {
-        List<String[]> prs = loadPRs();
+        List<PR> prs = loadPRs();
         int maxNum = 0;
-        for (String[] p : prs) {
-            String id = p[0];  
+        for (PR p : prs) {
+            String id = p.getPrid();
             if (id.startsWith("PR")) {
                 try {
                     int num = Integer.parseInt(id.substring(2));
@@ -43,23 +45,23 @@ public class PRManager {
         return String.format("PR%03d", maxNum + 1);
     }
 
-    
-    public void addPR(String prid, String itemIDs, String quantities, String date, String supplierID, String smID, String status) throws IOException {
+    // Add PR
+    public void addPR(PR pr) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true));
-        bw.write(prid + "|" + itemIDs + "|" + quantities + "|" + date + "|" + supplierID + "|" + smID + "|" + status);
+        bw.write(pr.toString());
         bw.newLine();
         bw.close();
     }
 
-    
-    public void editPR(String prid, String newItemIDs, String newQuantities, String newDate, String newSupplierID, String newSMID, String newStatus) throws IOException {
+    // Edit PR
+    public void editPR(PR updatedPR) throws IOException {
         List<String> lines = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split("\\|");
-            if (parts[0].equals(prid)) {
-                lines.add(prid + "|" + newItemIDs + "|" + newQuantities + "|" + newDate + "|" + newSupplierID + "|" + newSMID + "|" + newStatus);
+            if (parts[0].equals(updatedPR.getPrid())) {
+                lines.add(updatedPR.toString());
             } else {
                 lines.add(line);
             }
@@ -73,7 +75,7 @@ public class PRManager {
         bw.close();
     }
 
-    
+    // Delete PR
     public void deletePR(String prid) throws IOException {
         List<String> lines = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
