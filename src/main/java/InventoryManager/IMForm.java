@@ -98,6 +98,7 @@ public class IMForm extends javax.swing.JFrame {
         Label5 = new javax.swing.JLabel();
         specificUserField = new javax.swing.JTextField();
         specificUserBtn = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         UpdateStock = new javax.swing.JPanel();
         Label7 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -115,8 +116,6 @@ public class IMForm extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         SmallTable = new javax.swing.JTable();
         UpdateBtn = new javax.swing.JButton();
-        StockReport = new javax.swing.JPanel();
-        Label8 = new javax.swing.JLabel();
         ViewPOs = new javax.swing.JPanel();
         Label6 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -130,7 +129,6 @@ public class IMForm extends javax.swing.JFrame {
         ExitButton = new javax.swing.JButton();
         HomeButton = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        Button4 = new javax.swing.JButton();
         Button5 = new javax.swing.JButton();
         Button3 = new javax.swing.JButton();
         Button1 = new javax.swing.JButton();
@@ -394,6 +392,14 @@ public class IMForm extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Stock Report");
+        jButton4.setActionCommand("GenerateReportBtn");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout InvenNAlertsLayout = new javax.swing.GroupLayout(InvenNAlerts);
         InvenNAlerts.setLayout(InvenNAlertsLayout);
         InvenNAlertsLayout.setHorizontalGroup(
@@ -411,11 +417,14 @@ public class IMForm extends javax.swing.JFrame {
                     .addComponent(specificUserBtn)
                     .addComponent(Label4, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Label5, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(InvenNAlertsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(InvenNAlertsLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)))
+                .addGap(47, 47, 47))
             .addGroup(InvenNAlertsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(InvenNAlertsLayout.createSequentialGroup()
                     .addGap(47, 47, 47)
@@ -425,12 +434,14 @@ public class IMForm extends javax.swing.JFrame {
         InvenNAlertsLayout.setVerticalGroup(
             InvenNAlertsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(InvenNAlertsLayout.createSequentialGroup()
-                .addGroup(InvenNAlertsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(InvenNAlertsLayout.createSequentialGroup()
+                .addGroup(InvenNAlertsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, InvenNAlertsLayout.createSequentialGroup()
                         .addGap(78, 78, 78)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1))
+                        .addGroup(InvenNAlertsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(InvenNAlertsLayout.createSequentialGroup()
                         .addGap(96, 96, 96)
                         .addGroup(InvenNAlertsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -448,7 +459,7 @@ public class IMForm extends javax.swing.JFrame {
                         .addComponent(specificUserField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(specificUserBtn)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
             .addGroup(InvenNAlertsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(InvenNAlertsLayout.createSequentialGroup()
                     .addGap(34, 34, 34)
@@ -623,28 +634,6 @@ public class IMForm extends javax.swing.JFrame {
 
         MainPanel.add(UpdateStock, "card6");
 
-        Label8.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        Label8.setText("Generate Stock Report");
-
-        javax.swing.GroupLayout StockReportLayout = new javax.swing.GroupLayout(StockReport);
-        StockReport.setLayout(StockReportLayout);
-        StockReportLayout.setHorizontalGroup(
-            StockReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(StockReportLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(Label8)
-                .addContainerGap(246, Short.MAX_VALUE))
-        );
-        StockReportLayout.setVerticalGroup(
-            StockReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(StockReportLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(Label8, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(457, Short.MAX_VALUE))
-        );
-
-        MainPanel.add(StockReport, "card4");
-
         ViewPOs.setBackground(new java.awt.Color(153, 153, 153));
         ViewPOs.setForeground(new java.awt.Color(153, 153, 153));
 
@@ -765,22 +754,6 @@ public class IMForm extends javax.swing.JFrame {
         jLabel9.setPreferredSize(new java.awt.Dimension(300, 288));
         jLabel9.setRequestFocusEnabled(false);
 
-        Button4.setBackground(new java.awt.Color(173, 216, 230));
-        Button4.setText("Stock Report");
-        Button4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                ColouredHighlight(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                ColorReset(evt);
-            }
-        });
-        Button4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button4Action(evt);
-            }
-        });
-
         Button5.setBackground(new java.awt.Color(173, 216, 230));
         Button5.setText("Update Stock");
         Button5.setActionCommand("Button3");
@@ -856,15 +829,14 @@ public class IMForm extends javax.swing.JFrame {
                         .addGap(26, 26, 26)
                         .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(Button4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
                                 .addComponent(Button3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Button1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Button1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
                                 .addComponent(Button2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(SidePanelLayout.createSequentialGroup()
                                 .addComponent(ExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(50, 50, 50)
                                 .addComponent(HomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(Button5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(Button5, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(SidePanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -882,10 +854,8 @@ public class IMForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Button3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Button4, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Button5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(79, 79, 79)
                 .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(HomeButton, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                     .addComponent(ExitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -936,10 +906,6 @@ public class IMForm extends javax.swing.JFrame {
         cl.show(MainPanel, "card5");   
     }//GEN-LAST:event_Button3Action
 
-    private void Button4Action(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button4Action
-        cl.show(MainPanel, "card2");  
-    }//GEN-LAST:event_Button4Action
-
     private void AllUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AllUserBtnActionPerformed
         user.lowItemAlertSend("all");
     }//GEN-LAST:event_AllUserBtnActionPerformed
@@ -988,6 +954,10 @@ public class IMForm extends javax.swing.JFrame {
     private void POFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POFormActionPerformed
         showPOForm();
     }//GEN-LAST:event_POFormActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        StockReport();
+    }//GEN-LAST:event_jButton4ActionPerformed
     
     public static void main(String args[]) {
 
@@ -1010,7 +980,6 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JButton Button1;
     private javax.swing.JButton Button2;
     private javax.swing.JButton Button3;
-    private javax.swing.JButton Button4;
     private javax.swing.JButton Button5;
     private javax.swing.JButton ClearBtn;
     private javax.swing.JButton ExitButton;
@@ -1031,14 +1000,12 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JLabel Label5;
     private javax.swing.JLabel Label6;
     private javax.swing.JLabel Label7;
-    private javax.swing.JLabel Label8;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JButton POForm;
     private javax.swing.JList<String> POList;
     private javax.swing.JTextArea POTextArea;
     private javax.swing.JPanel SidePanel;
     private javax.swing.JTable SmallTable;
-    private javax.swing.JPanel StockReport;
     private javax.swing.JButton SubmitBtn;
     private javax.swing.JLabel TAI;
     private javax.swing.JLabel UAP;
@@ -1048,6 +1015,7 @@ public class IMForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1315,6 +1283,12 @@ public class IMForm extends javax.swing.JFrame {
                     PO.showPO();
                 }
             }
+    }
+    
+    private void StockReport(){
+        StockReport stockReport = new StockReport(user.getInvenList());
+        stockReport.createStockReportPopup();
+        
     }
 }
 
