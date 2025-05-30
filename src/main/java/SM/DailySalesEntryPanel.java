@@ -57,7 +57,7 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
     }
     
     private void loadItemsToComboBox() {
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Items.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -75,7 +75,7 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
     private void updateUnitPrice() {
         String selectedItem = (String) comboItemID.getSelectedItem();
         if (selectedItem != null) {
-            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Items.txt"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt"))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split("\\|");
@@ -132,7 +132,7 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
     private void updateQuantity() {
         String selectedItem = (String) comboItemID.getSelectedItem();
         if (selectedItem != null) {
-            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\OneDrive - Asia Pacific University of Technology And Innovation (APU)\\سطح المكتب\\JAVA\\JavaGroupAssignment\\src\\Inventory.txt"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Inventory.txt"))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split("\\|");
@@ -196,6 +196,7 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
         ASD.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ASD.setText("Quantity");
 
+        txtQuantity.setEditable(false);
         txtQuantity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtQuantityActionPerformed(evt);

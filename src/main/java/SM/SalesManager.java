@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.*;
 
 public class SalesManager {
-    private final String FILE_PATH = "C:\\Users\\dhoom\\Downloads\\SalesEntry.txt";
+    private final String FILE_PATH = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\SalesEntry.txt";
 
     // Load all sales
     public List<Sale> loadSales() throws IOException {
