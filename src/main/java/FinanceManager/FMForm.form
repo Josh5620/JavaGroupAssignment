@@ -879,7 +879,7 @@
                         <Column editable="true" title="Item_ID" type="java.lang.String"/>
                         <Column editable="true" title="Quantity" type="java.lang.Integer"/>
                         <Column editable="true" title="Date" type="java.lang.String"/>
-                        <Column editable="true" title="Price_Per_Unit" type="java.lang.Double"/>
+                        <Column editable="true" title="Price_Per_Unit" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

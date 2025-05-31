@@ -40,7 +40,7 @@ public class ItemEntryPanel extends javax.swing.JPanel {
     
 
     private void loadSuppliers() {
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Supplier.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Supplier.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -56,7 +56,7 @@ public class ItemEntryPanel extends javax.swing.JPanel {
     }
     private void loadItems() {
         DefaultTableModel model = new DefaultTableModel(new String[]{"Item ID", "Item Name", "Price", "Supplier ID"}, 0);
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Items.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Items.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");

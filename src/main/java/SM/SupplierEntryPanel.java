@@ -62,7 +62,7 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
 }
     
     private void loadItemsToComboBox() {
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Items.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Items.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -145,7 +145,7 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
         });
 
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnDelete.setText("Delet");
+        btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -153,7 +153,7 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
         });
 
         btnClear.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnClear.setText("Clean");
+        btnClear.setText("Clear");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClearActionPerformed(evt);

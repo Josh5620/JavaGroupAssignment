@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import shared_manager.POManager;
 public class POViewPanel extends javax.swing.JPanel {
     private POManager poManager = new POManager();
 
@@ -21,20 +22,33 @@ public class POViewPanel extends javax.swing.JPanel {
      */
     public POViewPanel() {
         initComponents();
-        loadPOs();
+        loadPOs(POTable, POList, 7);
     }
-    private void loadPOs() {
-        try {
-            DefaultTableModel model = (DefaultTableModel) myTable.getModel();
-            model.setRowCount(0); 
-            List<String[]> pos = new POManager().loadPOs(); 
-            for (String[] po : pos) {
-                model.addRow(po);  
+    
+    public final List<List<String>> POList = poManager.getPOList();
+    private void loadPOs(JTable table, List<List<String>> data, int columnCount) {
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setResizingAllowed(false);
+        table.enableInputMethods(false);
+        table.setCellSelectionEnabled(false);
+        table.setColumnSelectionAllowed(false);
+        table.setRowSelectionAllowed(true);
+
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        for (List<String> record : data) {
+            Object[] row = new Object[columnCount];
+            for (int i = 0; i < columnCount; i++) {
+                row[i] = record.size() > i 
+                         ? record.get(i) 
+                         : ""; 
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error loading POs: " + e.getMessage());
-        }
+            model.addRow(row);
     }
+    }
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,7 +61,7 @@ public class POViewPanel extends javax.swing.JPanel {
 
         Refresh = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        myTable = new javax.swing.JTable();
+        POTable = new javax.swing.JTable();
 
         Refresh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Refresh.setText("Refresh");
@@ -57,7 +71,7 @@ public class POViewPanel extends javax.swing.JPanel {
             }
         });
 
-        myTable.setModel(new javax.swing.table.DefaultTableModel(
+        POTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -68,7 +82,7 @@ public class POViewPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(myTable);
+        jScrollPane2.setViewportView(POTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -95,13 +109,13 @@ public class POViewPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
-        loadPOs();
+        loadPOs(POTable, POList, 7);
     }//GEN-LAST:event_RefreshActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable POTable;
     private javax.swing.JButton Refresh;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable myTable;
     // End of variables declaration//GEN-END:variables
 }

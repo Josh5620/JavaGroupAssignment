@@ -31,45 +31,18 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         sidebarPanel = new javax.swing.JPanel();
-        btnViewItems = new javax.swing.JButton();
-        btnViewSuppliers = new javax.swing.JButton();
-        btnViewPRs = new javax.swing.JButton();
         btnViewSales = new javax.swing.JButton();
+        btnViewSuppliers = new javax.swing.JButton();
+        btnViewItems = new javax.swing.JButton();
+        btnViewPRs = new javax.swing.JButton();
         btnViewOP = new javax.swing.JButton();
+        btnlogout = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         contentPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        sidebarPanel.setLayout(new java.awt.GridLayout(6, 1));
-
-        btnViewItems.setFont(new java.awt.Font("Yu Gothic", 1, 16)); // NOI18N
-        btnViewItems.setText(" Items");
-        btnViewItems.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewItemsActionPerformed(evt);
-            }
-        });
-        sidebarPanel.add(btnViewItems);
-
-        btnViewSuppliers.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        btnViewSuppliers.setText(" Suppliers");
-        btnViewSuppliers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewSuppliersActionPerformed(evt);
-            }
-        });
-        sidebarPanel.add(btnViewSuppliers);
-
-        btnViewPRs.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        btnViewPRs.setText(" PRs");
-        btnViewPRs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewPRsActionPerformed(evt);
-            }
-        });
-        sidebarPanel.add(btnViewPRs);
 
         btnViewSales.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnViewSales.setText("Sales");
@@ -78,7 +51,30 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
                 btnViewSalesActionPerformed(evt);
             }
         });
-        sidebarPanel.add(btnViewSales);
+
+        btnViewSuppliers.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnViewSuppliers.setText(" Suppliers");
+        btnViewSuppliers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewSuppliersActionPerformed(evt);
+            }
+        });
+
+        btnViewItems.setFont(new java.awt.Font("Yu Gothic", 1, 16)); // NOI18N
+        btnViewItems.setText(" Items");
+        btnViewItems.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewItemsActionPerformed(evt);
+            }
+        });
+
+        btnViewPRs.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnViewPRs.setText(" PRs");
+        btnViewPRs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewPRsActionPerformed(evt);
+            }
+        });
 
         btnViewOP.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnViewOP.setText("View OP");
@@ -87,17 +83,69 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
                 btnViewOPActionPerformed(evt);
             }
         });
-        sidebarPanel.add(btnViewOP);
+
+        btnlogout.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnlogout.setText("Logout");
 
         btnExit.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnExit.setText("Exit");
-        sidebarPanel.add(btnExit);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mega (3).png"))); // NOI18N
+
+        javax.swing.GroupLayout sidebarPanelLayout = new javax.swing.GroupLayout(sidebarPanel);
+        sidebarPanel.setLayout(sidebarPanelLayout);
+        sidebarPanelLayout.setHorizontalGroup(
+            sidebarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sidebarPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(sidebarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidebarPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidebarPanelLayout.createSequentialGroup()
+                        .addGroup(sidebarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnViewSales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnViewSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnViewItems, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnViewPRs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnViewOP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(sidebarPanelLayout.createSequentialGroup()
+                                .addComponent(btnExit)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                                .addComponent(btnlogout, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(16, 16, 16)))
+                        .addGap(16, 16, 16))))
+        );
+        sidebarPanelLayout.setVerticalGroup(
+            sidebarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidebarPanelLayout.createSequentialGroup()
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnViewSales, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnViewSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnViewItems, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnViewPRs, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnViewOP, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
+                .addGroup(sidebarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExit)
+                    .addComponent(btnlogout))
+                .addContainerGap())
+        );
 
         getContentPane().add(sidebarPanel, java.awt.BorderLayout.LINE_START);
 
+        contentPanel.setPreferredSize(new java.awt.Dimension(730, 534));
+        contentPanel.setLayout(new java.awt.BorderLayout());
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Welcome Sales Manager ");
-        contentPanel.add(jLabel1);
+        contentPanel.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(contentPanel, java.awt.BorderLayout.CENTER);
 
@@ -186,8 +234,10 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnViewPRs;
     private javax.swing.JButton btnViewSales;
     private javax.swing.JButton btnViewSuppliers;
+    private javax.swing.JButton btnlogout;
     private javax.swing.JPanel contentPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel sidebarPanel;
     // End of variables declaration//GEN-END:variables
 }
