@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.io.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import shared_manager.ItemManager;
+import shared_model.Item;
 public class ItemEntryPanel extends javax.swing.JPanel {
     ItemManager itemManager = new ItemManager();
 
@@ -40,7 +42,7 @@ public class ItemEntryPanel extends javax.swing.JPanel {
     
 
     private void loadSuppliers() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/Supplier.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Suppliers.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");

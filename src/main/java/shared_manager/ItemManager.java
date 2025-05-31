@@ -1,51 +1,97 @@
 package shared_manager;
+import shared_model.Item;
 import UserLogin.User;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
-public class ItemManager extends User{
-    static String filePath = "src/Items.txt";
-    static List<List<String>> itemList = new ArrayList<>();
+public class ItemManager {
+    private final String FILE_PATH = "src/Items.txt";
 
-    public ItemManager() {
-        makeBigList(filePath, itemList);
-    }
-
-    public static List<List<String>> getItemList() {
-        return itemList;
-    }
-
-    /** record = [itemID, itemName, price, supplierID] */
-    public static boolean addItem(List<String> record) {
-        for (List<String> row : itemList) {
-            if (row.get(0).equalsIgnoreCase(record.get(0))) {
-                return false; // duplicate ID
+    // Load All Items
+    public List<Item> loadItems() throws IOException {
+        List<Item> items = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 4) {
+                items.add(new Item(parts[0], parts[1], parts[2], parts[3]));
             }
         }
-        itemList.add(record);
-        updateTextFile(itemList, filePath);
-        return true;
+        br.close();
+        return items;
     }
 
-    /** Replace entire row matching itemID */
-    public static boolean editItem(String itemID, List<String> newValues) {
-        for (int i = 0; i < itemList.size(); i++) {
-            if (itemList.get(i).get(0).equalsIgnoreCase(itemID)) {
-                itemList.set(i, newValues);
-                updateTextFile(itemList, filePath);
-                return true;
+    // Generate Next ItemID
+    public String generateNextItemID() throws IOException {
+        List<Item> items = loadItems();
+        int maxNum = 0;
+        for (Item item : items) {
+            String id = item.getItemID();
+            if (id.startsWith("ITM")) {
+                try {
+                    int num = Integer.parseInt(id.substring(3));
+                    if (num > maxNum) {
+                        maxNum = num;
+                    }
+                } catch (NumberFormatException ignored) {}
             }
         }
-        return false;
+        int nextNum = maxNum + 1;
+        return String.format("ITM%03d", nextNum);
     }
 
-    public static boolean deleteItem(String itemID) {
-        for (int i = 0; i < itemList.size(); i++) {
-            if (itemList.get(i).get(0).equalsIgnoreCase(itemID)) {
-                itemList.remove(i);
-                updateTextFile(itemList, filePath);
-                return true;
+    // Add Item
+    public void addItem(Item item) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true));
+        bw.write(item.toString());
+        bw.newLine();
+        bw.close();
+    }
+
+    // Edit Item
+    public void editItem(Item updatedItem) throws IOException {
+        List<String> lines = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split("\\|");
+            if (parts[0].equals(updatedItem.getItemID())) {
+                lines.add(updatedItem.toString());
+            } else {
+                lines.add(line);
             }
         }
-        return false;
+        br.close();
+        BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH));
+        for (String l : lines) {
+            bw.write(l);
+            bw.newLine();
+        }
+        bw.close();
+    }
+
+    // Delete Item
+    public void deleteItem(String itemID) throws IOException {
+        List<String> lines = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split("\\|");
+            if (!parts[0].equals(itemID)) {
+                lines.add(line);
+            }
+        }
+        br.close();
+        BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH));
+        for (String l : lines) {
+            bw.write(l);
+            bw.newLine();
+        }
+        bw.close();
     }
 }
