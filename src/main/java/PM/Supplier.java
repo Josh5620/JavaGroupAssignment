@@ -16,7 +16,7 @@ public class Supplier {
     private String email;
     private String phone;
     private List<String> itemIDs; 
-    public static final String File_Path = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Suppliers.txt";
+    public static final String File_Path = "src/Suppliers.txt";
 
 
     public Supplier(String supplierID, String name, String email, String phone, List<String> itemIDs) {

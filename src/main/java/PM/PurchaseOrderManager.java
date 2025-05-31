@@ -18,7 +18,7 @@ public class PurchaseOrderManager {
 
     public void addPOFromPR(String prID, String date, String pmID) {
         try {
-            //String prFilePath = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
+            String prFilePath = "src/PurchaseRequisitions.txt";
             String itemIDs = "", quantities = "", supplierID = "", smID = "", status = "";
             boolean found = false;
 

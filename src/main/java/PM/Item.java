@@ -13,7 +13,7 @@ public class Item {
     private String itemName;
     private double price;
     private String supplierId;
-    public static final String File_Path = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt";
+    public static final String File_Path = "src/Items.txt";
 
 
     public Item(String itemId, String itemName, double price, String supplierId) {

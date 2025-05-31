@@ -75,7 +75,7 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
     private void updateUnitPrice() {
         String selectedItem = (String) comboItemID.getSelectedItem();
         if (selectedItem != null) {
-            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("src/Items.txt"))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split("\\|");
@@ -132,7 +132,7 @@ public class DailySalesEntryPanel extends javax.swing.JPanel {
     private void updateQuantity() {
         String selectedItem = (String) comboItemID.getSelectedItem();
         if (selectedItem != null) {
-            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Inventory.txt"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("src/Inventory.txt"))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split("\\|");

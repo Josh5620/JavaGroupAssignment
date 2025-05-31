@@ -18,7 +18,7 @@ public class PurchaseRequisition {
     private String supplierID;
     private String salesManagerID;
     private String status;
-    public static final String File_Path = "C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\PurchaseRequisitions";
+    public static final String File_Path = "src/PurchaseRequisitions";
 
 
     public PurchaseRequisition(String prID, String itemIDs, String quantities, String date, String supplierID, String salesManagerID, String status) {

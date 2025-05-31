@@ -1604,7 +1604,7 @@ public class PMForm1 extends javax.swing.JFrame {
 
             
                 String itemName = "", unitPrice = "";
-                try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt"))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader("src/Items.txt"))) {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         String[] parts = line.split("\\|");
@@ -1686,7 +1686,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 String quantity = quantities[i];
 
                 String itemName = "", unitPrice = "";
-                try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\dhmez\\OneDrive - Asia Pacific University\\Desktop\\APU\\Assignment\\JavaGroupAssignment\\src\\Items.txt"))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader("src/Items.txt"))) {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         String[] parts = line.split("\\|");
