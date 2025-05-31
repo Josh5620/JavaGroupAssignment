@@ -85,45 +85,18 @@ public class FinancialReport extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    public static void showReport(List<List<String>> stockData, List<List<String>> itemsList, String filterDate) {
+    public static void showReport(List<List<String>> salesData, List<List<String>> itemsList, String filterDate) {
         JDialog dialog = new JDialog();
         dialog.setTitle("Financial Report Viewer");
         dialog.setSize(850, 500);
         dialog.setLocationRelativeTo(null);
         dialog.setModal(true);
 
-        FinancialReport reportPanel = new FinancialReport(stockData, itemsList, filterDate);
+        FinancialReport reportPanel = new FinancialReport(salesData, itemsList, filterDate);
         dialog.add(reportPanel);
         dialog.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        List<List<String>> stockData = Arrays.asList(
-            Arrays.asList("ITM001", "20", "2025-05-10"),
-            Arrays.asList("ITM002", "15", "2025-05-09"),
-            Arrays.asList("ITM003", "10", "2025-05-08"),
-            Arrays.asList("ITM004", "25", "2025-05-11"),
-            Arrays.asList("ITM005", "30", "2025-05-07"),
-            Arrays.asList("ITM006", "12", "2025-05-10"),
-            Arrays.asList("ITM007", "18", "2025-05-11"),
-            Arrays.asList("ITM008", "22", "2025-05-09"),
-            Arrays.asList("ITM009", "16", "2025-05-10"),
-            Arrays.asList("ITM010", "19", "2025-05-08")
-        );
-
-        List<List<String>> itemsList = Arrays.asList(
-            Arrays.asList("ITM001", "Rice", "3.20", "SUP001"),
-            Arrays.asList("ITM002", "Onions", "2.50", "SUP002"),
-            Arrays.asList("ITM003", "Tomatoes", "3.80", "SUP002"),
-            Arrays.asList("ITM004", "Sugar", "4.60", "SUP001"),
-            Arrays.asList("ITM005", "Salt", "2.70", "SUP003"),
-            Arrays.asList("ITM006", "Milk", "7.20", "SUP002"),
-            Arrays.asList("ITM007", "Carrots", "2.30", "SUP003"),
-            Arrays.asList("ITM008", "Cabbage", "2.90", "SUP004"),
-            Arrays.asList("ITM009", "CookingOil", "5.50", "SUP004"),
-            Arrays.asList("ITM010", "Flour", "3.10", "SUP001")
-        );
-
-        showReport(stockData, itemsList, "2025-05-10");
-    }
+    
+    
+    
 }
