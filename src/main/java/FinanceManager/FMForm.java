@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import shared_manager.PRManager;
 import shared_manager.POManager;
+import shared_manager.FinancialReport;
 import UserLogin.LoginPage;
 import java.awt.CardLayout;
 import java.time.LocalDateTime;
@@ -29,11 +30,32 @@ public class FMForm extends javax.swing.JFrame {
         initComponents();
         buildPRTable();
         buildPOTable();
+        buildSalesEntryTable();
         populateDateComboBox(cmbPODateFilter, PO.getPOList(), 1);
-        populateDateComboBox(cmbPRDateFilter, PR.getPRList(), 1);
+        populateDateComboBox(cmbPRDateFilter, PR.getPRList(), 3);
+        populateDateComboBox(cmbfilterDateSE, SEList, 2);
         homePageLoad(username, password);
     }
 
+    private JFrame adminFrame; 
+    
+    public FMForm(String username, String role, JFrame adminFrame) {
+    this(username, role); 
+    this.adminFrame = adminFrame;
+
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+    
+    // Add listener to bring back admin panel when IMForm closes
+    this.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            if (adminFrame != null) {
+                adminFrame.setVisible(true);
+            }
+        }
+    });
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,8 +92,6 @@ public class FMForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         QuantityLabel = new javax.swing.JTextField();
-        cmbSupplier = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
         ModifyPO = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -81,7 +101,14 @@ public class FMForm extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         cmbPODateFilter = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        cmbPOId = new javax.swing.JComboBox<>();
         ReportsPanel = new javax.swing.JPanel();
+        BtnReport = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        SalesEntryTable = new javax.swing.JTable();
+        cmbfilterDateSE = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -212,9 +239,9 @@ public class FMForm extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(UsernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(478, Short.MAX_VALUE))
+                    .addComponent(UsernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(374, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,8 +274,8 @@ public class FMForm extends javax.swing.JFrame {
                     .addGroup(HomePanelLayout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(DateTimeL, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(200, 200, 200))))
+                        .addComponent(DateTimeL, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))))
         );
         HomePanelLayout.setVerticalGroup(
             HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,7 +289,7 @@ public class FMForm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        MainPanel.add(HomePanel, "card2");
+        MainPanel.add(HomePanel, "HomePanel");
 
         RequisitionsPanel.setBackground(new java.awt.Color(153, 153, 153));
         RequisitionsPanel.setPreferredSize(new java.awt.Dimension(660, 540));
@@ -320,7 +347,7 @@ public class FMForm extends javax.swing.JFrame {
                 .addContainerGap(193, Short.MAX_VALUE))
         );
 
-        MainPanel.add(RequisitionsPanel, "card2");
+        MainPanel.add(RequisitionsPanel, "RequisitionsPanel");
 
         PurchaseOrderPanel.setBackground(new java.awt.Color(153, 153, 153));
         PurchaseOrderPanel.setPreferredSize(new java.awt.Dimension(660, 540));
@@ -354,13 +381,6 @@ public class FMForm extends javax.swing.JFrame {
 
         QuantityLabel.setForeground(new java.awt.Color(0, 0, 0));
 
-        cmbSupplier.setForeground(new java.awt.Color(255, 255, 255));
-        cmbSupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("Supplier:");
-
         ModifyPO.setBackground(new java.awt.Color(102, 153, 255));
         ModifyPO.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         ModifyPO.setText("Modify");
@@ -376,18 +396,14 @@ public class FMForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ModifyPO, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(ModifyPO, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cmbSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(QuantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(QuantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -400,12 +416,8 @@ public class FMForm extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(QuantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
                 .addComponent(ModifyPO)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
@@ -445,30 +457,42 @@ public class FMForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("PO_ID:");
+
+        cmbPOId.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a Status", "Approved", "Denied", "Processing" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(ConfirmPOBtn)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                             .addComponent(jLabel4)
                             .addGap(52, 52, 52))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGap(6, 6, 6)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel7)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ConfirmPOBtn))
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(cmbPODateFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(cmbPODateFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(cmbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(cmbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(cmbPOId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(120, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -476,14 +500,24 @@ public class FMForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(ConfirmPOBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addComponent(jLabel7)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel10))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(cmbPOId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel7))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ConfirmPOBtn)
+                        .addGap(0, 25, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -504,7 +538,7 @@ public class FMForm extends javax.swing.JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         PurchaseOrderPanelLayout.setVerticalGroup(
             PurchaseOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -515,26 +549,94 @@ public class FMForm extends javax.swing.JFrame {
                 .addGroup(PurchaseOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        MainPanel.add(PurchaseOrderPanel, "card2");
+        MainPanel.add(PurchaseOrderPanel, "PurchaseOrderPanel");
 
         ReportsPanel.setBackground(new java.awt.Color(153, 153, 153));
         ReportsPanel.setPreferredSize(new java.awt.Dimension(660, 540));
+
+        BtnReport.setBackground(new java.awt.Color(255, 0, 0));
+        BtnReport.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        BtnReport.setText("Generate Sales Report");
+        BtnReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnReportActionPerformed(evt);
+            }
+        });
+
+        SalesEntryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Item_ID", "Quantity", "Date", "Price_Per_Unit"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(SalesEntryTable);
+        if (SalesEntryTable.getColumnModel().getColumnCount() > 0) {
+            SalesEntryTable.getColumnModel().getColumn(0).setResizable(false);
+            SalesEntryTable.getColumnModel().getColumn(1).setResizable(false);
+            SalesEntryTable.getColumnModel().getColumn(2).setResizable(false);
+            SalesEntryTable.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        cmbfilterDateSE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbfilterDateSE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbfilterDateSEActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Date:");
 
         javax.swing.GroupLayout ReportsPanelLayout = new javax.swing.GroupLayout(ReportsPanel);
         ReportsPanel.setLayout(ReportsPanelLayout);
         ReportsPanelLayout.setHorizontalGroup(
             ReportsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGroup(ReportsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReportsPanelLayout.createSequentialGroup()
+                .addContainerGap(152, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbfilterDateSE, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(267, 267, 267))
+            .addGroup(ReportsPanelLayout.createSequentialGroup()
+                .addGap(176, 176, 176)
+                .addComponent(BtnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         ReportsPanelLayout.setVerticalGroup(
             ReportsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ReportsPanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(ReportsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbfilterDateSE, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(BtnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(121, Short.MAX_VALUE))
         );
 
-        MainPanel.add(ReportsPanel, "card2");
+        MainPanel.add(ReportsPanel, "ReportsPanel");
 
         getContentPane().add(MainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 0, 640, 540));
 
@@ -580,17 +682,32 @@ public class FMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_ConfirmPOBtnActionPerformed
 
     private void cmbPRDateFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPRDateFilterActionPerformed
-        applyDateFilter(cmbPRDateFilter, requisitionTable, PR.getPRList(), 1, 7);
+        applyDateFilter(cmbPRDateFilter, requisitionTable, PR.getPRList(), 3, 7);
     }//GEN-LAST:event_cmbPRDateFilterActionPerformed
 
+    private void BtnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnReportActionPerformed
+    buildSalesEntryTable();
+    String filterDate = cmbfilterDateSE.getSelectedItem().toString();
+    FinancialReport.showReport(SEList, ItemsList, filterDate);
+    }//GEN-LAST:event_BtnReportActionPerformed
+
+    private void cmbfilterDateSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbfilterDateSEActionPerformed
+        applyDateFilter(cmbfilterDateSE, SalesEntryTable, SEList, 2, 4);
+    }//GEN-LAST:event_cmbfilterDateSEActionPerformed
+
     
+        
+    static String ItemsfilePath = "src/Items.txt";
+    private final List<List<String>> ItemsList = new ArrayList<>();
+    
+        
         private void buildTable(JTable table, List<List<String>> data, int columnCount) {
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setResizingAllowed(false);
         table.enableInputMethods(false);
         table.setCellSelectionEnabled(false);
         table.setColumnSelectionAllowed(false);
-        table.setRowSelectionAllowed(false);
+        table.setRowSelectionAllowed(true);
 
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -622,18 +739,33 @@ public class FMForm extends javax.swing.JFrame {
         );
     }
     
+    static String SEfilePath = "src/SalesEntry.txt";
+    private final List<List<String>> SEList = new ArrayList<>();
+    private void buildSalesEntryTable(){
+        PR.makeBigList(SEfilePath, SEList);
+        PR.makeBigList(ItemsfilePath, ItemsList);
+        buildTable(SalesEntryTable, SEList, 3);
+    }
+    
     private void applyDateFilter(JComboBox<String> comboBox, JTable table, List<List<String>> fullData, int dateIndex, int columnCount) {
     String selectedDate = (String) comboBox.getSelectedItem();
+    
+       if (selectedDate == null || selectedDate.equals("All")) {
+        buildTable(table, fullData, columnCount);
+        return;
+    }
+
     List<List<String>> filteredData = new ArrayList<>();
 
     for (List<String> row : fullData) {
-        if (selectedDate.equals("All") || row.get(dateIndex).equals(selectedDate)) {
+        if (row.get(dateIndex).equals(selectedDate)) {
             filteredData.add(row);
         }
     }
 
     buildTable(table, filteredData, columnCount);
 }
+
 
     private void populateDateComboBox(JComboBox<String> comboBox, List<List<String>> data, int dateIndex) {
     comboBox.removeAllItems();
@@ -658,14 +790,12 @@ public class FMForm extends javax.swing.JFrame {
 
     // Get new quantity and supplier selections from your form (e.g. text fields or combo boxes)
     String newQtyString = QuantityLabel.getText();           // e.g. "15/10"
-    String newSupplierID = cmbSupplier.getSelectedItem().toString(); // Optional if you're changing suppliers per item
 
     // Update PO in memory
     List<List<String>> poList = POManager.getPOList();
     for (List<String> row : poList) {
         if (row.get(0).equalsIgnoreCase(poID)) {
             row.set(3, newQtyString); // update quantities
-            // Optionally modify row.set(2) if supplier affects itemIDs (depends on design)
             break;
         }
     }
@@ -750,6 +880,7 @@ public class FMForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnReport;
     private javax.swing.JButton ConfirmPOBtn;
     private javax.swing.JLabel DateTimeL;
     private javax.swing.JButton ExitButton;
@@ -767,13 +898,16 @@ public class FMForm extends javax.swing.JFrame {
     private javax.swing.JPanel RequisitionsPanel;
     private javax.swing.JButton RequistionButton;
     private javax.swing.JLabel RoleLabel;
+    private javax.swing.JTable SalesEntryTable;
     private javax.swing.JPanel SidePanel;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JComboBox<String> cmbPODateFilter;
+    private javax.swing.JComboBox<String> cmbPOId;
     private javax.swing.JComboBox<String> cmbPRDateFilter;
     private javax.swing.JComboBox<String> cmbStatus;
-    private javax.swing.JComboBox<String> cmbSupplier;
+    private javax.swing.JComboBox<String> cmbfilterDateSE;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -787,6 +921,7 @@ public class FMForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable purchaseOrderTable;
     private javax.swing.JTable requisitionTable;
     // End of variables declaration//GEN-END:variables
