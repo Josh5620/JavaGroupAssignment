@@ -8,6 +8,8 @@ import java.awt.Component;
 import javax.swing.table.DefaultTableModel;
 import InventoryManager.InvenUser;
 import FinanceManager.FMForm;
+import PM.PMForm1;
+import SM.SalesManagerDashboard;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -809,7 +811,7 @@ public class AdminPanel extends javax.swing.JFrame {
     
     
     private void SMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SMBtnActionPerformed
-       AdminLayout.show(AdminMainPanel, "SMCard");
+       launchRoleDashboard("sm2", "p10", "SM", this);
     }//GEN-LAST:event_SMBtnActionPerformed
 
     private void ManageUsersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ManageUsersBtnActionPerformed
@@ -817,7 +819,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_ManageUsersBtnActionPerformed
 
     private void PMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PMBtnActionPerformed
-        AdminLayout.show(AdminMainPanel, "PMCard");
+        launchRoleDashboard("pm4", "p19", "FM", this);
     }//GEN-LAST:event_PMBtnActionPerformed
 
     private void IMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IMBtnActionPerformed
@@ -926,8 +928,8 @@ public class AdminPanel extends javax.swing.JFrame {
     
 public void launchRoleDashboard(String username, String password, String role, JFrame adminFrame) {
     switch (role) {
-//        case "SM" -> new SMForm(username, password, adminFrame).setVisible(true);
-//        case "PM" -> new PMForm(username, password, adminFrame).setVisible(true);
+        case "SM" -> new SalesManagerDashboard(username, password, adminFrame).setVisible(true);
+        case "PM" -> new PMForm1(username, password, adminFrame).setVisible(true);
         case "IM" -> new IMForm(username, password, adminFrame).setVisible(true);
         case "FM" -> new FMForm(username, password, adminFrame).setVisible(true);
         default   -> JOptionPane.showMessageDialog(null, "Invalid role!");

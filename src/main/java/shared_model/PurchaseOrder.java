@@ -51,6 +51,7 @@ public class PurchaseOrder extends JPanel {
     public String getPoID() { return poID; }
     public List<String> getItemIDs() { return itemIDs; }
     public List<Integer> getQuantities() { return quantities; }
+    public String getDate() { return date; }
     public String getStatus() { return status; }
     public String getApprovedBy() { return approvedBy; }
     public String getResolution() { return resolution; }

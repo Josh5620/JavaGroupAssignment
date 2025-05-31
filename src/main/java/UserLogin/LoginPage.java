@@ -234,12 +234,12 @@ public class LoginPage extends javax.swing.JFrame {
                         this.dispose();
                         break;
                     case 3:
-                        PMForm1 pMForm = new PMForm1();
+                        PMForm1 pMForm = new PMForm1(userLog, focusUser.get(3));
                         pMForm.setVisible(true);
                         this.dispose();
                         break;
                     case 4:
-                        SalesManagerDashboard sMForm = new SalesManagerDashboard();
+                        SalesManagerDashboard sMForm = new SalesManagerDashboard(userLog, focusUser.get(3));
                         sMForm.setVisible(true);
                         this.dispose();
                         break;

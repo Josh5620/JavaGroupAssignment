@@ -13,13 +13,32 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.*;
 import java.awt.*;
+import UserLogin.LoginPage;
 public class SalesManagerDashboard extends javax.swing.JFrame {
 
-    public SalesManagerDashboard() {
+    public SalesManagerDashboard(String username, String role) {
         initComponents();
 
     }
 
+     private JFrame adminFrame; 
+    
+    public SalesManagerDashboard(String username, String role, JFrame adminFrame) {
+    this(username, role); 
+    this.adminFrame = adminFrame;
+
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+    
+    // Add listener to bring back admin panel when IMForm closes
+    this.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            if (adminFrame != null) {
+                adminFrame.setVisible(true);
+            }
+        }
+    });
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -86,9 +105,19 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
 
         btnlogout.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnlogout.setText("Logout");
+        btnlogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlogoutActionPerformed(evt);
+            }
+        });
 
         btnExit.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mega (3).png"))); // NOI18N
 
@@ -119,7 +148,7 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         sidebarPanelLayout.setVerticalGroup(
             sidebarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidebarPanelLayout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnViewSales, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -192,6 +221,16 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
     contentPanel.repaint();
     }//GEN-LAST:event_btnViewOPActionPerformed
 
+    private void btnlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogoutActionPerformed
+        LoginPage login = new LoginPage();
+        login.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnlogoutActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -222,7 +261,7 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SalesManagerDashboard().setVisible(true);
+                new SalesManagerDashboard("sm2", "p10").setVisible(true);
             }
         });
     }

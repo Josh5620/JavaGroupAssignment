@@ -15,12 +15,14 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import shared_manager.*;
+import shared_model.*;
 public class PMForm1 extends javax.swing.JFrame {
 
     /**
      * Creates new form PMForm1
      */
-    public PMForm1() {
+    public PMForm1(String username, String password) {
         initComponents();
         
         contentPanel.add(panelViewItems, "panelViewItems");
@@ -43,7 +45,7 @@ public class PMForm1 extends javax.swing.JFrame {
         comboPOIDEdit.addActionListener(e -> {
         String selectedPOID = (String) comboPOIDEdit.getSelectedItem();
         if (selectedPOID != null) {
-            PurchaseOrderManager manager = new PurchaseOrderManager();
+            POManager manager = new POManager();
             List<PurchaseOrder> poList = manager.getAllPOs();
 
             for (PurchaseOrder po : poList) {
@@ -51,6 +53,24 @@ public class PMForm1 extends javax.swing.JFrame {
                     txtDate2.setText(po.getDate());
                     break;
                 }
+            }
+        }
+    });
+    }
+     private JFrame adminFrame; 
+    
+    public PMForm1(String username, String role, JFrame adminFrame) {
+    this(username, role); 
+    this.adminFrame = adminFrame;
+
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+    
+    // Add listener to bring back admin panel when IMForm closes
+    this.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            if (adminFrame != null) {
+                adminFrame.setVisible(true);
             }
         }
     });
@@ -1277,22 +1297,23 @@ public class PMForm1 extends javax.swing.JFrame {
         cl.show(contentPanel, "panelViewItems");
         
         ItemManager manager = new ItemManager();
-        List<Item> itemList = manager.getAllItems();
-
         DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
-        model.setRowCount(0);
+        model.setRowCount(0);  // Clear existing table rows
 
-        for (Item item : itemList) {
-            model.addRow(new Object[] {
-                item.getItemId(),
-                item.getItemName(),
-                item.getPrice(),
-                item.getSupplierId()
-            });
+        try {
+            List<Item> itemList = manager.loadItems();
+            for (Item item : itemList) {
+                model.addRow(new Object[] {
+                    item.getItemID(),
+                    item.getItemName(),
+                    item.getPrice(),
+                    item.getSupplierID()
+                });
+            }
+            tblItems.setModel(model);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Failed to load items: " + e.getMessage());
         }
-
-        tblItems.setModel(model);
-        
     }//GEN-LAST:event_btnViewItemsActionPerformed
 
     private void btnViewSuppliersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewSuppliersActionPerformed
@@ -1300,43 +1321,45 @@ public class PMForm1 extends javax.swing.JFrame {
         cl.show(contentPanel, "panelViewSuppliers");
         
         SupplierManager manager = new SupplierManager();
-        List<Supplier> supplierList = manager.getAllSuppliers();
-
         DefaultTableModel model = (DefaultTableModel) tblViewSup.getModel();
-        model.setRowCount(0);
+        model.setRowCount(0); // clear existing rows
 
-        for (Supplier supplier : supplierList) {
-            model.addRow(new Object[] {
-                supplier.getSupplierID(),
-                supplier.getName(),
-                supplier.getEmail(),
-                supplier.getPhone(),
-                String.join(",", supplier.getItemIDs()) 
-            });
+        try {
+            List<Supplier> supplierList = manager.loadSuppliers();
+            for (Supplier supplier : supplierList) {
+                model.addRow(new Object[] {
+                    supplier.getId(),
+                    supplier.getName(),
+                    supplier.getEmail(),
+                    supplier.getPhone(),
+                    supplier.getItemIDs().replace("\\", ", ")
+                });
+            }
+            tblViewSup.setModel(model);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Failed to load suppliers: " + e.getMessage());
         }
-
-        tblViewSup.setModel(model);
     }//GEN-LAST:event_btnViewSuppliersActionPerformed
 
     private void btnViewPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPRActionPerformed
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelViewPRs");
         
-        PurchaseRequisitionManager manager = new PurchaseRequisitionManager();
-        List<PurchaseRequisition> prList = manager.getAllPRs();
+    List<PurchaseRequisition> prList = PRManager.loadAllPRs();
+    DefaultTableModel model = (DefaultTableModel) tblViewPRs.getModel();
+    model.setRowCount(0);
 
-        DefaultTableModel model = (DefaultTableModel) tblViewPRs.getModel();
-        model.setRowCount(0); 
-
-        for (PurchaseRequisition pr : prList) {
-            model.addRow(new Object[] {
+    for (PurchaseRequisition pr : prList) {
+        if ("Approved".equalsIgnoreCase(pr.getStatus())) {
+            model.addRow(new Object[]{
                 pr.getPrID(),
-                pr.getRequiredDate(),
+                pr.getDate(),               
                 pr.getSupplierID(),
                 pr.getStatus(),
                 pr.getSalesManagerID()
             });
         }
+    }
     }//GEN-LAST:event_btnViewPRActionPerformed
 
     private void btnVGeneratePOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVGeneratePOActionPerformed
@@ -1349,7 +1372,7 @@ public class PMForm1 extends javax.swing.JFrame {
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelViewPOs");
         
-         PurchaseOrderManager manager = new PurchaseOrderManager();
+         POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
         DefaultTableModel model = (DefaultTableModel) tblViewPO.getModel();
         model.setRowCount(0);
@@ -1359,7 +1382,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 po.getPoID(),
                 po.getDate(),
                 po.getStatus(),
-                po.getPmID()
+                po.getApprovedBy()
             });
         }
     }//GEN-LAST:event_btnViewPOActionPerformed
@@ -1373,8 +1396,8 @@ public class PMForm1 extends javax.swing.JFrame {
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelGeneratePO_Add");
         
-        PurchaseRequisitionManager manager = new PurchaseRequisitionManager();
-        List<PurchaseRequisition> prList = manager.getAllPRs();
+        PRManager manager = new PRManager();
+        List<PurchaseRequisition> prList = manager.loadAllPRs();
 
         DefaultTableModel model = (DefaultTableModel) tblPRsForPO.getModel();
         model.setRowCount(0);
@@ -1395,7 +1418,7 @@ public class PMForm1 extends javax.swing.JFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
     comboPOIDEdit.removeAllItems();
-    PurchaseOrderManager manager = new PurchaseOrderManager();
+    POManager manager = new POManager();
     List<PurchaseOrder> poList = manager.getAllPOs();
 
     for (PurchaseOrder po : poList) {
@@ -1412,7 +1435,7 @@ public class PMForm1 extends javax.swing.JFrame {
         cl.show(contentPanel, "panelGeneratePO_Delete");
 
         
-        PurchaseOrderManager manager = new PurchaseOrderManager();
+        POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
 
         DefaultTableModel model = (DefaultTableModel) tblPOsDelete.getModel();
@@ -1425,7 +1448,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 po.getQuantities(),
                 po.getDate(),
                 po.getStatus(),
-                po.getPmID()
+                po.getApprovedBy()
             });
         }
 
@@ -1444,7 +1467,7 @@ public class PMForm1 extends javax.swing.JFrame {
         String pmID = txtPMID.getText().trim();
         String resolution = txtResolution.getText().trim();
     
-        PurchaseOrderManager manager = new PurchaseOrderManager();
+        POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
         PurchaseOrder selectedPO = null;
         for (PurchaseOrder po : poList) {
@@ -1753,7 +1776,7 @@ public class PMForm1 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PMForm1().setVisible(true);
+                new PMForm1("pm4", "p19").setVisible(true);
             }
         });
     }

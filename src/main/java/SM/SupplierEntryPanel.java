@@ -16,6 +16,8 @@ import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import shared_manager.SupplierManager;
+import shared_model.Supplier;
 public class SupplierEntryPanel extends javax.swing.JPanel {
     private final SupplierManager supplierManager = new SupplierManager();
 

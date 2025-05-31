@@ -79,7 +79,7 @@ public class POViewPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "PO_ID", "Date", "ItemIDs", "Quantities"
             }
         ));
         jScrollPane2.setViewportView(POTable);

@@ -1,109 +1,129 @@
 package shared_model;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PurchaseRequisition {
-    private String requisitionID;
+    private String prID;
     private List<String> itemIDs;
     private List<Integer> quantities;
-    private String requiredDate;
+    private String date;
     private String supplierID;
-    private String smID;
+    private String salesManagerID;
     private String status;
 
-    public PurchaseRequisition(String requisitionID,
-                               List<String> itemIDs,
-                               List<Integer> quantities,
-                               String requiredDate,
-                               String supplierID,
-                               String smID,
-                               String status) {
-        this.requisitionID = requisitionID;
-        this.itemIDs       = new ArrayList<>(itemIDs);
-        this.quantities    = new ArrayList<>(quantities);
-        this.requiredDate  = requiredDate;
-        this.supplierID    = supplierID;
-        this.smID          = smID;
-        this.status        = status;
+    // Constructor
+    public PurchaseRequisition(String prID, List<String> itemIDs, List<Integer> quantities,
+                                String date, String supplierID, String salesManagerID, String status) {
+        this.prID = prID;
+        this.itemIDs = itemIDs;
+        this.quantities = quantities;
+        this.date = date;
+        this.supplierID = supplierID;
+        this.salesManagerID = salesManagerID;
+        this.status = status;
     }
 
-
-    public static PurchaseRequisition parse(String line) {
+    // Static parser from text file line
+    public static PurchaseRequisition parse(String line) throws IllegalArgumentException {
         String[] parts = line.split("\\|");
-        if (parts.length != 7) return null;
-
-        String id       = parts[0];
-        String date     = parts[3];
-        String suppID   = parts[4];
-        String sm       = parts[5];
-        String stat     = parts[6];
-
-
-        String[] items = parts[1].split("/");
-        List<String> itemList = new ArrayList<>();
-        for (String s : items) {
-            if (!s.isEmpty()) itemList.add(s);
+        if (parts.length != 7) {
+            throw new IllegalArgumentException("Invalid PR line format: " + line);
         }
 
-
-        String[] qtys = parts[2].split("/");
-        List<Integer> qtyList = new ArrayList<>();
-        for (String q : qtys) {
-            try {
-                qtyList.add(Integer.parseInt(q));
-            } catch (NumberFormatException e) {
-                qtyList.add(0);
-            }
+        List<String> itemIDs = Arrays.asList(parts[1].split("/"));
+        String[] qtyParts = parts[2].split("/");
+        if (itemIDs.size() != qtyParts.length) {
+            throw new IllegalArgumentException("Mismatch in itemIDs and quantities for PR: " + parts[0]);
         }
 
-        return new PurchaseRequisition(id, itemList, qtyList, date, suppID, sm, stat);
+        List<Integer> quantities = Arrays.stream(qtyParts)
+                                         .map(Integer::parseInt)
+                                         .collect(Collectors.toList());
+
+        return new PurchaseRequisition(
+            parts[0], itemIDs, quantities, parts[3], parts[4], parts[5], parts[6]
+        );
     }
 
+    // Converts object to text file line
     public String toDataLine() {
-        // join itemIDs with "/"
-        String items = "";
-        if (!itemIDs.isEmpty()) {
-            items = itemIDs.get(0);
-            for (int i = 1; i < itemIDs.size(); i++) {
-                items += "/" + itemIDs.get(i);
-            }
-        }
-
-        // join quantities with "/"
-        String qtys = "";
-        if (!quantities.isEmpty()) {
-            qtys = quantities.get(0).toString();
-            for (int i = 1; i < quantities.size(); i++) {
-                qtys += "/" + quantities.get(i);
-            }
-        }
-
-        return requisitionID + "|" +
-               items         + "|" +
-               qtys          + "|" +
-               requiredDate  + "|" +
-               supplierID    + "|" +
-               smID          + "|" +
-               status;
+        String itemStr = String.join("/", itemIDs);
+        String qtyStr = quantities.stream()
+                                  .map(String::valueOf)
+                                  .collect(Collectors.joining("/"));
+        return String.join("|", prID, itemStr, qtyStr, date, supplierID, salesManagerID, status);
     }
 
-
-    public String        getRequisitionID() { return requisitionID; }
-    public List<String>  getItemIDs()       { return Collections.unmodifiableList(itemIDs); }
-    public List<Integer> getQuantities()    { return Collections.unmodifiableList(quantities); }
-    public String        getRequiredDate()  { return requiredDate; }
-    public String        getSupplierID()    { return supplierID; }
-    public String        getSmID()          { return smID; }
-    public String        getStatus()        { return status; }
-
-    public void setStatus(String status)      { this.status = status; }
-    public void setRequiredDate(String date)  { this.requiredDate = date; }
-    public void setSupplierID(String id)      { this.supplierID = id;  }
-    public void setSmID(String smID)          { this.smID = smID;      }
-    public void setItemIDs(List<String> ids) {
-        this.itemIDs = new ArrayList<>(ids);
+    // Getters and Setters
+    public String getPrID() {
+        return prID;
     }
-    public void setQuantities(List<Integer> q) {
-        this.quantities = new ArrayList<>(q);
+
+    public void setPrID(String prID) {
+        this.prID = prID;
+    }
+
+    public List<String> getItemIDs() {
+        return itemIDs;
+    }
+
+    public void setItemIDs(List<String> itemIDs) {
+        this.itemIDs = itemIDs;
+    }
+
+    public List<Integer> getQuantities() {
+        return quantities;
+    }
+
+    public void setQuantities(List<Integer> quantities) {
+        this.quantities = quantities;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getSupplierID() {
+        return supplierID;
+    }
+
+    public void setSupplierID(String supplierID) {
+        this.supplierID = supplierID;
+    }
+
+    public String getSalesManagerID() {
+        return salesManagerID;
+    }
+
+    public void setSalesManagerID(String salesManagerID) {
+        this.salesManagerID = salesManagerID;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    // Debugging utility
+    @Override
+    public String toString() {
+        return "PR{" +
+                "prID='" + prID + '\'' +
+                ", itemIDs=" + itemIDs +
+                ", quantities=" + quantities +
+                ", date='" + date + '\'' +
+                ", supplierID='" + supplierID + '\'' +
+                ", salesManagerID='" + salesManagerID + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

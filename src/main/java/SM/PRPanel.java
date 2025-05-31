@@ -12,9 +12,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import shared_manager.PRManager;
+import shared_model.PurchaseRequisition;
 public class PRPanel extends javax.swing.JPanel {
+    List<PurchaseRequisition> prs = PRManager.loadAllPRs();
     
         private PRManager prManager = new PRManager();
    
@@ -46,7 +50,7 @@ public class PRPanel extends javax.swing.JPanel {
         });
     }
     private void loadSuppliers() {
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Supplier.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Suppliers.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -60,7 +64,7 @@ public class PRPanel extends javax.swing.JPanel {
     }
     private void loadItemsForSupplier(String supplierID) {
         comboItemID.removeAllItems(); 
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\dhoom\\Downloads\\Supplier.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Suppliers.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -79,46 +83,36 @@ public class PRPanel extends javax.swing.JPanel {
         }
     }
     private void loadPRs() {
-        DefaultTableModel model = new DefaultTableModel(new String[]{"PRID", "ItemIDs", "Quantities", "Date", "SupplierID", "SMID", "Status"}, 0);
-        try {
-            List<PR> prs = prManager.loadPRs();
-            for (PR p : prs) {
-                model.addRow(new Object[]{
-                    p.getPrid(),
-                    p.getItemIDs(),
-                    p.getQuantities(),
-                    p.getDate(),
-                    p.getSupplierID(),
-                    p.getSmID(),
-                    p.getStatus()
-                });
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error loading PRs: " + e.getMessage());
-        }
-        tblPRs.setModel(model);
-        try {
-            txtPRID.setText(prManager.generateNextPRID());
-        } catch (IOException e) {
-            txtPRID.setText("Error");
-        }
+    DefaultTableModel model = new DefaultTableModel(
+        new String[]{"PRID", "ItemIDs", "Quantities", "Date", "SupplierID", "SMID", "Status"}, 0
+    );
+    List<PurchaseRequisition> prs = PRManager.loadAllPRs();
+    for (PurchaseRequisition pr : prs) {
+        model.addRow(new Object[]{
+            pr.getPrID(),
+            String.join("/", pr.getItemIDs()),
+            pr.getQuantities().stream().map(String::valueOf).collect(Collectors.joining("/")),
+            pr.getDate(),
+            pr.getSupplierID(),
+            pr.getSalesManagerID(),
+            pr.getStatus()
+        });
     }
+    tblPRs.setModel(model);
+    txtPRID.setText(PRManager.generateNextPRID());
+    }
+    
     private void clearFields() {
-        txtPRID.setText("");
-        if (comboItemID.getItemCount() > 0) {
-            comboItemID.setSelectedIndex(0);
-        }
-        txtQuantity.setText("");
-        txtDate.setText("");
-        if (comboSupplierID.getItemCount() > 0) {
-            comboSupplierID.setSelectedIndex(0);
-        }
-        txtSalesManagerID.setText("");  
-        try {
-            txtPRID.setText(prManager.generateNextPRID());
-        } catch (IOException e) {
-            txtPRID.setText("Error");
-        }
+    txtPRID.setText(PRManager.generateNextPRID());
+    if (comboItemID.getItemCount() > 0) {
+        comboItemID.setSelectedIndex(0);
+    }
+    txtQuantity.setText("");
+    txtDate.setText("");
+    if (comboSupplierID.getItemCount() > 0) {
+        comboSupplierID.setSelectedIndex(0);
+    }
+    txtSalesManagerID.setText("");
     }
     
 
@@ -329,61 +323,70 @@ public class PRPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPRActionPerformed
-        String prid = txtPRID.getText().trim();
-        String supplierID = (String) comboSupplierID.getSelectedItem();
-        String smID = txtSalesManagerID.getText().trim();
-        String date = txtDate.getText().trim();
-        String itemID = (String) comboItemID.getSelectedItem();
-        String quantity = txtQuantity.getText().trim();
+    String prid = txtPRID.getText().trim();
+    String supplierID = (String) comboSupplierID.getSelectedItem();
+    String smID = txtSalesManagerID.getText().trim();
+    String date = txtDate.getText().trim();
+    String itemID = (String) comboItemID.getSelectedItem();
+    String quantity = txtQuantity.getText().trim();
 
-        if (supplierID == null || smID.isEmpty() || date.isEmpty() || itemID == null || quantity.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill all fields.");
+    if (supplierID == null || smID.isEmpty() || date.isEmpty() || itemID == null || quantity.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please fill all fields.");
+        return;
+    }
+
+    // Check for duplicate PR ID
+    for (int i = 0; i < tblPRs.getRowCount(); i++) {
+        if (tblPRs.getValueAt(i, 0).equals(prid)) {
+            JOptionPane.showMessageDialog(this, "PR ID already exists.");
             return;
         }
+    }
 
-// Check for duplicate PRID in table
-        for (int i = 0; i < tblPRs.getRowCount(); i++) {
-            if (tblPRs.getValueAt(i, 0).equals(prid)) {
-                JOptionPane.showMessageDialog(this, "PR ID already exists.");
-                return;
-            }
-        }
+    try {
+        List<String> items = List.of(itemID);
+        List<Integer> quantities = List.of(Integer.parseInt(quantity));
+        PurchaseRequisition newPR = new PurchaseRequisition(
+            prid, items, quantities, date, supplierID, smID, "Pending"
+        );
 
-        try {
-            String status = "Pending";  
-            PR newPR = new PR(prid, itemID, quantity, date, supplierID, smID, status);
-            prManager.addPR(newPR);  // OOP method call
-            loadPRs();  // Refresh table
-            clearFields();  // Clear fields
-            JOptionPane.showMessageDialog(this, "PR added successfully.");
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error adding PR: " + ex.getMessage());
-        }
+        PRManager.addPR(newPR);
+        loadPRs();
+        clearFields();
+        JOptionPane.showMessageDialog(this, "PR added successfully.");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Invalid quantity format.");
+    }
     }//GEN-LAST:event_btnAddPRActionPerformed
 
     private void btnEditPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPRActionPerformed
-        String prid = txtPRID.getText().trim();
-        String supplierID = (String) comboSupplierID.getSelectedItem();
-        String smID = txtSalesManagerID.getText().trim();
-        String date = txtDate.getText().trim();
-        String itemID = (String) comboItemID.getSelectedItem();
-        String quantity = txtQuantity.getText().trim();
+    String prid = txtPRID.getText().trim();
+    String supplierID = (String) comboSupplierID.getSelectedItem();
+    String smID = txtSalesManagerID.getText().trim();
+    String date = txtDate.getText().trim();
+    String itemID = (String) comboItemID.getSelectedItem();
+    String quantity = txtQuantity.getText().trim();
 
-        if (prid.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please select a PR to edit.");
-            return;
-        }
+    if (prid.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please select a PR to edit.");
+        return;
+    }
 
-        try {
-            String status = "Pending";  
-            PR updatedPR = new PR(prid, itemID, quantity, date, supplierID, smID, status);
-            prManager.editPR(updatedPR);  // OOP method call
-            loadPRs();  // Refresh table
-            clearFields();  // Clear fields
-            JOptionPane.showMessageDialog(this, "PR updated successfully.");
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error editing PR: " + ex.getMessage());
-        }
+    try {
+        List<String> items = List.of(itemID);
+        List<Integer> quantities = List.of(Integer.parseInt(quantity));
+        PurchaseRequisition updatedPR = new PurchaseRequisition(
+            prid, items, quantities, date, supplierID, smID, "Pending"
+        );
+
+        PRManager.deletePR(prid); // delete existing
+        PRManager.addPR(updatedPR); // add updated version
+        loadPRs();
+        clearFields();
+        JOptionPane.showMessageDialog(this, "PR updated successfully.");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Invalid quantity format.");
+    }
     }//GEN-LAST:event_btnEditPRActionPerformed
 
     private void btnDeletePRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePRActionPerformed
@@ -394,12 +397,9 @@ public class PRPanel extends javax.swing.JPanel {
         }
 
         String prid = tblPRs.getValueAt(selectedRow, 0).toString();
-        try {
-            prManager.deletePR(prid);
-            loadPRs(); clearFields();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error deleting PR: " + ex.getMessage());
-        }
+        prManager.deletePR(prid);
+        loadPRs();
+        clearFields();
     }//GEN-LAST:event_btnDeletePRActionPerformed
 
     private void btnClearPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPRActionPerformed
