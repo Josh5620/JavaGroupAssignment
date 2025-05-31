@@ -1513,7 +1513,7 @@ public class PMForm1 extends javax.swing.JFrame {
             return;
         }
 
-        PurchaseOrderManager manager = new PurchaseOrderManager();
+        POManager manager = new POManager();
         boolean deleted = manager.deletePO(poID);
         if (deleted) {
             JOptionPane.showMessageDialog(this, "PO deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -1523,7 +1523,7 @@ public class PMForm1 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDelete2ActionPerformed
     private void loadPOsToTableDelete() {
-        PurchaseOrderManager manager = new PurchaseOrderManager();
+        POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
 
         DefaultTableModel model = (DefaultTableModel) tblPOsDelete.getModel();
@@ -1566,13 +1566,13 @@ public class PMForm1 extends javax.swing.JFrame {
 
         String pmID = "PM001"; 
 
-        PurchaseOrderManager manager = new PurchaseOrderManager();
+        POManager manager = new POManager();
         manager.addPOFromPR(prID, date.trim(), pmID);
     }//GEN-LAST:event_btnGeneratePOActionPerformed
 
     private void comboPOIDEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPOIDEditActionPerformed
         String selectedPOID = comboPOIDEdit.getSelectedItem().toString();
-        PurchaseOrderManager manager = new PurchaseOrderManager();
+        POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
 
         for (PurchaseOrder po : poList) {
@@ -1596,7 +1596,7 @@ public class PMForm1 extends javax.swing.JFrame {
         }
 
         String selectedPRID = tblViewPRs.getValueAt(selectedRow, 0).toString();
-        PurchaseRequisitionManager manager = new PurchaseRequisitionManager();
+        PRManager manager = new PRManager();
         List<PurchaseRequisition> prList = manager.getAllPRs();
 
         PurchaseRequisition selectedPR = null;
@@ -1688,7 +1688,7 @@ public class PMForm1 extends javax.swing.JFrame {
         }
 
         String selectedPOID = tblViewPO.getValueAt(selectedRow, 0).toString();
-        PurchaseOrderManager manager = new PurchaseOrderManager();
+        POManager manager = new POManager();
         PurchaseOrder selectedPO = manager.getPOByID(selectedPOID);
 
         if (selectedPO != null) {
