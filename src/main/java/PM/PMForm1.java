@@ -12,7 +12,9 @@ import java.awt.CardLayout;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import shared_manager.*;
@@ -23,6 +25,8 @@ public class PMForm1 extends javax.swing.JFrame {
      * Creates new form PMForm1
      */
     public PMForm1(String username, String password) {
+
+        
         initComponents();
         
         contentPanel.add(panelViewItems, "panelViewItems");
@@ -45,7 +49,7 @@ public class PMForm1 extends javax.swing.JFrame {
         comboPOIDEdit.addActionListener(e -> {
         String selectedPOID = (String) comboPOIDEdit.getSelectedItem();
         if (selectedPOID != null) {
-            POManager manager = new POManager();
+            
             List<PurchaseOrder> poList = manager.getAllPOs();
 
             for (PurchaseOrder po : poList) {
@@ -58,7 +62,8 @@ public class PMForm1 extends javax.swing.JFrame {
     });
     }
      private JFrame adminFrame; 
-    
+    POManager manager = new POManager();
+    PRManager PrManager = new PRManager();
     public PMForm1(String username, String role, JFrame adminFrame) {
     this(username, role); 
     this.adminFrame = adminFrame;
@@ -150,11 +155,11 @@ public class PMForm1 extends javax.swing.JFrame {
         ComboStatus = new javax.swing.JComboBox<>();
         panelGeneratePO_Delete = new javax.swing.JPanel();
         jScrollPane11 = new javax.swing.JScrollPane();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        tblPOsDelete = new javax.swing.JTable();
         jLabel23 = new javax.swing.JLabel();
         btnDelete2 = new javax.swing.JButton();
         btnBack8 = new javax.swing.JButton();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tblPOsDelete = new javax.swing.JTable();
         panelViewPOs = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane13 = new javax.swing.JScrollPane();
@@ -342,18 +347,18 @@ public class PMForm1 extends javax.swing.JFrame {
                         .addGap(118, 118, 118)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelHomeLayout.createSequentialGroup()
-                        .addGap(64, 64, 64)
+                        .addGap(81, 81, 81)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(586, Short.MAX_VALUE))
+                .addContainerGap(569, Short.MAX_VALUE))
         );
         panelHomeLayout.setVerticalGroup(
             panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHomeLayout.createSequentialGroup()
                 .addGap(88, 88, 88)
                 .addComponent(jLabel6)
-                .addGap(31, 31, 31)
+                .addGap(58, 58, 58)
                 .addComponent(jLabel7)
-                .addContainerGap(398, Short.MAX_VALUE))
+                .addContainerGap(802, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelHome, "card7");
@@ -407,7 +412,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
                 .addGap(48, 48, 48))
         );
 
@@ -459,7 +464,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 881, Short.MAX_VALUE)
                 .addGap(58, 58, 58))
         );
 
@@ -525,7 +530,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnDetailsPRs)
                 .addGap(25, 25, 25))
@@ -587,7 +592,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(307, Short.MAX_VALUE))
+                .addContainerGap(738, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelGeneratePO, "card5");
@@ -663,7 +668,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGroup(panelGeneratePO_AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGeneratePO, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBack5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addContainerGap(620, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelGeneratePO_Add, "card10");
@@ -754,8 +759,9 @@ public class PMForm1 extends javax.swing.JFrame {
                                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(119, 119, 119))
                     .addGroup(panelGeneratePO_EditLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnEdit2)
-                        .addGap(33, 33, 33)
+                        .addGap(34, 34, 34)
                         .addComponent(btnBack7)
                         .addGap(443, 443, 443))))
         );
@@ -800,16 +806,36 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGroup(panelGeneratePO_EditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(txtResolution, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(panelGeneratePO_EditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEdit2)
-                    .addComponent(btnBack7))
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addGroup(panelGeneratePO_EditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelGeneratePO_EditLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBack7))
+                    .addGroup(panelGeneratePO_EditLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(btnEdit2)))
+                .addContainerGap(574, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelGeneratePO_Edit, "card9");
 
         panelGeneratePO_Delete.setBackground(new java.awt.Color(244, 246, 246));
+
+        jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel23.setText("Choose PO To Delete");
+
+        btnDelete2.setText("Delete");
+        btnDelete2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelete2ActionPerformed(evt);
+            }
+        });
+
+        btnBack8.setText("Back");
+        btnBack8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBack8ActionPerformed(evt);
+            }
+        });
 
         tblPOsDelete.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -832,25 +858,6 @@ public class PMForm1 extends javax.swing.JFrame {
         });
         jScrollPane10.setViewportView(tblPOsDelete);
 
-        jScrollPane11.setViewportView(jScrollPane10);
-
-        jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel23.setText("Choose PO To Delete");
-
-        btnDelete2.setText("Delete");
-        btnDelete2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDelete2ActionPerformed(evt);
-            }
-        });
-
-        btnBack8.setText("Back");
-        btnBack8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBack8ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelGeneratePO_DeleteLayout = new javax.swing.GroupLayout(panelGeneratePO_Delete);
         panelGeneratePO_Delete.setLayout(panelGeneratePO_DeleteLayout);
         panelGeneratePO_DeleteLayout.setHorizontalGroup(
@@ -868,17 +875,23 @@ public class PMForm1 extends javax.swing.JFrame {
                                 .addGap(77, 77, 77)
                                 .addComponent(btnBack8))
                             .addGroup(panelGeneratePO_DeleteLayout.createSequentialGroup()
-                                .addGap(227, 227, 227)
+                                .addGap(184, 184, 184)
                                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(panelGeneratePO_DeleteLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelGeneratePO_DeleteLayout.setVerticalGroup(
             panelGeneratePO_DeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelGeneratePO_DeleteLayout.createSequentialGroup()
-                .addContainerGap(229, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel23)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
                 .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelGeneratePO_DeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -951,7 +964,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(btnDetails2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(637, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelViewPOs, "card6");
@@ -1106,7 +1119,7 @@ public class PMForm1 extends javax.swing.JFrame {
                         .addComponent(jLabel25)
                         .addComponent(txtTotalQ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnCloseDetails))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 580, Short.MAX_VALUE)
                 .addGroup(panelDetailsPRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel26)
                     .addComponent(txtGrandTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1264,7 +1277,7 @@ public class PMForm1 extends javax.swing.JFrame {
                         .addComponent(jLabel34)
                         .addComponent(txtTotalQ1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnCloseDetails1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 580, Short.MAX_VALUE)
                 .addGroup(panelDetailsPOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel35)
                     .addComponent(txtGrandTotal1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1344,8 +1357,9 @@ public class PMForm1 extends javax.swing.JFrame {
     private void btnViewPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPRActionPerformed
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelViewPRs");
-        
-    List<PurchaseRequisition> prList = PRManager.loadAllPRs();
+
+    List<PurchaseRequisition> prList = PrManager.loadAllPRs();
+    
     DefaultTableModel model = (DefaultTableModel) tblViewPRs.getModel();
     model.setRowCount(0);
 
@@ -1372,7 +1386,6 @@ public class PMForm1 extends javax.swing.JFrame {
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelViewPOs");
         
-         POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
         DefaultTableModel model = (DefaultTableModel) tblViewPO.getModel();
         model.setRowCount(0);
@@ -1396,8 +1409,8 @@ public class PMForm1 extends javax.swing.JFrame {
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelGeneratePO_Add");
         
-        PRManager manager = new PRManager();
-        List<PurchaseRequisition> prList = manager.loadAllPRs();
+
+        List<PurchaseRequisition> prList = PrManager.loadAllPRs();
 
         DefaultTableModel model = (DefaultTableModel) tblPRsForPO.getModel();
         model.setRowCount(0);
@@ -1405,9 +1418,9 @@ public class PMForm1 extends javax.swing.JFrame {
         for (PurchaseRequisition pr : prList) {
             model.addRow(new Object[]{
                 pr.getPrID(),
-                pr.getItemID(),       
-                pr.getQuantity(),     
-                pr.getRequiredDate(),
+                pr.getItemIDs(),       
+                pr.getQuantities(),     
+                pr.getDate(),
                 pr.getSupplierID(),
                 pr.getSalesManagerID(),
                 pr.getStatus()
@@ -1418,7 +1431,7 @@ public class PMForm1 extends javax.swing.JFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
     comboPOIDEdit.removeAllItems();
-    POManager manager = new POManager();
+    
     List<PurchaseOrder> poList = manager.getAllPOs();
 
     for (PurchaseOrder po : poList) {
@@ -1435,7 +1448,6 @@ public class PMForm1 extends javax.swing.JFrame {
         cl.show(contentPanel, "panelGeneratePO_Delete");
 
         
-        POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
 
         DefaultTableModel model = (DefaultTableModel) tblPOsDelete.getModel();
@@ -1467,7 +1479,6 @@ public class PMForm1 extends javax.swing.JFrame {
         String pmID = txtPMID.getText().trim();
         String resolution = txtResolution.getText().trim();
     
-        POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
         PurchaseOrder selectedPO = null;
         for (PurchaseOrder po : poList) {
@@ -1478,10 +1489,16 @@ public class PMForm1 extends javax.swing.JFrame {
         }
 
         if (selectedPO != null) {
-            String itemIDs = selectedPO.getItemIDs();
-            String quantities = selectedPO.getQuantities();
+            String itemIDs = String.join("/", selectedPO.getItemIDs());
 
-            PurchaseOrder updatedPO = new PurchaseOrder(poID, date, itemIDs, quantities, status, pmID, resolution);
+    // Convert List<Integer> to List<String>, then join with "/"
+            String quantities = selectedPO.getQuantities().stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining("/"));
+            List<String> tempPO = Arrays.asList(poID, date, itemIDs, quantities, status, pmID, resolution);
+            
+
+            PurchaseOrder updatedPO = new PurchaseOrder(tempPO);
             manager.editPO(updatedPO);
 
             JOptionPane.showMessageDialog(this, "PO updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -1513,7 +1530,6 @@ public class PMForm1 extends javax.swing.JFrame {
             return;
         }
 
-        POManager manager = new POManager();
         boolean deleted = manager.deletePO(poID);
         if (deleted) {
             JOptionPane.showMessageDialog(this, "PO deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -1523,7 +1539,6 @@ public class PMForm1 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDelete2ActionPerformed
     private void loadPOsToTableDelete() {
-        POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
 
         DefaultTableModel model = (DefaultTableModel) tblPOsDelete.getModel();
@@ -1536,7 +1551,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 po.getItemIDs(),
                 po.getQuantities(),
                 po.getStatus(),
-                po.getPmID(),
+                po.getApprovedBy(),
                 po.getResolution()
             });
         }
@@ -1565,22 +1580,23 @@ public class PMForm1 extends javax.swing.JFrame {
         }
 
         String pmID = "PM001"; 
-
-        POManager manager = new POManager();
         manager.addPOFromPR(prID, date.trim(), pmID);
     }//GEN-LAST:event_btnGeneratePOActionPerformed
 
     private void comboPOIDEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPOIDEditActionPerformed
         String selectedPOID = comboPOIDEdit.getSelectedItem().toString();
-        POManager manager = new POManager();
         List<PurchaseOrder> poList = manager.getAllPOs();
 
         for (PurchaseOrder po : poList) {
             if (po.getPoID().equals(selectedPOID)) {
                 txtDate2.setText(po.getDate());
-                txtItemID2.setText(po.getItemIDs());
-                txtQuantity2.setText(po.getQuantities());
-                txtPMID.setText(po.getPmID());
+                txtItemID2.setText(String.join("/", po.getItemIDs()));
+                txtQuantity2.setText(
+                    po.getQuantities().stream()
+                        .map(String::valueOf)
+                        .collect(Collectors.joining("/"))
+                );
+                txtPMID.setText(po.getApprovedBy());
                 txtResolution.setText(po.getResolution());
                 ComboStatus.setSelectedItem(po.getStatus());
                 break;
@@ -1596,8 +1612,7 @@ public class PMForm1 extends javax.swing.JFrame {
         }
 
         String selectedPRID = tblViewPRs.getValueAt(selectedRow, 0).toString();
-        PRManager manager = new PRManager();
-        List<PurchaseRequisition> prList = manager.getAllPRs();
+        List<PurchaseRequisition> prList = PrManager.loadAllPRs();
 
         PurchaseRequisition selectedPR = null;
         for (PurchaseRequisition pr : prList) {
@@ -1610,14 +1625,17 @@ public class PMForm1 extends javax.swing.JFrame {
         if (selectedPR != null) {
         
             txtDPRID.setText(selectedPR.getPrID());
-            txtDDate.setText(selectedPR.getRequiredDate());
+            txtDDate.setText(selectedPR.getDate());
             txtDSupID.setText(selectedPR.getSupplierID());
             txtDStatus.setText(selectedPR.getStatus());
             txtDSMID.setText(selectedPR.getSalesManagerID());
 
         
-            String[] items = selectedPR.getItemID().split("/");
-            String[] quantities = selectedPR.getQuantity().split("/");
+            String[] items = selectedPR.getItemIDs().toArray(new String[0]);
+            String[] quantities = selectedPR.getQuantities()
+                .stream()
+                .map(String::valueOf)
+                .toArray(String[]::new);
             DefaultTableModel model = (DefaultTableModel) tblDetalisPR.getModel();
             model.setRowCount(0); 
 
@@ -1688,18 +1706,21 @@ public class PMForm1 extends javax.swing.JFrame {
         }
 
         String selectedPOID = tblViewPO.getValueAt(selectedRow, 0).toString();
-        POManager manager = new POManager();
         PurchaseOrder selectedPO = manager.getPOByID(selectedPOID);
 
         if (selectedPO != null) {
             txtDPOID1.setText(selectedPO.getPoID());
             txtDDate1.setText(selectedPO.getDate());
-            txtDPMID1.setText(selectedPO.getPmID());
+            txtDPMID1.setText(selectedPO.getApprovedBy());
             txtDStatus1.setText(selectedPO.getStatus());
             txtDResolution.setText(selectedPO.getResolution());
 
-            String[] items = selectedPO.getItemIDs().split("/");
-            String[] quantities = selectedPO.getQuantities().split("/");
+            String[] items = selectedPO.getItemIDs().toArray(new String[0]);
+            String[] quantities = selectedPO.getQuantities()
+                .stream()
+                .map(String::valueOf)
+                .toArray(String[]::new);
+
 
             DefaultTableModel model = (DefaultTableModel) tblDetalisPO.getModel();
             model.setRowCount(0);

@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 
 public class PurchaseOrder extends JPanel {
@@ -56,6 +57,22 @@ public class PurchaseOrder extends JPanel {
     public String getApprovedBy() { return approvedBy; }
     public String getResolution() { return resolution; }
     public double getTotal() { return total; }
+    public String toString() {
+    String itemIDsStr = String.join("/", itemIDs);
+    String quantitiesStr = quantities.stream()
+        .map(String::valueOf)
+        .collect(Collectors.joining("/"));
+
+    return String.join("|",
+        poID,
+        date,
+        itemIDsStr,
+        quantitiesStr,
+        status,
+        approvedBy,
+        resolution
+    );
+}
 
     public void showPO() {
         JDialog dialog = new JDialog();

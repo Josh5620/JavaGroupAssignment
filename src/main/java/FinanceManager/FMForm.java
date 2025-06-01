@@ -817,7 +817,7 @@ public class FMForm extends javax.swing.JFrame {
         String newStatus = cmbStatus.getSelectedItem().toString();        // "Approved", "Denied"
 
         // Update only status and resolution (index 4 & 6)
-        POManager.editPO(poID, newStatus);
+        POManager.editPOStatus(poID, newStatus);
 
         JOptionPane.showMessageDialog(this, "PO confirmation saved.");
         buildPOTable();

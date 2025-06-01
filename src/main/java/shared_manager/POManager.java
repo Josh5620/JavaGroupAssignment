@@ -29,7 +29,7 @@ public class POManager extends User {
         return true;
     }
 
-    public static boolean editPO(String poID, String newStatus) {
+    public static boolean editPOStatus(String poID, String newStatus) {
         for (List<String> row : poList) {
             if (row.get(0).equalsIgnoreCase(poID)) {
                 row.set(4, newStatus);
@@ -153,6 +153,7 @@ public class POManager extends User {
             List<String> row = poList.get(i);
             if (row.get(0).equals(updatedPO.getPoID())) {
                 poList.set(i, Arrays.asList(updatedPO.toString().split("\\|")));
+                System.out.println(poList);
                 updateTextFile(poList, filePath);
                 return;
             }
