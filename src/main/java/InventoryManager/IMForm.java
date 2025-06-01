@@ -1,4 +1,5 @@
 package InventoryManager;
+import shared_model.StockReport;
 import javax.swing.*;
 import shared_model.PurchaseOrder;
 import UserLogin.LoginPage;
@@ -20,15 +21,14 @@ public class IMForm extends javax.swing.JFrame {
         homePageLoad(username,role);
     }
 
-    private JFrame adminFrame; 
-    
+    JFrame adminFrame; 
     public IMForm(String username, String role, JFrame adminFrame) {
     this(username, role); 
     this.adminFrame = adminFrame;
 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
     
-    // Add listener to bring back admin panel when IMForm closes
+
     this.addWindowListener(new java.awt.event.WindowAdapter() {
         @Override
         public void windowClosing(java.awt.event.WindowEvent e) {
@@ -910,7 +910,6 @@ public class IMForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void specificUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_specificUserBtnActionPerformed
-       
         user.lowItemAlertSend(specificUserField.getText());
     }//GEN-LAST:event_specificUserBtnActionPerformed
 
@@ -1042,19 +1041,12 @@ public class IMForm extends javax.swing.JFrame {
     table.getTableHeader().setResizingAllowed(false);
     table.setRowSelectionAllowed(true);
 
-    // Adjust column widths
-    table.getColumnModel().getColumn(0).setPreferredWidth(75);   // ID
-    table.getColumnModel().getColumn(1).setPreferredWidth(150);  // Name
-    table.getColumnModel().getColumn(2).setPreferredWidth(100);  // Quantity
-
-    // Clear and populate table
     DefaultTableModel model = (DefaultTableModel) table.getModel();
     model.setRowCount(0);
     for (List<String> item : user.getInvenList()) {
         model.addRow(new Object[]{item.get(0), item.get(1), item.get(2)});
     }
 
-    // Red highlight for Quantity < 20
     table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
@@ -1063,7 +1055,7 @@ public class IMForm extends javax.swing.JFrame {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
             if (isSelected) {
-                c.setBackground(Color.LIGHT_GRAY);
+
             } else if (column == 2) { // Quantity column
                 try {
                     int qty = Integer.parseInt(table.getValueAt(row, column).toString());
@@ -1083,21 +1075,23 @@ public class IMForm extends javax.swing.JFrame {
 }
 
     private void homePageLoad(String username, String role){
+        int totalQuantity = 0;
             this.cl = (CardLayout)(MainPanel.getLayout());
             cl.show(MainPanel, "card7");  
             user.checkAlert(username, role);
             jLabel11.setText("Welcome User: " + username);
             jLabel10.setText("Role: Inventory Manager");
             matchBars(user.botSix());
-            int totalQuantity = 0;
             int approvedAndResolvedCount = 0;
             user.makeBigList(POFilePath, PurchaseOrderTextList);
+
             for (List<String> po : PurchaseOrderTextList) {
                 String status = po.get(4);     
                 String resolution = po.get(6); 
 
-                if (status.equalsIgnoreCase("Approved") && resolution.equalsIgnoreCase("Resolved")) {
+                if (status.equalsIgnoreCase("Approved") && resolution.equalsIgnoreCase("Unresolved")) {
                     approvedAndResolvedCount++;
+
                 }
             }
             
@@ -1295,6 +1289,5 @@ public class IMForm extends javax.swing.JFrame {
     private void StockReport(){
         StockReport stockReport = new StockReport(user.getInvenList());
         stockReport.createStockReportPopup();
-        
     }
 }

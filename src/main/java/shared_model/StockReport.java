@@ -1,4 +1,4 @@
-package InventoryManager;
+package shared_model;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -14,14 +14,12 @@ public class StockReport extends JPanel {
     private JLabel titleLabel;
     private JScrollPane scrollPane;
     
-    // Constructor
     public StockReport() {
         this.inventory = new ArrayList<>();
         initializeComponents();
         setupLayout();
     }
     
-    // Constructor with inventory data
     public StockReport(List<List<String>> inventory) {
         this.inventory = inventory;
         initializeComponents();
@@ -29,7 +27,17 @@ public class StockReport extends JPanel {
         populateTable();
     }
     
-    // Initialize components
+    public void createStockReportPopup() {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Stock Report");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.add(this);
+            frame.pack();
+            frame.setLocationRelativeTo(null); // Center on screen
+            frame.setVisible(true);
+        });
+    }
+    
     private void initializeComponents() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(500, 400));
@@ -59,7 +67,6 @@ public class StockReport extends JPanel {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Inventory Items"));
     }
     
-    // Setup layout
     private void setupLayout() {
         add(titleLabel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
@@ -69,7 +76,6 @@ public class StockReport extends JPanel {
         add(legendPanel, BorderLayout.SOUTH);
     }
     
-    // Create legend panel showing color meanings
     private JPanel createLegendPanel() {
         JPanel legendPanel = new JPanel(new FlowLayout());
         legendPanel.setBorder(BorderFactory.createTitledBorder("Stock Level Legend"));
@@ -104,7 +110,6 @@ public class StockReport extends JPanel {
         return legendPanel;
     }
     
-    // Populate table with inventory data
     private void populateTable() {
         tableModel.setRowCount(0); // Clear existing rows
         
@@ -122,7 +127,6 @@ public class StockReport extends JPanel {
         }
     }
     
-    // Determine stock status based on quantity
     private String getStockStatus(int quantity) {
         if (quantity < 20) {
             return "Critical";
@@ -133,7 +137,6 @@ public class StockReport extends JPanel {
         }
     }
     
-    // Get color based on quantity
     private Color getStockColor(int quantity) {
         if (quantity < 20) {
             return Color.RED;
@@ -144,7 +147,6 @@ public class StockReport extends JPanel {
         }
     }
     
-    // Custom cell renderer for color coding rows
     private class StockCellRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
@@ -169,86 +171,5 @@ public class StockReport extends JPanel {
             return component;
         }
     }
-    
-    // Main method to create and display the stock report popup
-    public void createStockReportPopup() {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Stock Report");
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.add(this);
-            frame.pack();
-            frame.setLocationRelativeTo(null); // Center on screen
-            frame.setVisible(true);
-        });
-    }
-    
-    // Static method to create popup with inventory data
-    public static void showStockReport(List<List<String>> inventory) {
-        StockReport stockReport = new StockReport(inventory);
-        stockReport.createStockReportPopup();
-    }
-    
-    // Getters and Setters
-    public List<List<String>> getInventory() {
-        return inventory;
-    }
-    
-    public void setInventory(List<List<String>> inventory) {
-        this.inventory = inventory;
-        populateTable();
-        repaint();
-    }
-    
-    public JTable getStockTable() {
-        return stockTable;
-    }
-    
-    public void setStockTable(JTable stockTable) {
-        this.stockTable = stockTable;
-    }
-    
-    public DefaultTableModel getTableModel() {
-        return tableModel;
-    }
-    
-    public void setTableModel(DefaultTableModel tableModel) {
-        this.tableModel = tableModel;
-    }
-    
-    public JLabel getTitleLabel() {
-        return titleLabel;
-    }
-    
-    public void setTitleLabel(JLabel titleLabel) {
-        this.titleLabel = titleLabel;
-    }
-    
-    public void setTitle(String title) {
-        this.titleLabel.setText(title);
-    }
-    
-    // Method to add single item to inventory
-    public void addInventoryItem(String id, String name, String quantity) {
-        List<String> newItem = Arrays.asList(id, name, quantity);
-        inventory.add(newItem);
-        populateTable();
-    }
-    
-    // Method to remove item by ID
-    public void removeInventoryItem(String id) {
-        inventory.removeIf(item -> item.get(0).equals(id));
-        populateTable();
-    }
-    
-    // Method to get inventory count by status
-    public int getItemCountByStatus(String status) {
-        int count = 0;
-        for (List<String> item : inventory) {
-            int quantity = Integer.parseInt(item.get(2));
-            if (getStockStatus(quantity).equals(status)) {
-                count++;
-            }
-        }
-        return count;
-    }
+      
 }

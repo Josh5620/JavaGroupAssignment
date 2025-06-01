@@ -10,10 +10,8 @@ import javax.swing.JOptionPane;
 public class User {
     public User(){
         makeBigList(LoginFilePath,FullUserList);
-        
+        System.out.println(FullUserList);
 }
-
-    
     private static final String AlertFilePath = "src/AlertList.txt";
     private static final String LoginFilePath = "src/LoginTest.txt";
 
@@ -21,7 +19,6 @@ public class User {
     List<List<String>> SpecifiedUserList = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
 
-    
     public List<List<String>> getFullUserList(){
         return this.FullUserList;
     }
@@ -36,7 +33,6 @@ public class User {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
                 mainList.add(Arrays.asList(parts));
-
             }
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
@@ -65,7 +61,7 @@ public class User {
                 JOptionPane.INFORMATION_MESSAGE);
     }
     
-        public void checkAlert(String username, String role) {
+    public void checkAlert(String username, String role) {
             List<List<String>> Alerts = new ArrayList<>();
 
             try (BufferedReader reader = new BufferedReader(new FileReader(AlertFilePath))) {
@@ -118,10 +114,6 @@ public class User {
             }
         }
 
-            
-                    
- 
-    
     public static void updateTextFile(List<List<String>> arrayList, String FilePathString){
          try (BufferedWriter writer = new BufferedWriter(new FileWriter(FilePathString))) {
             for (List<String> row : arrayList) {
@@ -161,9 +153,4 @@ public class User {
                 e.printStackTrace();
             }
         }
-    
-    
-    
-    
-  
 }

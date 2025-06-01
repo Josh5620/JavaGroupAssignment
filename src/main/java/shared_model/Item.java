@@ -13,7 +13,6 @@ public class Item {
         this.supplierID = supplierID;
     }
 
-    // Getters
     public String getItemID() { return itemID; }
     public String getItemName() { return itemName; }
     public String getPrice() { return price; }

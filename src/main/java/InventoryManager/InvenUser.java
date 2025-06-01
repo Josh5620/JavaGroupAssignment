@@ -1,7 +1,6 @@
 package InventoryManager;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
 import UserLogin.User;
 
 
@@ -11,10 +10,8 @@ public class InvenUser extends User {
     static List<List<String>> InvenList = new ArrayList<>();
     static List<List<String>> StockAlert = new ArrayList<>();
     
-    public static void main(String[] args) {
-    }
-    
     public InvenUser(){
+        InvenList.clear();
         makeBigList(InvenFilePath, InvenList);
     }
     
@@ -22,7 +19,7 @@ public class InvenUser extends User {
         return InvenList;
     }
     
-    public static List<List<String>> lowitemStock(){ // Returns a array of the stuff that is below <5 its public so SM can use it too
+    public static List<List<String>> lowitemStock(){ // Returns a array of the stuff that is below <20
         if (!StockAlert.isEmpty()) {
         StockAlert.clear(); // 
         }
@@ -38,11 +35,10 @@ public class InvenUser extends User {
         return StockAlert;
     }
     
-    public static void updateStock(String id, int amount){ // Update stuff iwht th id and amount ltr with UI can make the confirmation a popup box
+    public static void updateStock(String id, int amount){ 
         for(List<String> item : InvenList){
             for(String itemID : item){
                 if(itemID.equals(id)){
-                    int baseQuan = Integer.parseInt(item.get(2));
                     int newAmount = amount;
                     
                     item.set(2, String.valueOf(newAmount));
@@ -57,9 +53,8 @@ public class InvenUser extends User {
     public void lowItemAlertSend(String username) {
         lowitemStock();
         StringBuilder alertBuilder = new StringBuilder("Low stock: ");
-
         for (int i = 0; i < StockAlert.size(); i++) {
-            String itemName = StockAlert.get(i).get(1); // get item name
+            String itemName = StockAlert.get(i).get(1); // Gets item name
 
             alertBuilder.append(itemName);
 
@@ -67,9 +62,7 @@ public class InvenUser extends User {
                 alertBuilder.append(", ");
             }
         }
-
         sendAlert("SM", username, alertBuilder.toString());
-
         StockAlert.clear();
     }
     
