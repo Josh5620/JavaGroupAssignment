@@ -819,7 +819,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_ManageUsersBtnActionPerformed
 
     private void PMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PMBtnActionPerformed
-        launchRoleDashboard("pm4", "p19", "FM", this);
+        launchRoleDashboard("pm4", "p19", "PM", this);
     }//GEN-LAST:event_PMBtnActionPerformed
 
     private void IMBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IMBtnActionPerformed
