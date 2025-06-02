@@ -429,9 +429,12 @@ public class PRPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Please select a PR to delete.");
             return;
         }
-
         String prid = tblPRs.getValueAt(selectedRow, 0).toString();
-        prManager.deletePR(prid);
+
+
+        PRManager freshPRManager = new PRManager();
+        freshPRManager.deletePR(prid);
+
         loadPRs();
         clearFields();
     }//GEN-LAST:event_btnDeletePRActionPerformed
