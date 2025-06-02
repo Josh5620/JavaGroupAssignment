@@ -1281,6 +1281,7 @@ public class IMForm extends javax.swing.JFrame {
         String selectedItem = POList.getSelectedValue();
             for (PurchaseOrder PO : PurchaseOrderList) {
                 if (PO.getPoID().equals(selectedItem)) {
+                    System.out.println(selectedItem);
                     PO.showPO();
                 }
             }
