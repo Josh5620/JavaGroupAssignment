@@ -8,6 +8,11 @@ package SM;
  *
  * @author dhoom
  */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.LinkedHashSet;
+import java.util.Arrays;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -40,12 +45,13 @@ public class PRPanel extends javax.swing.JPanel {
             int selectedRow = tblPRs.getSelectedRow();
             if (selectedRow >= 0) {
                 txtPRID.setText(tblPRs.getValueAt(selectedRow, 0).toString());
-                comboItemID.setSelectedItem(tblPRs.getValueAt(selectedRow, 1).toString());
+                String items = tblPRs.getValueAt(selectedRow, 1).toString();
+                comboItemID.removeAllItems();
+                Arrays.stream(items.split("/")).forEach(comboItemID::addItem);  
                 txtQuantity.setText(tblPRs.getValueAt(selectedRow, 2).toString());
                 txtDate.setText(tblPRs.getValueAt(selectedRow, 3).toString());
                 comboSupplierID.setSelectedItem(tblPRs.getValueAt(selectedRow, 4).toString());
                 txtSalesManagerID.setText(tblPRs.getValueAt(selectedRow, 5).toString());
-
             }
         });
     }
@@ -63,16 +69,18 @@ public class PRPanel extends javax.swing.JPanel {
         }
     }
     private void loadItemsForSupplier(String supplierID) {
-        comboItemID.removeAllItems(); 
+        comboItemID.removeAllItems();  
+    
         try (BufferedReader br = new BufferedReader(new FileReader("src/Suppliers.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
                 if (parts[0].equals(supplierID)) {
                     if (parts.length >= 5) {
-                        String[] items = parts[4].split("\\\\"); 
-                        for (String item : items) {
-                            comboItemID.addItem(item);
+                        String[] items = parts[4].split("/");  
+                        Set<String> uniqueItems = new LinkedHashSet<>(Arrays.asList(items));
+                        for (String item : uniqueItems) {
+                            comboItemID.addItem(item.trim()); 
                         }
                     }
                     break;  
@@ -83,36 +91,39 @@ public class PRPanel extends javax.swing.JPanel {
         }
     }
     private void loadPRs() {
-    DefaultTableModel model = new DefaultTableModel(
-        new String[]{"PRID", "ItemIDs", "Quantities", "Date", "SupplierID", "SMID", "Status"}, 0
-    );
-    List<PurchaseRequisition> prs = PRManager.loadAllPRs();
-    for (PurchaseRequisition pr : prs) {
-        model.addRow(new Object[]{
-            pr.getPrID(),
-            String.join("/", pr.getItemIDs()),
-            pr.getQuantities().stream().map(String::valueOf).collect(Collectors.joining("/")),
-            pr.getDate(),
-            pr.getSupplierID(),
-            pr.getSalesManagerID(),
-            pr.getStatus()
-        });
-    }
-    tblPRs.setModel(model);
-    txtPRID.setText(PRManager.generateNextPRID());
+        DefaultTableModel model = new DefaultTableModel(
+            new String[]{"PRID", "ItemIDs", "Quantities", "Date", "SupplierID", "SMID", "Status"}, 0
+        );
+
+        List<PurchaseRequisition> prs = PRManager.loadAllPRs();
+
+        for (PurchaseRequisition pr : prs) {
+            model.addRow(new Object[]{
+                pr.getPrID(),
+                String.join("/", pr.getItemIDs()),
+                pr.getQuantities().stream().map(String::valueOf).collect(Collectors.joining("/")),
+                pr.getDate(),
+                pr.getSupplierID(),
+                pr.getSalesManagerID(),
+                pr.getStatus()
+            });
+        }
+
+        tblPRs.setModel(model);
+        txtPRID.setText(PRManager.generateNextPRID());
+        comboItemID.removeAllItems();
     }
     
     private void clearFields() {
-    txtPRID.setText(PRManager.generateNextPRID());
-    if (comboItemID.getItemCount() > 0) {
-        comboItemID.setSelectedIndex(0);
-    }
-    txtQuantity.setText("");
-    txtDate.setText("");
-    if (comboSupplierID.getItemCount() > 0) {
-        comboSupplierID.setSelectedIndex(0);
-    }
-    txtSalesManagerID.setText("");
+        txtPRID.setText(PRManager.generateNextPRID());
+        txtQuantity.setText("");
+        txtDate.setText("");
+        txtSalesManagerID.setText("");
+
+        if (comboSupplierID.getItemCount() > 0) {
+            comboSupplierID.setSelectedIndex(0);
+        }
+        comboItemID.removeAllItems();  
     }
     
 
@@ -335,7 +346,6 @@ public class PRPanel extends javax.swing.JPanel {
         return;
     }
 
-    // Check for duplicate PR ID
     for (int i = 0; i < tblPRs.getRowCount(); i++) {
         if (tblPRs.getValueAt(i, 0).equals(prid)) {
             JOptionPane.showMessageDialog(this, "PR ID already exists.");
@@ -360,33 +370,57 @@ public class PRPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddPRActionPerformed
 
     private void btnEditPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPRActionPerformed
-    String prid = txtPRID.getText().trim();
-    String supplierID = (String) comboSupplierID.getSelectedItem();
-    String smID = txtSalesManagerID.getText().trim();
-    String date = txtDate.getText().trim();
-    String itemID = (String) comboItemID.getSelectedItem();
-    String quantity = txtQuantity.getText().trim();
+        String prid = txtPRID.getText().trim();
+        String supplierID = (String) comboSupplierID.getSelectedItem();
+        String smID = txtSalesManagerID.getText().trim();
+        String date = txtDate.getText().trim();
+        String itemID = (String) comboItemID.getSelectedItem();
+        String quantity = txtQuantity.getText().trim();
 
-    if (prid.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please select a PR to edit.");
-        return;
-    }
+        if (prid.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a PR to edit.");
+            return;
+        }
 
-    try {
-        List<String> items = List.of(itemID);
-        List<Integer> quantities = List.of(Integer.parseInt(quantity));
-        PurchaseRequisition updatedPR = new PurchaseRequisition(
-            prid, items, quantities, date, supplierID, smID, "Pending"
-        );
+        try {
+            PurchaseRequisition oldPR = PRManager.loadAllPRs().stream()
+                .filter(pr -> pr.getPrID().equals(prid))
+                .findFirst()
+                .orElse(null);
 
-        PRManager.deletePR(prid); // delete existing
-        PRManager.addPR(updatedPR); // add updated version
-        loadPRs();
-        clearFields();
-        JOptionPane.showMessageDialog(this, "PR updated successfully.");
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Invalid quantity format.");
-    }
+            if (oldPR == null) {
+                JOptionPane.showMessageDialog(this, "PR not found.");
+                return;
+            }
+
+            List<String> newItemIDs = new ArrayList<>(oldPR.getItemIDs());
+            List<Integer> newQuantities = new ArrayList<>(oldPR.getQuantities());
+
+            int index = newItemIDs.indexOf(itemID);
+            if (index >= 0) {
+            // إذا موجود، نحدث الكمية
+                int updatedQty = newQuantities.get(index) + Integer.parseInt(quantity);
+                newQuantities.set(index, updatedQty);
+            } else {
+ 
+                newItemIDs.add(itemID);
+                newQuantities.add(Integer.parseInt(quantity));
+            }
+
+            PurchaseRequisition updatedPR = new PurchaseRequisition(
+                prid, newItemIDs, newQuantities, date, supplierID, smID, "Pending"
+            );
+            
+            PRManager.deletePR(prid);
+            PRManager.addPR(updatedPR);
+
+            loadPRs();
+            clearFields();
+            JOptionPane.showMessageDialog(this, "PR updated successfully.");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid quantity format.");
+        }
     }//GEN-LAST:event_btnEditPRActionPerformed
 
     private void btnDeletePRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePRActionPerformed
