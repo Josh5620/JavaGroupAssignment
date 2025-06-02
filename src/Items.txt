@@ -1,3 +1,3 @@
-ITM٠٠١|Orange|4|SUP٠٠١
-ITM٠٠٢|Apple|4|SUP٠٠١
-ITM٠٠٣|Milk|5|SUP٠٠٣
+ITM001|Orange|4|SUP001
+ITM002|Apple|4|SUP001
+ITM003|Milk|5|SUP002
