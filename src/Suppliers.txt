@@ -1,1 +1,4 @@
 SUP004|PastaHouse|pasta@suppliers.com|0198765432|
+SUP٠٠١|Abdo|abdo@gmail.com|0145841|ITM٠٠١/ITM٠٠٢
+SUP٠٠٢|azoooz@df,,,ld|aJFOIH|654511|NoItems
+SUP٠٠٣|ASD|asd@.com|02545445|NoItems
