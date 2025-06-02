@@ -336,39 +336,51 @@ public class PRPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPRActionPerformed
-    String prid = txtPRID.getText().trim();
-    String supplierID = (String) comboSupplierID.getSelectedItem();
-    String smID = txtSalesManagerID.getText().trim();
-    String date = txtDate.getText().trim();
-    String itemID = (String) comboItemID.getSelectedItem();
-    String quantity = txtQuantity.getText().trim();
+        String prid = txtPRID.getText().trim();
+        String supplierID = (String) comboSupplierID.getSelectedItem();
+        String smID = txtSalesManagerID.getText().trim();
+        String date = txtDate.getText().trim();
+        String itemID = (String) comboItemID.getSelectedItem();
+        String quantity = txtQuantity.getText().trim();
 
-    if (supplierID == null || smID.isEmpty() || date.isEmpty() || itemID == null || quantity.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please fill all fields.");
-        return;
-    }
-
-    for (int i = 0; i < tblPRs.getRowCount(); i++) {
-        if (tblPRs.getValueAt(i, 0).equals(prid)) {
-            JOptionPane.showMessageDialog(this, "PR ID already exists.");
+        if (supplierID == null || smID.isEmpty() || date.isEmpty() || itemID == null || quantity.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill all fields.");
             return;
         }
-    }
 
-    try {
-        List<String> items = List.of(itemID);
-        List<Integer> quantities = List.of(Integer.parseInt(quantity));
-        PurchaseRequisition newPR = new PurchaseRequisition(
-            prid, items, quantities, date, supplierID, smID, "Pending"
-        );
 
-        PRManager.addPR(newPR);
-        loadPRs();
-        clearFields();
-        JOptionPane.showMessageDialog(this, "PR added successfully.");
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Invalid quantity format.");
-    }
+        boolean exists = false;
+        try (BufferedReader br = new BufferedReader(new FileReader("src/PurchaseRequisitions.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith(prid + "|")) {
+                    exists = true;
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error checking PRID: " + e.getMessage());
+        }
+
+        if (exists) {
+            JOptionPane.showMessageDialog(this, "PR ID already exists in file.");
+            return;
+        }
+
+        try {
+            List<String> items = List.of(itemID);
+            List<Integer> quantities = List.of(Integer.parseInt(quantity));
+            PurchaseRequisition newPR = new PurchaseRequisition(
+                prid, items, quantities, date, supplierID, smID, "Pending"
+            );
+
+            PRManager.addPR(newPR);
+            loadPRs();
+            clearFields();
+            JOptionPane.showMessageDialog(this, "PR added successfully.");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid quantity format.");
+        }
     }//GEN-LAST:event_btnAddPRActionPerformed
 
     private void btnEditPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPRActionPerformed
@@ -400,7 +412,7 @@ public class PRPanel extends javax.swing.JPanel {
 
             int index = newItemIDs.indexOf(itemID);
             if (index >= 0) {
-            // إذا موجود، نحدث الكمية
+        
                 int updatedQty = newQuantities.get(index) + Integer.parseInt(quantity);
                 newQuantities.set(index, updatedQty);
             } else {
