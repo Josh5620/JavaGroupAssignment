@@ -30,7 +30,7 @@ public class PRManager extends User {
         return true;
     }
 
-    // Deletes a PR by ID — used by SM/PM
+    // Deletes a PR by ID — used by SM
     public static boolean deletePR(String prID) {
         for (int i = 0; i < prList.size(); i++) {
             List<String> row = prList.get(i);
@@ -45,17 +45,24 @@ public class PRManager extends User {
 
     // Converts List<List<String>> to List<PurchaseRequisition> — used by SM/PM
     public static List<PurchaseRequisition> loadAllPRs() {
-        List<PurchaseRequisition> result = new ArrayList<>();
-        for (List<String> row : prList) {
+    List<PurchaseRequisition> result = new ArrayList<>();
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
             try {
-                String line = String.join("|", row);
                 result.add(PurchaseRequisition.parse(line));
             } catch (Exception e) {
-                System.err.println("Skipping invalid PR: " + row);
+                System.err.println("Skipping invalid PR line: " + line);
             }
         }
-        return result;
+    } catch (IOException e) {
+        System.err.println("Error reading PR file: " + e.getMessage());
     }
+
+    return result;
+}
+
 
     // Generates next PR ID like PR001, PR002...
     public static String generateNextPRID() {
