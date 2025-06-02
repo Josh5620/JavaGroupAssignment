@@ -95,9 +95,11 @@ public class Admin extends User {
         logUserAction("added", username, Role);
         UserList.add(tmpUserList);
         tmpuser.updateTextFile(UserList, Userfilepath);
-        System.out.println("User was successfully added! "
-                    + "Current number of users: " + UserList.size());
-
+        JOptionPane.showMessageDialog(
+        null,
+        "User was successfully added! " + "Current number of users: " + UserList.size(),
+        "User creation successful!",
+        JOptionPane.INFORMATION_MESSAGE);
     };
      
     public void DeleteUser(String username){
