@@ -68,14 +68,14 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
         if (selectedRow >= 0) {
             String supplierID = tblSuppliers.getValueAt(selectedRow, 0).toString();
 
-            comboItemID.removeAllItems();  // تفريغ الكومبو أولاً
+            comboItemID.removeAllItems();  
 
             try (BufferedReader br = new BufferedReader(new FileReader("src/Items.txt"))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split("\\|");
                     if (parts.length >= 4 && parts[3].equals(supplierID)) {
-                        comboItemID.addItem(parts[0]);  // إضافة ItemID
+                        comboItemID.addItem(parts[0]);  
                     }
                 }
             } catch (IOException e) {
@@ -93,7 +93,7 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
                 txtEmail.setText(tblSuppliers.getValueAt(selectedRow, 2).toString());
                 txtPhone.setText(tblSuppliers.getValueAt(selectedRow, 3).toString());
 
-                loadItemsToComboBox();  // إضافة استدعاء تحميل ItemIDs الخاصة بـ Supplier
+                loadItemsToComboBox();  
             }
         });
     }
@@ -295,7 +295,7 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
         }
 
         try {
-            Supplier newSupplier = new Supplier(id, name, email, phone, "NoItems");  // NoItems كبداية
+            Supplier newSupplier = new Supplier(id, name, email, phone, "NoItems");  
             supplierManager.addSupplier(newSupplier);  // OOP method call
             loadSuppliers();  
             clearFields();  

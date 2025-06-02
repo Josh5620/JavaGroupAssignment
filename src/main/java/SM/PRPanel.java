@@ -47,7 +47,7 @@ public class PRPanel extends javax.swing.JPanel {
                 txtPRID.setText(tblPRs.getValueAt(selectedRow, 0).toString());
                 String items = tblPRs.getValueAt(selectedRow, 1).toString();
                 comboItemID.removeAllItems();
-                Arrays.stream(items.split("/")).forEach(comboItemID::addItem);  // تعبية الكومبو
+                Arrays.stream(items.split("/")).forEach(comboItemID::addItem);  
                 txtQuantity.setText(tblPRs.getValueAt(selectedRow, 2).toString());
                 txtDate.setText(tblPRs.getValueAt(selectedRow, 3).toString());
                 comboSupplierID.setSelectedItem(tblPRs.getValueAt(selectedRow, 4).toString());
@@ -69,7 +69,7 @@ public class PRPanel extends javax.swing.JPanel {
         }
     }
     private void loadItemsForSupplier(String supplierID) {
-        comboItemID.removeAllItems();  // أولاً: نفرغ الكومبو
+        comboItemID.removeAllItems();  
     
         try (BufferedReader br = new BufferedReader(new FileReader("src/Suppliers.txt"))) {
             String line;
@@ -77,13 +77,13 @@ public class PRPanel extends javax.swing.JPanel {
                 String[] parts = line.split("\\|");
                 if (parts[0].equals(supplierID)) {
                     if (parts.length >= 5) {
-                        String[] items = parts[4].split("/");  // استخدم الفاصل الصحيح
+                        String[] items = parts[4].split("/");  
                         Set<String> uniqueItems = new LinkedHashSet<>(Arrays.asList(items));
                         for (String item : uniqueItems) {
-                            comboItemID.addItem(item.trim());  // نضيف العناصر بدون تكرار
+                            comboItemID.addItem(item.trim()); 
                         }
                     }
-                    break;  // وجدنا المورد، نخرج
+                    break;  
                 }
             }
         } catch (IOException e) {
@@ -110,11 +110,7 @@ public class PRPanel extends javax.swing.JPanel {
         }
 
         tblPRs.setModel(model);
-
-    // توليد PRID جديد افتراضي
         txtPRID.setText(PRManager.generateNextPRID());
-
-    // Reset الكومبو بوكس لبدء جديد
         comboItemID.removeAllItems();
     }
     
@@ -124,14 +120,10 @@ public class PRPanel extends javax.swing.JPanel {
         txtDate.setText("");
         txtSalesManagerID.setText("");
 
-    // Reset الكومبو بوكس للـ Supplier والـ Item
         if (comboSupplierID.getItemCount() > 0) {
             comboSupplierID.setSelectedIndex(0);
         }
-        comboItemID.removeAllItems();  // تنظيف ComboBox
-
-    // ممكن تضيف reset للكومبو بحيث ما يتركه فاضي
-    // comboItemID.addItem("Select Item...");
+        comboItemID.removeAllItems();  
     }
     
 
@@ -354,7 +346,6 @@ public class PRPanel extends javax.swing.JPanel {
         return;
     }
 
-    // Check for duplicate PR ID
     for (int i = 0; i < tblPRs.getRowCount(); i++) {
         if (tblPRs.getValueAt(i, 0).equals(prid)) {
             JOptionPane.showMessageDialog(this, "PR ID already exists.");
@@ -392,7 +383,6 @@ public class PRPanel extends javax.swing.JPanel {
         }
 
         try {
-        // 1. البحث عن PR القديم
             PurchaseRequisition oldPR = PRManager.loadAllPRs().stream()
                 .filter(pr -> pr.getPrID().equals(prid))
                 .findFirst()
@@ -403,7 +393,6 @@ public class PRPanel extends javax.swing.JPanel {
                 return;
             }
 
-        // 2. دمج الـ ItemID الجديد مع القديم بدون تكرار
             List<String> newItemIDs = new ArrayList<>(oldPR.getItemIDs());
             List<Integer> newQuantities = new ArrayList<>(oldPR.getQuantities());
 
@@ -413,17 +402,15 @@ public class PRPanel extends javax.swing.JPanel {
                 int updatedQty = newQuantities.get(index) + Integer.parseInt(quantity);
                 newQuantities.set(index, updatedQty);
             } else {
-            // إذا جديد، نضيفه
+ 
                 newItemIDs.add(itemID);
                 newQuantities.add(Integer.parseInt(quantity));
             }
 
-        // 3. إنشاء PR جديد محدث
             PurchaseRequisition updatedPR = new PurchaseRequisition(
                 prid, newItemIDs, newQuantities, date, supplierID, smID, "Pending"
             );
-
-        // 4. حذف القديم وإضافة الجديد
+            
             PRManager.deletePR(prid);
             PRManager.addPR(updatedPR);
 

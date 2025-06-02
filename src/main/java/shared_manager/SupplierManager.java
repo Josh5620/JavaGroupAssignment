@@ -59,7 +59,7 @@ public class SupplierManager {
                 if (currentItems.equals("NoItems") || currentItems.isEmpty()) {
                     itemSet.clear();
                 }
-                itemSet.add(newItemID);  // أضف الجديد بدون تكرار
+                itemSet.add(newItemID);  
                 String updatedItems = String.join("/", itemSet);
                 Supplier newSupplier = new Supplier(updatedSupplier.getId(), updatedSupplier.getName(), updatedSupplier.getEmail(), updatedSupplier.getPhone(), updatedItems);
                 lines.add(newSupplier.toString());
