@@ -1,1 +1,5 @@
-SUP004|PastaHouse|pasta@suppliers.com|0198765432|
+SUP001|Lim|Lim@gmail.com|017895643|ITM001/ITM002
+SUP002|John|John@gmail.com|0978613556|ITM003/ITM004/ITM005
+SUP003|Sami|Sami@gmail.com|07975645678|ITM006
+SUP004|Mohd|Mohd@gmail.com|0124798873|ITM007/ITM008
+SUP005|Rami|Rami@gmail.com|0387445139|NoItems
