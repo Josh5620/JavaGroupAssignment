@@ -22,6 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import shared_manager.PRManager;
 import shared_model.PurchaseRequisition;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 public class PRPanel extends javax.swing.JPanel {
     List<PurchaseRequisition> prs = PRManager.loadAllPRs();
     
@@ -429,14 +431,42 @@ public class PRPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Please select a PR to delete.");
             return;
         }
+
         String prid = tblPRs.getValueAt(selectedRow, 0).toString();
 
+        List<String> lines = new ArrayList<>();
+        boolean found = false;
 
-        PRManager freshPRManager = new PRManager();
-        freshPRManager.deletePR(prid);
+        try (BufferedReader br = new BufferedReader(new FileReader("src/PurchaseRequisitions.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.startsWith(prid + "|")) {
+                    lines.add(line);
+                } else {
+                    found = true;
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error reading file: " + e.getMessage());
+            return;
+        }
 
-        loadPRs();
-        clearFields();
+        if (found) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/PurchaseRequisitions.txt"))) {
+                for (String l : lines) {
+                     bw.write(l);
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error writing file: " + e.getMessage());
+                return;
+            }
+            loadPRs();  // إعادة تحميل الجدول
+            clearFields();  // مسح الحقول
+            JOptionPane.showMessageDialog(this, "PR deleted successfully!");
+        } else {
+            JOptionPane.showMessageDialog(this, "PR not found for deletion.");
+        }
     }//GEN-LAST:event_btnDeletePRActionPerformed
 
     private void btnClearPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPRActionPerformed
