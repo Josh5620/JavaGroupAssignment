@@ -348,38 +348,41 @@ public class PRPanel extends javax.swing.JPanel {
             return;
         }
 
-
-        for (int i = 0; i < tblPRs.getRowCount(); i++) {
-            if (tblPRs.getValueAt(i, 0).equals(prid)) {
-                JOptionPane.showMessageDialog(this, "PR ID already exists in table.");
-                return;
+// تحقق من الملف مباشرة بدون PRManager
+        boolean exists = false;
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("src/PurchaseRequisitions.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+                if (line.startsWith(prid + "|")) {
+                    exists = true;
+                }
             }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error reading file: " + e.getMessage());
+            return;
         }
 
-
-        PRManager tempManager = new PRManager();
-        List<PurchaseRequisition> existingPRs = PRManager.loadAllPRs();
-        for (PurchaseRequisition pr : existingPRs) {
-            if (pr.getPrID().equalsIgnoreCase(prid)) {
+        if (exists) {
             JOptionPane.showMessageDialog(this, "PR ID already exists in file.");
-                return;
-            }
+            return;
         }
 
-        try {
-            List<String> items = List.of(itemID);
-            List<Integer> quantities = List.of(Integer.parseInt(quantity));
-            PurchaseRequisition newPR = new PurchaseRequisition(
-                prid, items, quantities, date, supplierID, smID, "Pending"
-            );
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/PurchaseRequisitions.txt", true))) {
+            String itemStr = itemID;
+            String qtyStr = quantity;
+            String dataLine = String.join("|", prid, itemStr, qtyStr, date, supplierID, smID, "Pending");
+            bw.write(dataLine);
+            bw.newLine();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error writing to file: " + e.getMessage());
+            return;
+        }
 
-            PRManager.addPR(newPR);
-            loadPRs();
-            clearFields();
-            JOptionPane.showMessageDialog(this, "PR added successfully.");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid quantity format.");
-        }   
+        loadPRs();
+        clearFields();
+        JOptionPane.showMessageDialog(this, "PR added successfully."); 
     }//GEN-LAST:event_btnAddPRActionPerformed
 
     private void btnEditPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPRActionPerformed
