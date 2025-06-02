@@ -349,22 +349,21 @@ public class PRPanel extends javax.swing.JPanel {
         }
 
 
-        boolean exists = false;
-        try (BufferedReader br = new BufferedReader(new FileReader("src/PurchaseRequisitions.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.startsWith(prid + "|")) {
-                    exists = true;
-                    break;
-                }
+        for (int i = 0; i < tblPRs.getRowCount(); i++) {
+            if (tblPRs.getValueAt(i, 0).equals(prid)) {
+                JOptionPane.showMessageDialog(this, "PR ID already exists in table.");
+                return;
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error checking PRID: " + e.getMessage());
         }
 
-        if (exists) {
+
+        PRManager tempManager = new PRManager();
+        List<PurchaseRequisition> existingPRs = PRManager.loadAllPRs();
+        for (PurchaseRequisition pr : existingPRs) {
+            if (pr.getPrID().equalsIgnoreCase(prid)) {
             JOptionPane.showMessageDialog(this, "PR ID already exists in file.");
-            return;
+                return;
+            }
         }
 
         try {
@@ -380,7 +379,7 @@ public class PRPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "PR added successfully.");
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid quantity format.");
-        }
+        }   
     }//GEN-LAST:event_btnAddPRActionPerformed
 
     private void btnEditPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPRActionPerformed
