@@ -8,6 +8,7 @@ package PM;
  *
  * @author dhmez
  */
+import UserLogin.LoginPage;
 import java.awt.CardLayout;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -102,6 +103,7 @@ public class PMForm1 extends javax.swing.JFrame {
         btnHome = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         lblLogo = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
         panelHome = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -156,10 +158,10 @@ public class PMForm1 extends javax.swing.JFrame {
         panelGeneratePO_Delete = new javax.swing.JPanel();
         jScrollPane11 = new javax.swing.JScrollPane();
         jLabel23 = new javax.swing.JLabel();
-        btnDelete2 = new javax.swing.JButton();
-        btnBack8 = new javax.swing.JButton();
         jScrollPane10 = new javax.swing.JScrollPane();
         tblPOsDelete = new javax.swing.JTable();
+        btnDelete2 = new javax.swing.JButton();
+        btnBack8 = new javax.swing.JButton();
         panelViewPOs = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane13 = new javax.swing.JScrollPane();
@@ -177,7 +179,6 @@ public class PMForm1 extends javax.swing.JFrame {
         jScrollPane14 = new javax.swing.JScrollPane();
         tblDetalisPR = new javax.swing.JTable();
         jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
         btnCloseDetails = new javax.swing.JButton();
         txtDPRID = new javax.swing.JTextField();
         txtDDate = new javax.swing.JTextField();
@@ -185,6 +186,7 @@ public class PMForm1 extends javax.swing.JFrame {
         txtDStatus = new javax.swing.JTextField();
         txtDSMID = new javax.swing.JTextField();
         txtTotalQ = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
         txtGrandTotal = new javax.swing.JTextField();
         panelDetailsPO = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
@@ -197,7 +199,6 @@ public class PMForm1 extends javax.swing.JFrame {
         jScrollPane18 = new javax.swing.JScrollPane();
         tblDetalisPO = new javax.swing.JTable();
         jLabel34 = new javax.swing.JLabel();
-        jLabel35 = new javax.swing.JLabel();
         btnCloseDetails1 = new javax.swing.JButton();
         txtDPOID1 = new javax.swing.JTextField();
         txtDDate1 = new javax.swing.JTextField();
@@ -205,6 +206,7 @@ public class PMForm1 extends javax.swing.JFrame {
         txtDStatus1 = new javax.swing.JTextField();
         txtDResolution = new javax.swing.JTextField();
         txtTotalQ1 = new javax.swing.JTextField();
+        jLabel36 = new javax.swing.JLabel();
         txtGrandTotal1 = new javax.swing.JTextField();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -278,10 +280,23 @@ public class PMForm1 extends javax.swing.JFrame {
         btnExit.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         btnExit.setForeground(new java.awt.Color(255, 255, 255));
         btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         lblLogo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mega (3).png"))); // NOI18N
         lblLogo.setText("Logo");
+
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout navigationPanelLayout = new javax.swing.GroupLayout(navigationPanel);
         navigationPanel.setLayout(navigationPanelLayout);
@@ -291,18 +306,22 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(navigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(navigationPanelLayout.createSequentialGroup()
-                        .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGroup(navigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnViewItems, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnViewPO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnVGeneratePO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnViewPR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnViewSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblLogo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addContainerGap())
-                    .addComponent(btnViewItems, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnViewPR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnViewSuppliers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
-                    .addComponent(btnVGeneratePO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnViewPO, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(navigationPanelLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
                         .addComponent(btnHome)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLogout)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExit)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addContainerGap(67, Short.MAX_VALUE))))
         );
         navigationPanelLayout.setVerticalGroup(
             navigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -313,17 +332,18 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addComponent(btnViewItems, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnViewSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnViewPR, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnViewPR, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addComponent(btnVGeneratePO, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnViewPO, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(21, 21, 21)
                 .addGroup(navigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnHome)
+                    .addComponent(btnLogout)
                     .addComponent(btnExit))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         contentPanel.setBackground(new java.awt.Color(232, 228, 228));
@@ -344,21 +364,21 @@ public class PMForm1 extends javax.swing.JFrame {
             .addGroup(panelHomeLayout.createSequentialGroup()
                 .addGroup(panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelHomeLayout.createSequentialGroup()
-                        .addGap(118, 118, 118)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(220, 220, 220)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelHomeLayout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(569, Short.MAX_VALUE))
+                        .addGap(242, 242, 242)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(430, Short.MAX_VALUE))
         );
         panelHomeLayout.setVerticalGroup(
             panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHomeLayout.createSequentialGroup()
-                .addGap(88, 88, 88)
+                .addGap(82, 82, 82)
                 .addComponent(jLabel6)
-                .addGap(58, 58, 58)
+                .addGap(62, 62, 62)
                 .addComponent(jLabel7)
-                .addContainerGap(802, Short.MAX_VALUE))
+                .addContainerGap(822, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelHome, "card7");
@@ -412,7 +432,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 904, Short.MAX_VALUE)
                 .addGap(48, 48, 48))
         );
 
@@ -464,7 +484,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 881, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 899, Short.MAX_VALUE)
                 .addGap(58, 58, 58))
         );
 
@@ -520,8 +540,8 @@ public class PMForm1 extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(panelViewPRsLayout.createSequentialGroup()
-                .addGap(184, 184, 184)
-                .addComponent(btnDetailsPRs, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(162, 162, 162)
+                .addComponent(btnDetailsPRs, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelViewPRsLayout.setVerticalGroup(
@@ -529,11 +549,11 @@ public class PMForm1 extends javax.swing.JFrame {
             .addGroup(panelViewPRsLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
                 .addComponent(btnDetailsPRs)
-                .addGap(25, 25, 25))
+                .addContainerGap(587, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelViewPRs, "card4");
@@ -592,7 +612,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(738, Short.MAX_VALUE))
+                .addContainerGap(756, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelGeneratePO, "card5");
@@ -667,8 +687,8 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(panelGeneratePO_AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGeneratePO, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBack5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(620, Short.MAX_VALUE))
+                    .addComponent(btnBack5, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(638, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelGeneratePO_Add, "card10");
@@ -741,7 +761,7 @@ public class PMForm1 extends javax.swing.JFrame {
                             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
                         .addGroup(panelGeneratePO_EditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtQuantity2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtItemID2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -761,9 +781,9 @@ public class PMForm1 extends javax.swing.JFrame {
                     .addGroup(panelGeneratePO_EditLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnEdit2)
-                        .addGap(34, 34, 34)
+                        .addGap(18, 18, 18)
                         .addComponent(btnBack7)
-                        .addGap(443, 443, 443))))
+                        .addGap(387, 387, 387))))
         );
         panelGeneratePO_EditLayout.setVerticalGroup(
             panelGeneratePO_EditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -806,14 +826,11 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGroup(panelGeneratePO_EditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(txtResolution, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(panelGeneratePO_EditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelGeneratePO_EditLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBack7))
-                    .addGroup(panelGeneratePO_EditLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(btnEdit2)))
-                .addContainerGap(574, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(panelGeneratePO_EditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBack7)
+                    .addComponent(btnEdit2))
+                .addContainerGap(638, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelGeneratePO_Edit, "card9");
@@ -822,20 +839,6 @@ public class PMForm1 extends javax.swing.JFrame {
 
         jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel23.setText("Choose PO To Delete");
-
-        btnDelete2.setText("Delete");
-        btnDelete2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDelete2ActionPerformed(evt);
-            }
-        });
-
-        btnBack8.setText("Back");
-        btnBack8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBack8ActionPerformed(evt);
-            }
-        });
 
         tblPOsDelete.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -858,6 +861,20 @@ public class PMForm1 extends javax.swing.JFrame {
         });
         jScrollPane10.setViewportView(tblPOsDelete);
 
+        btnDelete2.setText("Delete");
+        btnDelete2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelete2ActionPerformed(evt);
+            }
+        });
+
+        btnBack8.setText("Back");
+        btnBack8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBack8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelGeneratePO_DeleteLayout = new javax.swing.GroupLayout(panelGeneratePO_Delete);
         panelGeneratePO_Delete.setLayout(panelGeneratePO_DeleteLayout);
         panelGeneratePO_DeleteLayout.setHorizontalGroup(
@@ -870,19 +887,18 @@ public class PMForm1 extends javax.swing.JFrame {
                     .addGroup(panelGeneratePO_DeleteLayout.createSequentialGroup()
                         .addGroup(panelGeneratePO_DeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelGeneratePO_DeleteLayout.createSequentialGroup()
-                                .addGap(191, 191, 191)
-                                .addComponent(btnDelete2)
-                                .addGap(77, 77, 77)
-                                .addComponent(btnBack8))
-                            .addGroup(panelGeneratePO_DeleteLayout.createSequentialGroup()
                                 .addGap(184, 184, 184)
-                                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelGeneratePO_DeleteLayout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelGeneratePO_DeleteLayout.createSequentialGroup()
+                                .addGap(91, 91, 91)
+                                .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(164, 164, 164)
+                                .addComponent(btnBack8, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(panelGeneratePO_DeleteLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelGeneratePO_DeleteLayout.setVerticalGroup(
             panelGeneratePO_DeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -890,14 +906,14 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
-                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(panelGeneratePO_DeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDelete2)
-                    .addComponent(btnBack8))
-                .addGap(11, 11, 11))
+                    .addComponent(btnBack8)
+                    .addComponent(btnDelete2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 300, Short.MAX_VALUE)
+                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
         );
 
         contentPanel.add(panelGeneratePO_Delete, "card8");
@@ -964,7 +980,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(btnDetails2)
-                .addContainerGap(637, Short.MAX_VALUE))
+                .addContainerGap(659, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelViewPOs, "card6");
@@ -1007,8 +1023,6 @@ public class PMForm1 extends javax.swing.JFrame {
 
         jLabel25.setText("Total Quantity:");
 
-        jLabel26.setText("Grand Total:");
-
         btnCloseDetails.setText("Close");
         btnCloseDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1033,6 +1047,8 @@ public class PMForm1 extends javax.swing.JFrame {
 
         txtTotalQ.setEditable(false);
 
+        jLabel27.setText("Grand Total:");
+
         txtGrandTotal.setEditable(false);
 
         javax.swing.GroupLayout panelDetailsPRLayout = new javax.swing.GroupLayout(panelDetailsPR);
@@ -1047,20 +1063,6 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(93, 93, 93)
                 .addGroup(panelDetailsPRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelDetailsPRLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(panelDetailsPRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(panelDetailsPRLayout.createSequentialGroup()
-                                .addComponent(jLabel26)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtGrandTotal))
-                            .addGroup(panelDetailsPRLayout.createSequentialGroup()
-                                .addComponent(jLabel25)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTotalQ, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCloseDetails)
-                        .addGap(73, 73, 73))
                     .addGroup(panelDetailsPRLayout.createSequentialGroup()
                         .addGroup(panelDetailsPRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelDetailsPRLayout.createSequentialGroup()
@@ -1084,7 +1086,21 @@ public class PMForm1 extends javax.swing.JFrame {
                             .addGroup(panelDetailsPRLayout.createSequentialGroup()
                                 .addComponent(jLabel24)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDSMID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtDSMID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panelDetailsPRLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(panelDetailsPRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelDetailsPRLayout.createSequentialGroup()
+                                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtGrandTotal))
+                            .addGroup(panelDetailsPRLayout.createSequentialGroup()
+                                .addComponent(jLabel25)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTotalQ, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCloseDetails)
+                        .addGap(73, 73, 73)))
                 .addGap(0, 180, Short.MAX_VALUE))
         );
         panelDetailsPRLayout.setVerticalGroup(
@@ -1119,10 +1135,11 @@ public class PMForm1 extends javax.swing.JFrame {
                         .addComponent(jLabel25)
                         .addComponent(txtTotalQ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnCloseDetails))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 580, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelDetailsPRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel26)
-                    .addComponent(txtGrandTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel27)
+                    .addComponent(txtGrandTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(606, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelDetailsPR, "card11");
@@ -1165,8 +1182,6 @@ public class PMForm1 extends javax.swing.JFrame {
 
         jLabel34.setText("Total Quantity:");
 
-        jLabel35.setText("Grand Total:");
-
         btnCloseDetails1.setText("Close");
         btnCloseDetails1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1191,6 +1206,8 @@ public class PMForm1 extends javax.swing.JFrame {
 
         txtTotalQ1.setEditable(false);
 
+        jLabel36.setText("Grand Total:");
+
         txtGrandTotal1.setEditable(false);
 
         javax.swing.GroupLayout panelDetailsPOLayout = new javax.swing.GroupLayout(panelDetailsPO);
@@ -1205,20 +1222,6 @@ public class PMForm1 extends javax.swing.JFrame {
                 .addGap(93, 93, 93)
                 .addGroup(panelDetailsPOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelDetailsPOLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(panelDetailsPOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(panelDetailsPOLayout.createSequentialGroup()
-                                .addComponent(jLabel35)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtGrandTotal1))
-                            .addGroup(panelDetailsPOLayout.createSequentialGroup()
-                                .addComponent(jLabel34)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTotalQ1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCloseDetails1)
-                        .addGap(73, 73, 73))
                     .addGroup(panelDetailsPOLayout.createSequentialGroup()
                         .addGroup(panelDetailsPOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelDetailsPOLayout.createSequentialGroup()
@@ -1242,7 +1245,21 @@ public class PMForm1 extends javax.swing.JFrame {
                             .addGroup(panelDetailsPOLayout.createSequentialGroup()
                                 .addComponent(jLabel33)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDResolution, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtDResolution, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panelDetailsPOLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(panelDetailsPOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelDetailsPOLayout.createSequentialGroup()
+                                .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtGrandTotal1))
+                            .addGroup(panelDetailsPOLayout.createSequentialGroup()
+                                .addComponent(jLabel34)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTotalQ1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCloseDetails1)
+                        .addGap(73, 73, 73)))
                 .addGap(0, 180, Short.MAX_VALUE))
         );
         panelDetailsPOLayout.setVerticalGroup(
@@ -1277,10 +1294,11 @@ public class PMForm1 extends javax.swing.JFrame {
                         .addComponent(jLabel34)
                         .addComponent(txtTotalQ1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnCloseDetails1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 580, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelDetailsPOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel35)
-                    .addComponent(txtGrandTotal1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel36)
+                    .addComponent(txtGrandTotal1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(606, Short.MAX_VALUE))
         );
 
         contentPanel.add(panelDetailsPO, "card12");
@@ -1358,22 +1376,21 @@ public class PMForm1 extends javax.swing.JFrame {
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelViewPRs");
 
-    List<PurchaseRequisition> prList = PrManager.loadAllPRs();
+    List<PurchaseRequisition> prList = PRManager.loadAllPRs();
     
     DefaultTableModel model = (DefaultTableModel) tblViewPRs.getModel();
     model.setRowCount(0);
 
     for (PurchaseRequisition pr : prList) {
-        if ("Approved".equalsIgnoreCase(pr.getStatus())) {
-            model.addRow(new Object[]{
-                pr.getPrID(),
-                pr.getDate(),               
-                pr.getSupplierID(),
-                pr.getStatus(),
-                pr.getSalesManagerID()
-            });
-        }
+        model.addRow(new Object[]{
+            pr.getPrID(),
+            pr.getDate(),
+            pr.getSupplierID(),
+            pr.getStatus(),
+            pr.getSalesManagerID()
+        });
     }
+
     }//GEN-LAST:event_btnViewPRActionPerformed
 
     private void btnVGeneratePOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVGeneratePOActionPerformed
@@ -1408,8 +1425,14 @@ public class PMForm1 extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelGeneratePO_Add");
+        loadToTable();
         
 
+        
+
+    }//GEN-LAST:event_btnAddActionPerformed
+    
+    private void loadToTable(){
         List<PurchaseRequisition> prList = PrManager.loadAllPRs();
 
         DefaultTableModel model = (DefaultTableModel) tblPRsForPO.getModel();
@@ -1426,9 +1449,7 @@ public class PMForm1 extends javax.swing.JFrame {
                 pr.getStatus()
             });
         }
-
-    }//GEN-LAST:event_btnAddActionPerformed
-
+    }
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
     comboPOIDEdit.removeAllItems();
     
@@ -1511,33 +1532,6 @@ public class PMForm1 extends javax.swing.JFrame {
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelGeneratePO");
     }//GEN-LAST:event_btnBack7ActionPerformed
-
-    private void btnBack8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack8ActionPerformed
-        CardLayout cl = (CardLayout)(contentPanel.getLayout());
-        cl.show(contentPanel, "panelGeneratePO");
-    }//GEN-LAST:event_btnBack8ActionPerformed
-
-    private void btnDelete2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete2ActionPerformed
-        int selectedRow = tblPOsDelete.getSelectedRow(); 
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a PO to delete.", "Selection Required", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String poID = tblPOsDelete.getValueAt(selectedRow, 0).toString(); 
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete PO " + poID + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        boolean deleted = manager.deletePO(poID);
-        if (deleted) {
-            JOptionPane.showMessageDialog(this, "PO deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            loadPOsToTableDelete();
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to delete PO.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnDelete2ActionPerformed
     private void loadPOsToTableDelete() {
         List<PurchaseOrder> poList = manager.getAllPOs();
 
@@ -1564,14 +1558,12 @@ public class PMForm1 extends javax.swing.JFrame {
             return;
         }
 
-    
         String status = tblPRsForPO.getValueAt(selectedRow, 6).toString(); 
         if (!status.equalsIgnoreCase("Pending")) {
-            JOptionPane.showMessageDialog(this, "This PR is not pending and cannot be converted to PO.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "This PR is already approved.", "Error", JOptionPane.ERROR_MESSAGE);
             return; 
         }
 
-    
         String prID = tblPRsForPO.getValueAt(selectedRow, 0).toString();
         String date = JOptionPane.showInputDialog(this, "Enter the Date for the PO:", "PO Date", JOptionPane.PLAIN_MESSAGE);
         if (date == null || date.trim().isEmpty()) {
@@ -1579,8 +1571,18 @@ public class PMForm1 extends javax.swing.JFrame {
             return;
         }
 
-        String pmID = "PM001"; 
-        manager.addPOFromPR(prID, date.trim(), pmID);
+        String pmID = JOptionPane.showInputDialog(this, "Enter PM ID:", "PM ID", JOptionPane.PLAIN_MESSAGE);
+        if (pmID == null || pmID.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "PM ID is required.", "Input Required", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+
+        POManager poManager = new POManager(); 
+        poManager.addPOFromPR(prID, date.trim(), pmID.trim());
+        loadToTable();
+
+
     }//GEN-LAST:event_btnGeneratePOActionPerformed
 
     private void comboPOIDEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPOIDEditActionPerformed
@@ -1603,82 +1605,6 @@ public class PMForm1 extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_comboPOIDEditActionPerformed
-
-    private void btnDetailsPRsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailsPRsActionPerformed
-        int selectedRow = tblViewPRs.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a PR to view details.", "Selection Required", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String selectedPRID = tblViewPRs.getValueAt(selectedRow, 0).toString();
-        List<PurchaseRequisition> prList = PrManager.loadAllPRs();
-
-        PurchaseRequisition selectedPR = null;
-        for (PurchaseRequisition pr : prList) {
-            if (pr.getPrID().equals(selectedPRID)) {
-                selectedPR = pr;
-                break;
-            }
-        }
-
-        if (selectedPR != null) {
-        
-            txtDPRID.setText(selectedPR.getPrID());
-            txtDDate.setText(selectedPR.getDate());
-            txtDSupID.setText(selectedPR.getSupplierID());
-            txtDStatus.setText(selectedPR.getStatus());
-            txtDSMID.setText(selectedPR.getSalesManagerID());
-
-        
-            String[] items = selectedPR.getItemIDs().toArray(new String[0]);
-            String[] quantities = selectedPR.getQuantities()
-                .stream()
-                .map(String::valueOf)
-                .toArray(String[]::new);
-            DefaultTableModel model = (DefaultTableModel) tblDetalisPR.getModel();
-            model.setRowCount(0); 
-
-            for (int i = 0; i < items.length; i++) {
-                String itemID = items[i];
-                String quantity = quantities[i];
-
-            
-                String itemName = "", unitPrice = "";
-                try (BufferedReader reader = new BufferedReader(new FileReader("src/Items.txt"))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        String[] parts = line.split("\\|");
-                        if (parts[0].equals(itemID)) {
-                            itemName = parts[1];
-                            unitPrice = parts[2];
-                            break;
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                double total = Double.parseDouble(unitPrice) * Double.parseDouble(quantity);
-                model.addRow(new Object[]{itemID, itemName, quantity, unitPrice, total});
-            }
-
-        
-            double totalQuantity = 0, grandTotal = 0;
-            for (int i = 0; i < model.getRowCount(); i++) {
-                totalQuantity += Double.parseDouble(model.getValueAt(i, 2).toString());
-                grandTotal += Double.parseDouble(model.getValueAt(i, 4).toString());
-            }
-            txtTotalQ.setText(String.valueOf(totalQuantity));
-            txtGrandTotal.setText(String.format("%.2f", grandTotal));
-
-        
-            CardLayout cl = (CardLayout)(contentPanel.getLayout());
-            cl.show(contentPanel, "panelDetailsPR");
-        } else {
-            JOptionPane.showMessageDialog(this, "PR not found!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnDetailsPRsActionPerformed
 
     private void txtDPRIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDPRIDActionPerformed
         // TODO add your handling code here:
@@ -1762,6 +1688,119 @@ public class PMForm1 extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "PO not found!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnDetails2ActionPerformed
+
+    private void btnDetailsPRsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailsPRsActionPerformed
+        int selectedRow = tblViewPRs.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a PR to view details.", "Selection Required", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String selectedPRID = tblViewPRs.getValueAt(selectedRow, 0).toString();
+        List<PurchaseRequisition> prList = PrManager.loadAllPRs();
+
+        PurchaseRequisition selectedPR = null;
+        for (PurchaseRequisition pr : prList) {
+            if (pr.getPrID().equals(selectedPRID)) {
+                selectedPR = pr;
+                break;
+            }
+        }
+
+        if (selectedPR != null) {
+        
+            txtDPRID.setText(selectedPR.getPrID());
+            txtDDate.setText(selectedPR.getDate());
+            txtDSupID.setText(selectedPR.getSupplierID());
+            txtDStatus.setText(selectedPR.getStatus());
+            txtDSMID.setText(selectedPR.getSalesManagerID());
+
+        
+            String[] items = selectedPR.getItemIDs().toArray(new String[0]);
+            String[] quantities = selectedPR.getQuantities()
+                .stream()
+                .map(String::valueOf)
+                .toArray(String[]::new);
+            DefaultTableModel model = (DefaultTableModel) tblDetalisPR.getModel();
+            model.setRowCount(0); 
+
+            for (int i = 0; i < items.length; i++) {
+                String itemID = items[i];
+                String quantity = quantities[i];
+
+            
+                String itemName = "", unitPrice = "";
+                try (BufferedReader reader = new BufferedReader(new FileReader("src/Items.txt"))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        String[] parts = line.split("\\|");
+                        if (parts[0].equals(itemID)) {
+                            itemName = parts[1];
+                            unitPrice = parts[2];
+                            break;
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                double total = Double.parseDouble(unitPrice) * Double.parseDouble(quantity);
+                model.addRow(new Object[]{itemID, itemName, quantity, unitPrice, total});
+            }
+
+        
+            double totalQuantity = 0, grandTotal = 0;
+            for (int i = 0; i < model.getRowCount(); i++) {
+                totalQuantity += Double.parseDouble(model.getValueAt(i, 2).toString());
+                grandTotal += Double.parseDouble(model.getValueAt(i, 4).toString());
+            }
+            txtTotalQ.setText(String.valueOf(totalQuantity));
+            txtGrandTotal.setText(String.format("%.2f", grandTotal));
+
+        
+            CardLayout cl = (CardLayout)(contentPanel.getLayout());
+            cl.show(contentPanel, "panelDetailsPR");
+        } else {
+            JOptionPane.showMessageDialog(this, "PR not found!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDetailsPRsActionPerformed
+
+    private void btnDelete2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete2ActionPerformed
+        int selectedRow = tblPOsDelete.getSelectedRow(); 
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a PO to delete.", "Selection Required", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String poID = tblPOsDelete.getValueAt(selectedRow, 0).toString(); 
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete PO " + poID + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        boolean deleted = manager.deletePO(poID);
+        if (deleted) {
+            JOptionPane.showMessageDialog(this, "PO deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            loadPOsToTableDelete();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to delete PO.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDelete2ActionPerformed
+
+    private void btnBack8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack8ActionPerformed
+        CardLayout cl = (CardLayout)(contentPanel.getLayout());
+        cl.show(contentPanel, "panelGeneratePO");
+    }//GEN-LAST:event_btnBack8ActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        LoginPage login = new LoginPage();
+        login.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
     
     
     
@@ -1820,6 +1859,7 @@ public class PMForm1 extends javax.swing.JFrame {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnGeneratePO;
     private javax.swing.JButton btnHome;
+    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnVGeneratePO;
     private javax.swing.JButton btnViewItems;
     private javax.swing.JButton btnViewPO;
@@ -1845,7 +1885,7 @@ public class PMForm1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
@@ -1854,7 +1894,7 @@ public class PMForm1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

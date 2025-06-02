@@ -10,6 +10,7 @@ import java.util.*;
 
 public class POManager extends User {
     private static final String filePath = "src/PurchaseOrders.txt";
+    private static final String FILE_PATH = "src/PurchaseRequisitions.txt";
     private static final List<List<String>> poList = new ArrayList<>();
 
     public POManager() {
@@ -55,21 +56,18 @@ public class POManager extends User {
 
     public void addPOFromPR(String prID, String date, String pmID) {
         try {
-            String itemIDs = "", quantities = "", supplierID = "", smID = "", status = "";
+            String prFilePath = "src/PurchaseRequisitions.txt";
+            String itemIDs = "", quantities = "", supplierID = "", smID = "";
             boolean found = false;
-
             List<String> updatedPRLines = new ArrayList<>();
-            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        
+            try (BufferedReader reader = new BufferedReader(new FileReader(prFilePath))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("\\|");
                     if (parts[0].equals(prID)) {
-                        status = parts[6];
-                        if (!status.equalsIgnoreCase("Pending")) {
-                            JOptionPane.showMessageDialog(null,
-                                    "This PR is not pending and cannot be converted to PO.",
-                                    "Error",
-                                    JOptionPane.ERROR_MESSAGE);
+                        if (!parts[6].equalsIgnoreCase("Pending")) {
+                            JOptionPane.showMessageDialog(null, "This PR is already approved.", "Error", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         itemIDs = parts[1];
@@ -85,13 +83,11 @@ public class POManager extends User {
             }
 
             if (!found) {
-                JOptionPane.showMessageDialog(null,
-                        "PR not found.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "PR not found.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
+        
             String lastPOID = "PO000";
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 String line;
@@ -102,32 +98,36 @@ public class POManager extends User {
                     }
                 }
             }
-
             int nextID = Integer.parseInt(lastPOID.substring(2)) + 1;
             String newPOID = String.format("PO%03d", nextID);
 
-            List<String> newRecord = Arrays.asList(newPOID, date, itemIDs, quantities, "Processing", pmID, "Unresolved");
-            addPO(newRecord);
+            String status = "Processing";
+            String resolution = "Unresolved";
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+        
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+                writer.write(newPOID + "|" + date + "|" + itemIDs + "|" + quantities + "|" + status + "|" + pmID + "|" + resolution);
+                writer.newLine();
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(prFilePath))) {
                 for (String l : updatedPRLines) {
                     writer.write(l);
                     writer.newLine();
                 }
             }
 
-            JOptionPane.showMessageDialog(null,
-                    "Purchase Order generated successfully and PR status updated to Approved.",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-
+        
+            JOptionPane.showMessageDialog(null, "Purchase Order generated successfully and PR status updated to Approved.", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Error generating PO or updating PR status: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error generating PO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+
+
+
+
 
     public List<PurchaseOrder> getAllPOs() {
         List<PurchaseOrder> result = new ArrayList<>();
@@ -147,6 +147,8 @@ public class POManager extends User {
         }
         return null;
     }
+    
+    
 
     public void editPO(PurchaseOrder updatedPO) {
         for (int i = 0; i < poList.size(); i++) {
