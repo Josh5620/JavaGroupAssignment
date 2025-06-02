@@ -64,16 +64,23 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
 }
     
     private void loadItemsToComboBox() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/Items.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length >= 1) {
-                    comboItemID.addItem(parts[0]);  // ItemID
+        int selectedRow = tblSuppliers.getSelectedRow();
+        if (selectedRow >= 0) {
+            String supplierID = tblSuppliers.getValueAt(selectedRow, 0).toString();
+
+            comboItemID.removeAllItems();  // تفريغ الكومبو أولاً
+
+            try (BufferedReader br = new BufferedReader(new FileReader("src/Items.txt"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split("\\|");
+                    if (parts.length >= 4 && parts[3].equals(supplierID)) {
+                        comboItemID.addItem(parts[0]);  // إضافة ItemID
+                    }
                 }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error loading items for the selected supplier: " + e.getMessage());
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error loading items: " + e.getMessage());
         }
     }
     
@@ -86,15 +93,18 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
                 txtEmail.setText(tblSuppliers.getValueAt(selectedRow, 2).toString());
                 txtPhone.setText(tblSuppliers.getValueAt(selectedRow, 3).toString());
 
+                loadItemsToComboBox();  // إضافة استدعاء تحميل ItemIDs الخاصة بـ Supplier
             }
         });
     }
+    
     
     private void clearFields() {
         txtSupplierID.setText("");
         txtName.setText("");
         txtEmail.setText("");
         txtPhone.setText("");
+        comboItemID.removeAllItems();
         
         try {
             txtSupplierID.setText(supplierManager.generateNextSupplierID());
@@ -308,10 +318,10 @@ public class SupplierEntryPanel extends javax.swing.JPanel {
         }
 
         try {
-            Supplier updatedSupplier = new Supplier(id, name, email, phone, "");  
+            Supplier updatedSupplier = new Supplier(id, name, email, phone, "");  // OOP: ItemIDs handled in editSupplier
             supplierManager.editSupplier(updatedSupplier, selectedItem);  
-            loadSuppliers();  
-            clearFields();  
+            loadSuppliers();  // Refresh table
+            clearFields();  // Clear fields
             JOptionPane.showMessageDialog(this, "Supplier updated successfully.");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error editing supplier: " + ex.getMessage());

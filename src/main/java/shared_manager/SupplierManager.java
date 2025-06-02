@@ -55,12 +55,13 @@ public class SupplierManager {
             String[] parts = line.split("\\|");
             if (parts[0].equals(updatedSupplier.getId())) {
                 String currentItems = parts.length >= 5 ? parts[4] : "NoItems";
-                if (currentItems.equals("NoItems")) {
-                    currentItems = newItemID;
-                } else if (!currentItems.contains(newItemID)) {
-                    currentItems += "\\" + newItemID;
+                Set<String> itemSet = new LinkedHashSet<>(Arrays.asList(currentItems.split("\\\\")));
+                if (currentItems.equals("NoItems") || currentItems.isEmpty()) {
+                    itemSet.clear();
                 }
-                Supplier newSupplier = new Supplier(updatedSupplier.getId(), updatedSupplier.getName(), updatedSupplier.getEmail(), updatedSupplier.getPhone(), currentItems);
+                itemSet.add(newItemID);  // أضف الجديد بدون تكرار
+                String updatedItems = String.join("/", itemSet);
+                Supplier newSupplier = new Supplier(updatedSupplier.getId(), updatedSupplier.getName(), updatedSupplier.getEmail(), updatedSupplier.getPhone(), updatedItems);
                 lines.add(newSupplier.toString());
             } else {
                 lines.add(line);
@@ -70,7 +71,7 @@ public class SupplierManager {
         BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH));
         for (String l : lines) {
             bw.write(l);
-            bw.newLine();
+         bw.newLine();
         }
         bw.close();
     }
