@@ -1670,8 +1670,13 @@ public class PMForm1 extends javax.swing.JFrame {
                     e.printStackTrace();
                 }
 
-                double total = Double.parseDouble(unitPrice) * Double.parseDouble(quantity);
-                model.addRow(new Object[]{itemID, itemName, quantity, unitPrice, total});
+                if (!unitPrice.isEmpty() && !quantity.isEmpty()) {
+                    double total = Double.parseDouble(unitPrice) * Double.parseDouble(quantity);
+                    model.addRow(new Object[]{itemID, itemName, quantity, unitPrice, total});
+                } else {
+                    System.err.println("Warning: unitPrice or quantity is empty for itemID: " + itemID);
+                }
+
             }
 
             double totalQuantity = 0, grandTotal = 0;
@@ -1744,8 +1749,13 @@ public class PMForm1 extends javax.swing.JFrame {
                     e.printStackTrace();
                 }
 
-                double total = Double.parseDouble(unitPrice) * Double.parseDouble(quantity);
-                model.addRow(new Object[]{itemID, itemName, quantity, unitPrice, total});
+                if (!unitPrice.isEmpty() && !quantity.isEmpty()) {
+                    double total = Double.parseDouble(unitPrice) * Double.parseDouble(quantity);
+                    model.addRow(new Object[]{itemID, itemName, quantity, unitPrice, total});
+                } else {
+                    System.err.println("Empty unitPrice or quantity for itemID: " + itemID);
+                }
+
             }
 
         
