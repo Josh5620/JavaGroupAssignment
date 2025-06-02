@@ -9,3 +9,5 @@ ITM017|Fish|11.90|SUP004
 ITM019|Garlic|6.80|SUP003
 ITM٠٢٠|Milk|4|SUP٠٠١
 ITM٠٢١|Orange|2|SUP٠٠١
+ITM٠٢٢|Mailk|2|SUP004
+ITM٠٢٣|Apples|6|SUP٠٠٢
