@@ -2,7 +2,6 @@ package shared_manager;
 
 import UserLogin.User;
 import shared_model.PurchaseOrder;
-import shared_model.PurchaseRequisition;
 
 import javax.swing.*;
 import java.io.*;

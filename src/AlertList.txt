@@ -1,24 +1,12 @@
 1|IM|im1|im1 ure fired|Done
 2|IM|all|Low Item Alert : Hand Sanitiser|Done
 3|FM|user3|Warning : PO #1234 awaiting stock confirmation|Not Done
-4|PM|user4|Low Item Alert : Laptop Chargers|Done
-5|Admin|user5|Security Notice : Multiple failed login attempts|Not Done
-6|IM|user6|Low Item Alert : Eggs|Done
-7|SM|user7|Low Item Alert : Printer Ink|Done
-8|FM|user8|Alert : Payment delayed for Supplier #S45|Not Done
-9|PM|user9|Low Item Alert : Packaging Tape|Done
-10|Admin|user10|System Notice : Inventory sync completed at 03:00 AM|Done
-11|SM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-12|SM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-13|SM|im3|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-14|SM|im3|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-15|IM|all|Low stock: Rice, Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Done
-16|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-17|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-18|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-19|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-20|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-21|SM|yhujk|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-22|SM|45tg6hwgrtgweertgwee|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-23|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
-24|SM|Dylan|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+4|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Done
+5|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Done
+6|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Done
+7|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Done
+8|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Done
+9|SM|yhujk|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+10|SM|45tg6hwgrtgweertgwee|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done
+11|SM|all|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Done
+12|SM|Dylan|Low stock: Tomatoes, Milk, Flour, Apples, Chicken, Bread, Garlic|Not Done

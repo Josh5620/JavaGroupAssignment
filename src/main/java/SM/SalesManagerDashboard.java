@@ -14,10 +14,13 @@ import java.io.IOException;
 import javax.swing.*;
 import java.awt.*;
 import UserLogin.LoginPage;
+import shared_manager.PRManager;
 public class SalesManagerDashboard extends javax.swing.JFrame {
+    PRManager user = new PRManager();
 
     public SalesManagerDashboard(String username, String role) {
         initComponents();
+        user.checkAlert(username, role);
 
     }
 
