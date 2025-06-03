@@ -1506,33 +1506,37 @@ public class PMForm1 extends javax.swing.JFrame {
         String status = ComboStatus.getSelectedItem().toString();
         String pmID = txtPMID.getText().trim();
         String resolution = txtResolution.getText().trim();
-    
+
         List<PurchaseOrder> poList = manager.getAllPOs();
         PurchaseOrder selectedPO = null;
-        for (PurchaseOrder po : poList) {
-            if (po.getPoID().equals(poID)) {
-                selectedPO = po;
-                break;
+            for (PurchaseOrder po : poList) {
+                if (po.getPoID().equals(poID)) {
+                    selectedPO = po;
+                    break;
+                }
             }
-        }
 
-        if (selectedPO != null) {
-            String itemIDs = String.join("/", selectedPO.getItemIDs());
+            if (selectedPO != null) {
+                String itemIDs = String.join("/", selectedPO.getItemIDs());
 
-    // Convert List<Integer> to List<String>, then join with "/"
-            String quantities = selectedPO.getQuantities().stream()
+    
+                String quantities = selectedPO.getQuantities().stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining("/"));
-            List<String> tempPO = Arrays.asList(poID, date, itemIDs, quantities, status, pmID, resolution);
-            
+                List<String> tempPO = Arrays.asList(poID, date, itemIDs, quantities, status, pmID, resolution);
 
-            PurchaseOrder updatedPO = new PurchaseOrder(tempPO);
-            manager.editPO(updatedPO);
+                PurchaseOrder updatedPO = new PurchaseOrder(tempPO);
+                manager.editPO(updatedPO);
 
-            JOptionPane.showMessageDialog(this, "PO updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Selected PO not found!", "Error", JOptionPane.ERROR_MESSAGE);
+    
+                manager.getPOList().clear();  
+                manager.makeBigList("src/PurchaseOrders.txt", manager.getPOList());
+
+                JOptionPane.showMessageDialog(this, "PO updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Selected PO not found!", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_btnEdit2ActionPerformed
 
     private void btnBack7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack7ActionPerformed
