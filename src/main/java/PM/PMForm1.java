@@ -1402,7 +1402,12 @@ public class PMForm1 extends javax.swing.JFrame {
     private void btnViewPOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPOActionPerformed
         CardLayout cl = (CardLayout)(contentPanel.getLayout());
         cl.show(contentPanel, "panelViewPOs");
-        
+
+
+        manager.getPOList().clear();  
+        manager.makeBigList("src/PurchaseOrders.txt", manager.getPOList());  
+
+
         List<PurchaseOrder> poList = manager.getAllPOs();
         DefaultTableModel model = (DefaultTableModel) tblViewPO.getModel();
         model.setRowCount(0);
@@ -1415,6 +1420,8 @@ public class PMForm1 extends javax.swing.JFrame {
                 po.getApprovedBy()
             });
         }
+
+
     }//GEN-LAST:event_btnViewPOActionPerformed
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
