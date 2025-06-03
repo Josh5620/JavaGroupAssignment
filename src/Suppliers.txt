@@ -1,7 +1,5 @@
-SUP004|Salman|salman@gmail.com|05979548|ITM005
 SUP001|Abdo|abdo@gmail.com|0145841|ITM001/ITM002
-SUP002|azoooz@df,,,ld|aJFOIH|654511|ITM003
-
+SUP002|azoooz|azooz@gmail.com|654511|ITM003
 SUP003|Saleem|salem@gmail.com|7784666|ITM004
 SUP004|Salman|salman@gmail.com|05979548|ITM005
 SUP005|Maghroom|maghroom@gmail.com|01647857|NoItems
